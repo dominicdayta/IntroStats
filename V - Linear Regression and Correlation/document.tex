@@ -1,0 +1,290 @@
+\documentclass{article}
+
+\usepackage{kafkanotes}
+\usepackage{amsmath}
+\usepackage{multirow}
+
+%Judul dan Penulis
+\title{IV. Correlation and Regression Analysis}
+\author{Dayta, Dominic}
+
+\begin{document}
+
+%Halaman Judul
+\begin{titlepage}
+\thispagestyle{empty}
+\maketitle
+
+%Abstrak
+\begin{abstract}
+Hypothesis tests are useful so far as making statements on unknown parameters, or making comparisons between pairs or sets of such parameters. However, in many cases what we are concerned about in statistical analysis is to identify some form of \textit{relationship}. In the following lecture, we explore the idea of statistical modeling through two simple but flexible forms: the correlation coefficient and the regression equation.
+
+\textit{Please note that the following lecture notes have been prepared specifically for our Stat 195 class. Please do not disseminate.}
+\end{abstract}
+
+\tableofcontents
+\end{titlepage}
+
+%Geometri untuk halaman konten
+\newgeometry{top=20mm,bottom=25mm,right=80mm,left=20mm}
+
+%================KONTEN DIMULAI DISINI================%
+
+\section{Correlation Coefficients}
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/positivenegative}
+  \caption{Visual comparison of a positive and negative correlation.}
+  \label{fig:posneg}
+\end{marginfigure}
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/lowhigh}
+  \caption{Visual comparison of a low and high correlation coefficient.}
+  \label{fig:lowhigh}
+\end{marginfigure}
+
+The principal objective of correlation analysis is to ascertain the strength and direction of the linear association between two variables. This is particularly valuable when attempting to summarize the extent to which changes in one variable lead to consistent and predictable changes in another.
+
+Correlation analysis makes use of the linear correlation coefficient, which in parameter form is denoted by $\rho$. This coefficient assumes values ranging between -1 and 1, inclusive of both endpoints, reflecting the span of possible relationships between the variables.
+
+We define the linear correlation coefficient as follows:
+
+$$
+\rho = \frac{E(XY) - E(X)E(Y)}{\sqrt{Var(X)Var(Y)}} = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}
+$$
+which follows the property we mentioned above that,
+$$
+-1 \leq \rho \leq +1
+$$
+
+A $\rho$ value of -1 signifies a perfect negative linear correlation, implying that as one variable increases, the other decreases in a precisely predictable manner. Conversely, while a $\rho$ value of 1 indicates a perfect positive linear correlation, where increases in one variable correspond exactly to increases in the other. A value of 0 denotes no linear correlation, implying that changes in one variable do not predictably correspond to changes in the other, at least in linear fashion.
+
+See Figure \ref{fig:posneg} how this is visualized through a scatterplot. The scatterplot visualizes the data for the $X$ variable on the horizontal axis, while the other $Y$ variable follows the vertical axis. In Figure \ref{fig:posneg} we can see how a positive correlation (left) means that moving to the right on the horizontal axis also means that points tend to move upwards on the vertical axis. Meanwhile, a negative correlation (right) implies that moving the same direction to the horizontal axis means that points are instead moving downwards along the vertical a xis.
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/nonlinear}
+  \caption{The above represent present correlations, but will not be detected as linear under the correlation coefficient.}
+  \label{fig:nonlinear}
+\end{marginfigure}
+
+In Figure \ref{fig:lowhigh} we also see how a correlation closer to zero ($\rho = 0.4$) means that points don't follow this linear relationship quite as definitively, and instead exhibits more of a scatter, compared to a pair whose correlation is closer to 1 ($\rho = 0.8$). In a latter part of this discussion we touch on how the values are interpreted specifically to gauge the strength of the relationship between the pair.
+
+If $\rho = 0$, then there is no linear relationship between $X$ and $Y$. However, this does not automatically mean a lack of association, in general. For instance, see Figure \ref{fig:nonlinear} which illustrates two examples of pairs of variables that have $\rho = 0$. Nevertheless, it would be incorrect to conclude that they are not associated at all. Rather, their association is not described by a line.
+
+Another misconception that needs to be addressed is that a strong linear relationship does not necessarily mean that $X$ causes $Y$ or $Y$ causes $X$. In practice, it's quite difficult, if not entirely impossible, to make direct statements about causality, as causality is a very strong form of relationship that is more akin to deterministic relationships, rather than the probabilistic types that we deal with in statistics. It is possible that other variables may have caused the change in both $X$ and $Y$. It may also simply be due to coincidence.
+
+\subsection{Pearson's Product-Moment Coefficient}
+
+Pearson's product moment correlation coefficient, denoted as $r$, quantifies the extent to which changes in one variable are associated with predictable changes in another, following a linear pattern. Derived from the principles of covariance and variance, Pearson's $r$ is a useful point estimator for $\rho$.
+
+Mathematically, the Pearson correlation coefficient $r$ is computed by dividing the covariance of the two variables by the product of their individual standard deviations. This normalization ensures that $r$ assumes values within the range of -1 to 1, inclusive of both endpoints. In notation,
+
+$$
+r = \frac{\sum^{n}_{i=1}{(x_i - \bar{x})(y_i - \bar{y})}}{\sqrt{(\sum^{n}_{i=1}{(x_i - \bar{x}})^2) (\sum^{n}_{i=1}{(y_i - \bar{y}})^2)}}
+$$
+
+The value of $r$ is interpreted in the same way as $\rho$. In practice, it is useful to make descriptive statements about the strength of the association between variables based on the observed value or $r$. The actual cutoffs vary from reference to reference, but an example of such descriptive interpretations would be as follows:
+
+\begin{table}[h]
+\begin{tabular}{ll}
+\hline
+\textbf{Coefficient Value}  & \textbf{Interpretation}                   \\ \hline
+.90 to 1.00 (-.90 to -1.00) & Very high positive (negative) correlation \\
+.70 to .90 (-.70 to -.90)   & High positive (negative) correlation      \\
+.50 to .70 (-.50 to -.70)   & Moderate positive (negative) correlation  \\
+.30 to .50 (-.30 to -.50)   & Low positive (negative) correlation       \\
+.00 to .30 (.00 to -.30)    & Negligible Correlation                    \\ \hline
+\end{tabular}
+\end{table}
+
+In practice, Pearson's $r$ is widely used to estimate the population correlation coefficient $\rho$ based on a sample of data. However, beyond simple estimating this correlation and making statements about its strength, it is also essential to determine whether the observed correlation coefficient is statistically significant or merely a result of chance. This is equivalent to testing for the following null hypothesis:
+
+$$
+H_0: \rho = \rho_0
+$$
+commonly $\rho_0 = 0$, against alternatives that the relationship might be stronger ($\rho > \rho_0$), weaker ($\rho < \rho_0$), or simply not equal to this null value ($\rho \neq \rho_0$).
+
+Using large sample properties, it is found that the sampling distribution of $r$ is the t-distribution. Thus, we make use of the t-test to perform this hypothesis testing. The test statistic is given by
+
+$$
+t = \frac{(r - \rho_0)\sqrt{n-2}}{\sqrt{1-r^2}}
+$$
+
+This follows a t distribution with $\nu = n-2$ degrees of freedom.
+
+\subsection{Spearman's Rank Order Coefficient}
+
+Unlike Pearson's product moment correlation coefficient, Spearman's $r$ is employed when dealing with ordinal or non-normally distributed data, where the assumption of linearity may not hold. This coefficient is particularly useful for assessing relationships between variables that exhibit a consistent trend in their values without strictly adhering to a linear pattern.
+
+The primary distinction between Spearman's rank correlation coefficient and Pearson's lies in the nature of the data they are applied to. While Pearson's is suited for continuous variables that exhibit linear relationships, Spearman's $r$ is specifically designed for situations where the variables are measured on an ordinal scale. Ordinal data maintains a meaningful order among values, but the intervals between the values might not be uniform or precisely quantifiable. In addition, Spearman's $r$ is also robust against outliers, making it suitable for data sets that might contain extreme values that could unduly influence Pearson's correlation.
+
+The calculation of Spearman's rank correlation involves transforming the original data into ranks and then computing Pearson's correlation coefficient on the ranks. The process of ranking involves assigning a rank to each value based on its order in the data set, with the smallest value receiving a rank of 1 and subsequent values assigned ranks accordingly. Tied values are assigned the average of the ranks that they would have occupied. The transformed ranked data are then used to compute the Spearman correlation coefficient, using
+
+$$
+r = 1 - \frac{6 \sum^{n}_{i=1}{d^2_i}}{n(n^2-1)}
+$$
+where $d_i = R(X_i) - R(Y_i)$ is the difference between the $X$ and $Y$ ranks for each observation.
+
+With large sample sizes, the sampling distribution for Spearman's coefficient is the same as that for Pearson's $r$. Thus, performing a hypothesis test makes use of the same distribution and test statistic.
+
+\section{Regression Analysis}
+
+Correlation analysis is quite useful in measuring the strength and direction of the relationship between two variables. For simpler analysis, this much information is already quite helpful. In practice, however, we tend to want to do more than simply knowing whether two variables are related. More specifically, we wish to know exactly how one variable will react when another variable changes.
+
+The goal of linear regression is to summarize, in an equation form known also as the \textit{regression model} how a response variable $Y$ will move with respect to a set of one or more independent variables $X$.
+
+\subsection{Estimating the Regression Model}
+
+The regression model is given by the following:
+
+$$
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_p x_p + \varepsilon
+$$
+where $\varepsilon$, known as the error term, is assumed to be random and distributed identically across all $n$ observations as the normal distribution, $\varepsilon \sim N(0, \sigma^2_\varepsilon)$.
+
+The above equation gives the specific structure of a regression model. We assume that the value of $y$ follows a function that is determined by values of a set of $p$ independent variables, plus some random fluctuation represented by the error term. The $\beta$ coefficients represent the parameters of the model, and they provide the intercept as well as the slopes of the regression line. $\beta_0$ represents y-intercept: when all of the $x$ variables are set to 0, then $y = 0$ plus some random error. Meanwhile, $\beta_1$ represents the strength and direction of the relationship that $x_1$ has with $y$. If $\beta_1 > 0$ then that means a unit increase in $x_1$ will associate with a $\beta_1$ increase in $y$. On the other hand, if $\beta_1 < 0$ then a unit increase in $x_1$ will associate with a $\beta_1$ decrease in $y$. Finally, if $\beta_1 = 0$ then no change in $x_1$ will reflect in $y$ (no association).
+
+The random error term is a flexible component of the regression model that accounts for the statistical or probabilistic nature of the data. A random error term may be thought of as a representation of the effect of other factors, that is, apart from X, not explicitly stated in the model, but have an affect the response variable to some extent.
+
+It accounts for the inherent variation or basic and unpredictable element of randomness in responses. It also accounts for measurement errors in recording the value of the response variable.
+
+In practice, though, the error term is unobserved and unestimated. When performing inference, we leave out the error term, which is done by referring not to $y$ but to its expected value $E[y]$, also denoted as $\hat{y}$.
+
+$$
+\hat{y} = E[y] = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_p x_p
+$$
+which reveals that the regression model is a description of how changes in $x$ associates with changes in the \textit{average} of $y$.
+
+The regression model is based on a number of important assumptions, which we will return to later when discussing model diagnostics. In order for inference on the above model to be valid, the regression model assumes that
+
+\begin{itemize}
+    \item The error terms are independent from one another;
+    \item The error terms are normally distributed;
+    \item The error terms all have a mean of 0; and
+    \item The error terms have constant variance $\sigma^2_\varepsilon$
+\end{itemize}
+
+The general steps in performing regression analysis are as follows:
+
+\begin{enumerate}
+    \item Obtain the equation that best fits the data.
+    \item Evaluate the equation to determine the strength of the relationship for prediction and estimation.
+    \item Determine if the assumptions about the error terms are satisfied.
+    \item If the model fit the data adequately, use the equation for prediction and for describing the nature of the relationship between the variables.
+\end{enumerate}
+
+But how to obtain the line of best fit? This is done through the method of least squares. More completely, we call this method the Ordinary Least Squares (OLS) algorithm. We describe its steps in detail in the following section.
+
+\subsubsection{Simple Linear Regression}
+
+For the sake of simplicity, we consider only a regression model with one independent variable, also known as the simple linear regression model:
+
+$$
+y = \beta_0 + \beta_1 x_1 + \varepsilon
+$$
+
+The above model highlights more clearly why such a model is called linear. The form specifically follows Figure \ref{fig:linequation}, which is the standard linear equation. In this equation, the y-intercept is given by $\beta_0$, and the slope is $\beta_1$.
+
+\begin{figure}[h]
+\includegraphics[width=8cm]{images/lineq}
+\caption{The linear equation form $y = mx + b$, where the slope $m = b_1$ and the intercept is given by $b_0$.}
+  \label{fig:linequation}
+\end{figure}
+
+The OLS method is a way of finding $\beta_0$ and $\beta_1$ that will result in an equation that minimizes the discrepnacy between resulting $\hat{y}$ and the true value $y$. Recall that $\hat{y} = \beta_0 + \beta_1 x_1$. The squared error loss (or MSE) is given by
+
+$$
+\begin{aligned}
+y &= \beta_0 + \beta_1 x_1 + \varepsilon \\
+MSE &= \sum^{n}_{i=1}(y_i - [\beta_0 + \beta_1 x_i])^2
+\end{aligned}
+$$
+
+The minimum is obtained through the first derivative method. We obtain partial derivatives of the MSE (denoted now simply as $f$) with respect to $\beta_0$ and $\beta_1$. Then, we equate those derivatives to zero and solve for the resulting $\beta_0$ and $\beta_1$, respectively.
+
+For instance, the steps for finding the estimator on $\beta_0$ is given below:
+
+$$
+\begin{aligned}
+\frac{\delta}{\delta \beta_0} f &= - 2 \sum^{n}_{i=1}(y_i - [\beta_0 + \beta_1 x_i]) \\
+&\to \sum^{n}_{i=1}(y_i - [\beta_0 + \beta_1 x_i]) = 0 \\
+&\to \sum^{n}_{i=1}{y_i} - \beta_1 \sum^{n}_{i=1}{x_i} = n \beta_0 \\
+&\to \hat{\beta}_0 = \bar{y} - \beta_1 \bar{x}
+\end{aligned}
+$$
+
+The steps for $\beta_1$ is much trickier, but we can use the fact that we've already shown $\hat{\beta}_0 = \bar{y} - \beta_1 \bar{x}$:
+
+$$
+\begin{aligned}
+\frac{\delta}{\delta \beta_1} f &= - \sum^{n}_{i=1}{2 x_i(y_i - [\beta_0 + \beta_1 x_i])} \\
+& \to \sum^{n}_{i=1}{x_i y_i - \beta_0 x_i - \beta_1 x^2_i} = 0 \\
+& \to \sum^{n}_{i=1}{x_i y_i - (\bar{y} - \beta_1 \bar{x}) x_i - \beta_1 x^2_i} = 0 \\
+& \to \sum^{n}_{i=1}{x_i y_i} - \bar{y}\sum^{n}_{i=1}{x_i} + \beta_1 \bar{x} \sum^{n}_{i=1}{x_i} - \beta_1 \sum^{n}_{i=1}{x^2_i} = 0 \\
+& \to \hat{\beta}_1 = \frac{\sum^{n}_{i=1}{(x_i - \bar{x})(y_i - \bar{y})}}{\sum^{n}_{i=1}{(x_i - \bar{x})^2}}
+\end{aligned}
+$$
+
+We can now use the above estimators $\hat{\beta}_0$ and $\hat{\beta}_1$ as point estimates for the $\beta_0$ and $\beta_1$ parameters in the regression model.
+
+\begin{figure}[h]
+\includegraphics[width=8cm]{images/regexample}
+\caption{Example of a simple linear regression on the skincare mortality dataset. The line shown is given by $\hat{Mortality} = 389.19 - 5.978 Lattitude$.}
+  \label{fig:linequation}
+\end{figure}
+
+\subsubsection{Multiple Linear Regression}
+
+The simple linear regression model is simple to estimate, but is often not used due to the limitation of having only one predictor variable. In practice, we are often involved with controlling for the impact of two or more variables. We return now to the multiple linear regression setup, which involves $p$ variables.
+
+$$
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_p x_p + \varepsilon
+$$
+
+Performing the same OLS steps in a multiple linear regression setup is much trickier and requires the use of matrix calculus. The above regression model can be restated in matrix form as
+
+$$
+\mathbf{y} = \mathbf{X} \pmb{\beta} + \pmb{\varepsilon}
+$$
+
+where $\mathbf{y}^T = [y_1, y_2, ..., y_n]$ is the vector of $y$ values for all $n$ observations, and $\pmb{\varepsilon} = [\varepsilon_1, \varepsilon_2, ..., \varepsilon_n]$ are the corresponding error term observations for the same $n$ observations. Meanwhile, the vector $\pmb{\beta} = [\beta_0, \beta_1, \beta_2, ..., \beta_p]$ is a $p+1$ vector of the $p$ slopes including the $\beta_0$ intercept. Each of these elements in the $\pmb{\beta}$ vector correspond to one column in the $\mathbf{X}$ matrix, with an extra column on the leftmost side having only repetitions of $1$:
+$$
+\mathbf{X} = \begin{bmatrix}
+1 & x_{11} & x_{12} & ... & x_{1p}\\
+1 & x_{21} & x_{22} & ... & x_{2p}\\
+1 & ... & ... & ... & ...\\
+1 & x_{n1} & x_{n2} & ... & x_{np}
+\end{bmatrix}
+$$
+This matrix is also referred to in statistics as the ``design matrix". By applying a similar set of steps as in the simple linear regression model, we come up with the following OLS estimate for $\pmb{\beta}$ vector:
+$$
+\hat{\pmb{\beta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}
+$$
+
+\subsection{Model Diagnostics}
+
+It was briefly touched on in an earlier section that the inference conducted on the regression model depends on a number of assumptions. Thus, strictly speaking, in order for the model to hold, it is important that these assumptions are not violated in the data.
+
+Through a comprehensive evaluation of key assumptions, we can uncover potential issues that might undermine the validity of the regression results. We will focus on three critical aspects of model diagnostics—testing for heteroskedasticity, multicollinearity, and normality of residuals.
+
+\textit{Residuals} refer to differences between the model predicted average per observation, $\hat{y}$, and the true value $y$ observed in the data:
+$$
+r_i = y_i - \hat{y}_i
+$$
+
+These residuals represent a set of observations that are analogous (but not theoretically equivalent) to the error term $\varepsilon$.
+
+\subsubsection{Heteroskedasticity}
+
+Heteroskedasticity refers to the unequal dispersion of residuals across different levels of the predictor variable(s). Detecting and addressing this phenomenon is vital, as it violates the assumption of homoskedasticity, which posits that the variability of residuals should remain consistent regardless of the values of predictors. To assess heteroskedasticity, researchers often employ graphical methods, like scatterplots of residuals against predictor variables, or quantitative tests such as the Breusch-Pagan test. Addressing heteroskedasticity may involve transforming variables, introducing additional predictor variables, or utilizing heteroskedasticity-robust standard errors in regression analysis.
+
+\subsubsection{Multicollinearity}
+
+Multicollinearity arises when predictor variables in a regression model are highly correlated, leading to challenges in attributing the effect of individual predictors on the outcome. This phenomenon can inflate standard errors, making coefficients less precise and more challenging to interpret. To identify multicollinearity, researchers typically calculate variance inflation factors (VIFs) for each predictor, with higher values indicating stronger correlation with other predictors. Remedying multicollinearity often entails removing or combining correlated predictors, or applying dimensionality reduction techniques like principal component analysis (PCA).
+
+\subsubsection{Error Normality}
+
+The assumption of normality of residuals posits that the residuals—differences between observed and predicted values—should follow a normal distribution. Departures from normality can undermine the reliability of hypothesis tests and confidence intervals associated with the regression coefficients. Normality can be assessed through graphical methods like normal probability plots or quantile-quantile (Q-Q) plots. Additionally, statistical tests such as the Shapiro-Wilk test or the Anderson-Darling test can provide quantitative measures of departure from normality. When substantial deviations are detected, transformations of variables or using robust regression techniques might be considered.
+
+\end{document}

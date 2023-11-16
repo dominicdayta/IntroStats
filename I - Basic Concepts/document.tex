@@ -1,0 +1,439 @@
+\documentclass{article}
+
+\usepackage{kafkanotes}
+
+%Judul dan Penulis
+\title{I. Basic Concepts In Statistics}
+\author{Dayta, Dominic}
+
+\begin{document}
+
+%Halaman Judul
+\begin{titlepage}
+\thispagestyle{empty}
+\maketitle
+
+%Abstrak
+\begin{abstract}
+In this lecture, we delve into the fundamental concepts of statistics, providing an overview of key elements and principles. We begin with an exploration of the process of collecting, presenting, and summarizing data, laying a strong foundation for statistical analysis. Moving forward, we shift our focus towards probabilities, specifically on how to assign and evaluate probabilities on events. We introduce Kolmogorov's axiomatic definition of probability, which provides the foundation of modern probability theory.
+
+\textit{Please note that the following lecture notes have been prepared specifically for our Stat 195 class. Please do not disseminate.}
+\end{abstract}
+
+\tableofcontents
+\end{titlepage}
+
+%Geometri untuk halaman konten
+\newgeometry{top=20mm,bottom=25mm,right=80mm,left=20mm}
+
+%================KONTEN DIMULAI DISINI================%
+
+\section{Basic Concepts In Statistics}
+
+\subsection{Overview of Statistics}
+
+\emph{Statistics} is a scientific discipline that encompasses a range of methodologies used to conduct studies aimed at collecting, organizing, summarizing, analyzing, and presenting data.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Descriptive Statistics \\
+    Inferential Statistics
+\end{tabular}
+\end{margintable}
+
+We typically classify statistics into two major types. The first of these types is \emph{Descriptive statistics}, which involves the systematic collection, organization, summarization, and presentation of data. When doing descriptive statistics, our goal is to analyze the characteristics and key features of only the data at hand.
+
+On the other hand, \emph{Inferential statistics} enables us in drawing broader conclusions and making inferences about populations based on data obtained from samples. It involves generalizing from a smaller subset, known as the sample, to the larger group of interest, known as the population. Inferential statistics encompasses tasks such as estimation, hypothesis testing, determining relationships between variables, and making predictions about future outcomes.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Population $\to$ sample \\
+    Parameter $\to$ statistic
+\end{tabular}
+\end{margintable}
+
+To put it into context, a \emph{population} refers to the entire set of subjects, which can include humans or any other objects or entities, that are under study or consideration. For example, if we are examining the heights of all students in a particular school, the population would consist of every student's height in that school. When performing inferential studies, we are interested not exactly in listing down all of these students' heights, but rather a \emph{summary measure} describing the entire population. For example, what are really trying to capture is the average height of all the students in the school. We refer to this summary measure as the \emph{parameter} of interest. Note that the parameter need not be the average. It can also take the form of other summary measures, such as standard deviations, ranges, minimum, maximum, etc. We revisit the idea of summary measures in future lectures. In general though, the population is much too large for us to study in its entirety, so the value of the parameter is unknown.
+
+In contrast, a \emph{sample} refers to a smaller, representative subset of the population that is selected for observation and analysis. This subset is chosen to provide insights into the characteristics of the larger population, without having to deal with the population in its entirety. Continuing with the previous example, a sample might consist of a group of students randomly chosen from the school, and their heights would be measured and analyzed to draw conclusions about the heights of all students in the entire school population. Specifically, we wish to obtain a summary measure in the sample that reflects the summary measure of the population. When applied to the sample, the summary measure is called the \emph{statistic}. The purpose of the statistic is to serve as an estimate of the unknown \emph{parameter}.
+
+Aside from classifying statistics based on whether the activity is describing or inferring from data, we also tend to classify statistics based on the exact nature of statistical work being conducted. In this typology, we make a distinction between applied statistics and theoretical/mathematical statistics, each serving unique purposes and employing different methodologies.
+
+\emph{Applied statistics} focuses on the practical application of statistical methods to real-world problems and data analysis. It involves using statistical techniques to collect, analyze, and interpret data in various fields such as business, healthcare, social sciences, and engineering. Applied statisticians work with data sets and use statistical models and methods to draw meaningful insights, make informed decisions, and solve specific problems. They often collaborate with professionals from other domains to address practical questions, design experiments, perform statistical inference, and communicate findings effectively.
+
+On the other hand, \emph{Theoretical} or \emph{Mathematical statistics} concentrates on the development and theoretical underpinnings of statistical methods and concepts. It involves the formulation of mathematical models, the derivation of statistical distributions, and the exploration of fundamental principles and properties of statistical inference. Theoretical statisticians work on advancing statistical theory, developing new methodologies, and proving mathematical theorems to understand the foundations of statistical inference and estimation. Their work often contributes to the development of new statistical tools and techniques, which are subsequently applied by applied statisticians.
+
+While applied statistics focuses on practical problem-solving and data analysis, theoretical/mathematical statistics delves into the mathematical formulation and theoretical understanding of statistical concepts. These two branches of statistics are interconnected and complement each other. Theoretical developments in statistical theory inform and enhance the practice of applied statistics, allowing for more rigorous and robust data analysis. Similarly, applied statisticians provide feedback and real-world challenges that motivate further theoretical developments in the field.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Classical Inference \\
+    Computational Statistics \\
+    Statistical Learning
+\end{tabular}
+\end{margintable}
+
+Another distinction in Statistics that is becoming increasingly relevant today is between the \emph{Classical} (Mathematical) flavor of Statistics, and its modern, \emph{Computational} one. The latter is part of the contemporary growth of data science and machine learning, and has an increased focus on taking advantage of computers and algorithms to perform data analysis.
+
+Classical statistics, also known as mathematical statistics or simply inferential statistics, is rooted in mathematical theory and probability distributions. It relies on mathematical formulas and assumptions to analyze data, estimate parameters, and make statistical inferences. Classical statistical methods often involve closed-form solutions and analytical calculations, making them computationally efficient for many scenarios.
+
+Classical statistics emphasizes theoretical foundations, such as hypothesis testing, confidence intervals, and p-values, which are derived based on assumptions about data distributions and population parameters. On the other hand, computational statistics takes a more algorithmic and computational approach to statistical analysis. It leverages computational power and techniques to handle complex models, large datasets, and real-world scenarios. Computational statistics often involves simulation-based methods, resampling techniques (e.g., bootstrapping), and optimization algorithms to estimate parameters, assess uncertainties, and perform statistical inference.
+
+Within contemporary data science, computational statistics has gained tremendous relevance due to the explosion of data availability and the need to analyze complex datasets efficiently. Data science applications often involve diverse data types, such as text, images, and sensor data, requiring flexible and scalable statistical methods. Computational statistics enables practitioners to leverage machine learning algorithms, optimization techniques, and parallel computing to analyze and model complex patterns in data. It offers the ability to build predictive models, perform clustering and classification tasks, and conduct exploratory data analysis. In fact, a new branch of statistics has already emerged and receives much of the research activity today, focusing on the intersection between Machine Learning (in the Computer Science sense) and Statistical Inference, known today as \emph{Statistical Learning}.
+
+\subsection{Basic Concepts In Statistics}
+
+\subsubsection{Variables}
+
+At the core of statistics lies the exploration and analysis of data, which necessitates a clear understanding of what constitutes "data" itself. To establish this, we first need to define the concept of a variable. In statistics, a variable refers to any unknown characteristic or trait that can assume a range of values once observed or measured. For instance, "age" can be considered a variable. Without reference to any specific individual, age can encompass a wide spectrum, ranging from 0 to even 100 years old. However, when we gather a sample and measure this variable, it ultimately assumes a particular value. Let's imagine we randomly approach a person on the street and ask them about their age, and they respond with "24 years." In this scenario, age is the variable under consideration, and "24 years" is the observed value. It is this observed value that we refer to as our data – the concrete information we have obtained from our sample.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Qualitative and Quantitative Variables \\
+    Discrete and Continuous Variables
+\end{tabular}
+\end{margintable}
+
+This section delves further into the intricate details of the various types of variables that are analyzed. Variables can be categorized into two main types: qualitative and quantitative. \emph{Qualitative variables} pertain to distinct categories based on specific characteristics or attributes. For instance, if individuals are classified by gender as either male or female, the variable "gender" falls into the qualitative category. Other examples include religious preference and geographic locations.
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/dataclass}
+  \caption{A simple typology of variables. Data refers to the observed values of a variable, which can either be qualitative or quantitative. Descriptions can be applied interchangeably, i.e., \emph{qualitative data} and \emph{qualitative variables} are both valid.}
+  \label{fig:marginfig}
+\end{marginfigure}
+
+On the other hand, \emph{Quantitative variables} are numerical and allow for ordering or ranking. Take age as an example; it is a quantitative variable, enabling individuals to be ranked based on their age values. Additional instances of quantitative variables include heights, weights, and body temperatures.
+
+Quantitative variables can be further divided into two subgroups: discrete and continuous. \emph{Discrete variables} are countable and can assume specific values like 0, 1, 2, or 3. Examples include the number of children in a family, the student count in a classroom, or the daily number of calls received by a switchboard operator over a month.
+
+In contrast, \emph{Continuous variables} have the ability to take on an infinite number of values within a specific interval. For instance, temperature is considered a continuous variable because it can assume an infinite range of values between any two given temperatures.
+
+\subsubsection{Levels of Measurement}
+
+\emph{Nominal Level:} At this level, data is categorized into distinct groups or categories based on some characteristic or attribute. However, there is no inherent order or ranking between the categories. Examples of nominal level data include gender (male, female), eye color (blue, brown, green), and marital status (single, married, divorced).
+
+\emph{Ordinal Level:} In this level, data can be ordered or ranked, indicating relative differences or preferences. However, the differences between the values are not necessarily equal or quantifiable. A classic example of ordinal level data is survey ratings, where respondents rate their satisfaction levels as "very unsatisfied," "unsatisfied," "neutral," "satisfied," or "very satisfied." While there is an order to the categories, the exact difference in satisfaction between "unsatisfied" and "neutral" may not be precisely quantifiable.
+
+\emph{Interval Level:} This level of measurement not only allows for ordering but also ensures that the differences between values are equal and meaningful. However, there is no true zero point or absence of the measured attribute. A well-known example of interval level data is temperature measured in degrees Celsius or Fahrenheit. The difference between 10°C and 20°C is the same as the difference between 20°C and 30°C, but zero degrees Celsius does not indicate the complete absence of temperature.
+
+\begin{margintable}
+\begin{tabular}{cc} 
+    & Levels of Measurement \\
+    \textbf{Nominal} & Unordered categories \\
+    \textbf{Ordinal} & Ordered categories \\
+    \textbf{Interval} & Scale without zero point \\
+    \textbf{Ratio} & Scale with a zero point
+\end{tabular}
+\end{margintable}
+
+\emph{Ratio Level:} The highest level of measurement, the ratio level, possesses all the properties of the previous levels, including ordering, equal intervals, and a true zero point. In ratio level data, zero indicates the complete absence of the attribute being measured. Examples of ratio level data include height (measured in centimeters or inches), weight (measured in kilograms or pounds), and income (measured in dollars). A height of zero means no height, and a weight of zero signifies no weight.
+
+\subsection{Collecting Data}
+
+\subsubsection{Data Collection Methods}
+
+There are multiple approaches to collecting data, with surveys being one of the most commonly used methods. Surveys can be conducted through various means, including telephone surveys, mailed questionnaires, and personal interviews.
+
+\emph{Telephone} surveys offer advantages in terms of cost-effectiveness and potential for candid responses since there is no face-to-face interaction. However, there are limitations to consider. Some individuals in the population may not have phones or may not answer calls, which means not everyone has an equal chance of being surveyed. Additionally, the prevalence of unlisted numbers and cell phones further restricts the reach of telephone surveys. Furthermore, even the tone of the interviewer's voice can potentially influence the respondent's answers.
+
+\emph{Mailed} questionnaire surveys allow for wider coverage across different geographic areas compared to telephone surveys or personal interviews, as they are less expensive to conduct. Respondents also have the option to remain anonymous. However, there are drawbacks to mailed questionnaires. The response rate tends to be low, and respondents may provide inappropriate or incomplete answers. Additionally, some individuals may struggle with reading or comprehending the questions.
+
+\emph{Personal interview} surveys offer the advantage of obtaining in-depth responses from the individuals being interviewed. This method allows for probing questions and a deeper understanding of the participants' perspectives. However, personal interviews require trained interviewers to ask questions and record responses accurately, which adds to the overall cost compared to the other survey methods. Another potential drawback is the potential for interviewer bias in the selection of respondents.
+
+Aside from surveys, data can also be collected through other means such as surveying records or direct observation of situations. These approaches can provide valuable insights and information, depending on the specific research objectives and available resources.
+
+When selecting a data collection method, researchers need to carefully consider the advantages, limitations, and potential biases associated with each approach. The choice of data collection method should align with the research goals and the population being studied, ensuring the reliability and validity of the collected data.
+
+Statistical studies can be classified in various ways, and this we touch on two types: observational studies and experimental studies.
+
+In an \emph{Observational} study, researchers simply observe and analyze what is happening or what has occurred in the past, aiming to draw conclusions based on these observations. They do not intervene or manipulate any variables. Observational studies are often used when it is not feasible or ethical to control variables directly. Researchers collect data and examine relationships, patterns, or associations among variables. However, it is important to note that observational studies cannot establish causality since they do not involve the manipulation of variables.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Experimental Studies \\
+    Observational Studies
+\end{tabular}
+\end{margintable}
+
+In contrast, \emph{Experimental} studies involve the deliberate manipulation of one or more independent variables by the researcher to determine how these manipulations influence other variables, known as dependent variables. In an experimental study, researchers assign participants randomly to different groups, apply specific treatments or interventions, and carefully measure the effects on the dependent variables. The goal is to establish cause-and-effect relationships between the independent and dependent variables. For example, a study conducted at Virginia Polytechnic Institute, as presented in Psychology Today, divided female undergraduate students into two groups and instructed them differently in terms of increasing their number of sit-ups performed. The researchers found that those given specific goals performed better than those who were not given specific goals. This study exemplifies a statistical experiment since the researchers manipulated the type of instructions given to each group, making it possible to draw causal conclusions.
+
+In a true experimental study, subjects should be randomly assigned to groups, ensuring that the groups are comparable and any differences observed can be attributed to the independent variable. Similarly, the treatments or interventions should be assigned randomly to minimize bias. However, there are instances when random assignment is not possible, such as in educational research, where intact groups like existing classrooms are used. In such cases, the study is referred to as a \emph{Quasi-experimental} study. While random assignment of subjects may not be possible, the assignment of treatments should still be done randomly to uphold the principles of experimental design. It is worth noting that many research articles do not explicitly state whether random assignment of subjects was employed.
+
+In statistical studies, researchers typically examine one or more independent variables, also known as explanatory variables, which they manipulate or observe. These independent variables are the factors under investigation, with the researcher aiming to determine their impact on the dependent variable, also referred to as the outcome variable. The dependent variable is the resultant variable that is measured or observed to assess the effects or changes caused by the independent variable(s). It is important to carefully define and measure the dependent variable to accurately assess the impact of the independent variable(s) on the outcome.
+
+Lastly, a confounding variable is a factor that influences the dependent or outcome variable but is not adequately separated from the independent variable(s). Confounding variables can introduce bias or spurious relationships, leading to inaccurate conclusions. In experimental studies, researchers attempt to control or account for confounding variables to isolate the true effects of the independent variable(s) on the dependent variable.
+
+\subsubsection{Sampling}
+
+As mentioned previously, when conducting inferential studies, statisticians utilize samples to gather data and information about a specific variable from a larger population. Utilizing samples offers advantages in terms of time, cost, and the ability to obtain more detailed information about a particular subject. However, it is essential to avoid biased sampling methods that could skew the obtained information. For instance, interviewing people on a street corner during the day would exclude responses from individuals working in offices or attending school, resulting in a sample that does not represent the entire population adequately.
+
+To ensure unbiased samples, statisticians employ four fundamental methods of sampling: random, systematic, stratified, and cluster sampling.
+
+\begin{margintable}
+\begin{tabular}{cc} 
+    & Sampling Methods \\
+    \textbf{Random} & Using chance methods \\
+    \textbf{Systematic} & Sorted selection \\
+    \textbf{Stratified} & Selection \emph{within} groups \\
+    \textbf{Cluster} & Selection \emph{of} groups
+\end{tabular}
+\end{margintable}
+
+\emph{Random} sampling involves selecting samples using chance methods or random numbers. One approach is to assign a number to each subject in the population, place the numbered cards in a bowl, thoroughly mix them, and then select the required number of cards. The subjects corresponding to the selected numbers form the sample. However, due to the difficulty of thoroughly mixing the cards, there is a possibility of obtaining a biased sample. To mitigate this issue, statisticians often generate random numbers using computers or calculators. Before the advent of computers, random numbers were obtained from tables.
+
+\emph{Systematic} sampling involves numbering each subject in the population and then selecting every kth subject. For instance, if there are 2000 subjects in the population and a sample of 50 is required, with 2000 ÷ 50 = 40, the researcher would select every 40th subject. However, the first subject (numbered between 1 and 40) would be chosen randomly. For example, if subject 12 is the first selected subject, the sample would include subjects with numbers 12, 52, 92, and so on, until 50 subjects are obtained. Care must be taken in how the subjects are numbered to avoid systematic biases. If subjects were arranged in an alternating pattern like wife, husband, wife, husband, and every 40th subject were selected, the resulting sample would consist solely of husbands. Sometimes, numbering is not required, such as when every tenth item from an assembly line is selected for testing defects.
+
+\emph{Stratified} sampling involves dividing the population into groups or strata based on a relevant characteristic for the study, and then selecting samples from each group. Samples within each stratum should be randomly chosen. For example, if a college president wishes to gauge student opinions on a specific issue and determine if there are differences between first-year and second-year students, the president would randomly select students from each group for the sample.
+
+\emph{Cluster} sampling involves dividing the population into clusters or groups based on specific criteria such as geographic area or schools in a large district. The researcher then randomly selects some of these clusters and includes all members of the selected clusters in the sample. For instance, if a researcher aims to survey apartment dwellers in a large city with ten apartment buildings, they may randomly select two buildings and interview all the residents in those selected buildings. Cluster sampling is employed when the population is extensive or when the subjects are spread across a large geographic area. For instance, to study hospital patients in New York City, it would be costly and time-consuming to obtain a random sample of patients due to their dispersal. Instead, a few hospitals could be randomly selected, and the patients in those hospitals would form the cluster for the sample.
+
+By employing these various sampling methods, statisticians can ensure that the samples obtained are representative and provide reliable information about the broader population, enabling valid inferences and generalizations to be made.
+
+\section{Probability}
+
+\subsection{Events}
+
+A \emph{random experiment} refers to a process that can be repeated under similar conditions, yet its outcome cannot be predicted with certainty beforehand. To illustrate the concept of a random experiment, let's consider a few examples:
+
+\begin{enumerate}
+\item Tossing a coin
+\item Rolling a pair of dice
+\item Selecting 5 cards from a well-shuffled deck of cards
+\item Selecting a sample of size n from a population of N using a probability sampling method
+\end{enumerate}
+
+In some cases, a random experiment involves selecting a sample from a larger population using a probability sampling method. For instance, when conducting surveys or experiments in social sciences or market research, researchers often select a sample of a certain size ($n$) from a population ($N$) using a probability-based approach. The sample chosen represents a subset of the population, and the outcome of the selection process is uncertain due to the randomness involved.
+
+When discussing random experiments, it is essential to introduce the concept of the sample space, denoted by the symbol $\Omega$. The sample space refers to the collection of all possible outcomes of a random experiment. It encompasses every potential result that could arise from the experiment. For example, when tossing a coin, the sample space consists of two sample points: heads and tails. Each sample point represents a unique outcome within the sample space.
+
+There are different ways to specify a collection or set within the context of random experiments. The first method is the \emph{roster method}, which involves listing down all the elements that belong to the set and enclosing them in braces. For instance, if we consider the set of outcomes when rolling a pair of dice, we could use the roster method to represent the sample space as 
+$$\{1, 2, 3, 4, 5, 6\}$$
+This method is useful when the number of elements in the set is small and easily manageable.
+
+The second method is the \emph{rule method}, where we state a rule that the elements must satisfy in order to belong to the set. For example, if we consider the set of even numbers that can be obtained by rolling a pair of dice, we could represent it using the rule method as
+$$
+\{x | x \text{ is an even number between } 1 \text{ and } 6\}
+$$
+This method is particularly helpful when dealing with infinite or larger sets where listing all the elements would be impractical.
+
+Consider the random experiment of tossing a balanced coin twice. Using $H$ to denote a head and $T$ to denote a tail, specify the sample space using Roster Method:
+
+$$
+\Omega = \{HH, HT, TH, TT\}
+$$
+on the other hand, using the rule method, this will be
+$$
+\Omega = \{(x,y) | x \in \{H,T\}, y \in \{H,T\} \}
+$$
+
+But take note that, in the same experiment, instead of recording what comes up on the first and second tosses, what we can also do is to count the number of heads that will come up in the two tosses. In this case, the sample space is
+
+$$
+\begin{aligned}
+\Omega &= \{0, 1, 2 \} \\
+\Omega &= \{x | x \in \{0,1,2 \} \}
+\end{aligned}
+$$
+using the roster and rule methods.
+
+The previous example shows that the description of the sample space is \emph{not unique}. There are many ways in which we can specify the collection of all possible outcomes of the experiment. Which representation must we choose to use? Naturally, the choice depends on the characteristic of interest and whatever will facilitate the assignment and computation of probabilities.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    \textbf{Remember:} \\
+    Descriptions of the sample space \\ are \emph{not} unique.
+\end{tabular}
+\end{margintable}
+
+In the context of random experiments, an \emph{event} refers to a specific subset of the sample space. It represents a particular outcome or a combination of outcomes that we are interested in studying or analyzing.
+
+When we say that an event has occurred, it means that the outcome of the experiment falls within the sample points belonging to that event. In other words, if any of the possible outcomes of the experiment match one of the outcomes in the event, we consider the event to have taken place. On the other hand, if the outcome does not fall within the event, we say that the event did not occur.
+
+We use capital Latin letters to denote events of interest. These letters serve as symbols to identify and refer to specific subsets of the sample space. For example, let's consider the experiment of rolling a six-sided die. The sample space, denoted by $\Omega$, consists of the possible outcomes: $\{1, 2, 3, 4, 5, 6\}$. Suppose we are interested in the event of rolling an even number. We can denote this event as $E$, where $E$ represents the subset $\{2, 4, 6\}$ within the sample space $\Omega$. If the outcome of the experiment is any of the numbers 2, 4, or 6, we say that event $E$ has occurred. Conversely, if the outcome is 1, 3, or 5, event $E$ did not occur.
+
+We also define two basic events:
+
+\begin{enumerate}
+\item The impossible event is the empty set $\emptyset$.
+\item The sure event is the sample space $\Omega$.
+\end{enumerate}
+
+Two subsets of the sample space that will always be events are the empty set and the sample space. Their probabilities are always defined.
+
+Remember that an event occurs if the outcome of the experiment belongs in it. But $\emptyset$ is the empty set so it does not contain any sample point and thus it is impossible for this event to happen. On the other hand, $\Omega$ is the sample space so it contains all possible outcomes of the experiment and thus we are sure that it will always occur.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Events in Set Notation
+\end{tabular}
+\end{margintable}
+
+Aside from the impossible event and the sure event, other events can be written in terms of set operations.
+
+\begin{enumerate}
+\item $A^c$ The complement of the set $A$ is the collection of sample points in the sample space that do not belong in $A$. In other words, $A^c$ occurs when $A$ does not occur.
+\item $A \cup B$: The union of $A$ and $B$ is the collection of sample points that belong in at least one of $A$ and $B$.
+\item $A \cap B$: The intersection of $A$ and $B$ is the collection of sample points that belong in both $A$ and $B$
+\item $A - B$ or $A \setminus B$: The difference of $A$ and $B$ is the collection of sample points that belong in $A$ but not in $B$. This event happens if specifically $A$ occurs but not $B$.
+\end{enumerate}
+
+These operations on two events can be extended to $n$ events.
+
+$A_1 \cup A_2 \cup ... \cup A_n$ is the collection of sample points that belong in at least one of $A_1, A_2, ..., A_n$. This event occurred if at least one of the $n$ events occurred. Meanwhile, $A_1 \cap A_2 \cap ... \cap A_n$ is the collection of sample points that belong in each one of $A_1, A_2, ..., A_n$. This event occurred if all of the $n$ events occurred.
+
+Two events $A$ and $B$ are \emph{mutually exclusive} if and only if $A \cap B = \emptyset$. That is, $A$ and $B$ have no elements in common.
+
+The concept of mutually exclusive events can be extended to more than two events.  Accordingly, any collection of events is said to be mutually exclusive if the collection is \emph{pairwise disjoint}, which means that when one event in the collection occurs then any one of the other events in the collection cannot occur.
+
+So far we have discussed events, but have left out methods of how to assign them probabilities. We will explore the probability function $P()$ and its properties in more detail in the next section. For now, we touch on some approaches to assigning probabilities to an event. The probability of an event $A$ is written as $P(A)$.
+
+The method of using \emph{a priori}  or \emph{classical} probability assigns probabilities to events before the experiment is performed.
+If an experiment can result in any one of $N$ different equally likely outcomes, and if exactly $n$ of these outcomes belong to event $A$, then
+$$
+P(A)=\frac{\text{number of elements in } A}{\text{number of elements in } \Omega} = \frac{n}{N}
+$$
+
+\begin{margintable}
+\begin{tabular}{c} 
+    A-Priori (Classical) Probability \\
+    Posteriori (Empirical) Probability
+\end{tabular}
+\end{margintable}
+
+A priori probability is also referred to as the “classical definition of probability” because it was the first formula that provided a theoretical computation of probability. Its use is restricted to experiments whose sample space contains equiprobable outcomes, and consequently, the sample space must have only a finite number of sample points.
+
+On the other hand, the method of using a \emph{posteriori} or \emph{relative frequency} assigns probabilities to events by repeating the experiment a large number of times. If a random experiment is repeated many times under uniform conditions, then
+$$
+P(A)=\frac{\text{number of times } A \text{ is observed}}{\text{number of repetitions conducted}}
+$$
+
+For any event $A$, the a posteriori approach defines the $P(A)$ as the limiting value of the relative frequency of occurrence of event $A$ if we repeat the process endlessly. The advantage of using a posteriori probabilities instead of a priori probabilities is that its use is not restricted to random experiments that generate a sample space containing equiprobable outcomes.
+
+The advantage, on the other hand, of using a priori probabilities instead of a posteriori probabilities is that its use does not require us to perform the actual experiment and can be determined prior it.
+
+\subsection{Probability Functions and Kolmogorov's Axioms}
+
+Kolmogorov's Axiomatic Definition of Probability is a fundamental concept in probability theory that provides a rigorous and mathematical foundation for understanding and quantifying uncertainty. It was developed by the Russian mathematician Andrey Kolmogorov in the 1930s and has since become the cornerstone of modern probability theory and its applications in various fields, including statistics.
+
+The probability of an event $A$, denoted by $P(A)$, is a function that assigns a measure of chance that event $A$ will occur and must satisfy the following properties:
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Axiomatic Definition of Probability
+\end{tabular}
+\end{margintable}
+
+\begin{enumerate}
+\item $P(A) \geq $0 for any event $A$
+\item $P(\Omega) = 1$
+\item Finite Additivity: Given a sequence of mutually exclusive events $A_1, A_2, ..., A_n$ then $P(A_1 \cup A_2 \cup ... \cup A_n) = P(A_1) + P(A_2) + ... + P(A_n)$
+\end{enumerate}
+
+A probability measure that is close to 1 means that the event has a very large chance of occurrence. On the other hand, if the probability measure is close to 0, then the event has a very small chance of occurrence. A probability of 0.5, the midpoint of the interval $[0,1]$, means that the event has a 50-50 chance of occurrence, that is, the chance that the event will occur is just the same as the chance that the event will not occur.
+
+In fact, if you are sure that an event is going to happen, then it must be assigned a probability of 1. Similarly, the probability of the impossible event must always be equal to 0. 
+
+In the following discussion, we discuss some further properties of probabilities:
+
+\begin{enumerate}
+    \item If $A$ is an event, then $P(A^c) = 1 - P(A)$
+    \item If $A$ and $B$ are events, then $P(A \cap B^c) = P(A)-P(A \cap B)$. 
+    \item Additive Law of Probability: If $A$ and $B$ are events, then $$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+    \item If $A$ and $B$ are mutually exclusive, then $$P(A \cup B) = P(A) + P(B)$$
+    \item If $A$ and $B$ are events, then $$P((A \cup B)^c) = P(A^c \cap B^c)$$ and $$P((A \cap B)^c) = P(A^c \cup B^c)$$ by De Morgan's Laws 
+\end{enumerate}
+
+\begin{margintable}
+\begin{tabular}{c} 
+    These properties are derived from \\
+    our set notation of events. Therefore \\
+    other properties can be included by \\
+    using known properties and results \\
+    from set theory.
+\end{tabular}
+\end{margintable}
+
+\subsection{Conditional Probabilities and Independence}
+
+Let $A$ and $B$ be two events where $P(B)>0$. The conditional probability of event $A$ given the occurrence of event $B$ is
+$$
+P(A|B) = \frac{P(A \cap B)}{P(B)}
+$$
+
+From the definition of the conditional probability $P(A | B)$, $P(A \cap B) = P(A | B)P(B)$. Similarly, from the definition of the conditional probability $P(B | A)$, $P(A \cap B) = P(B | A)P(A)$.
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/totalprob}
+  \caption{Consider the partitions $B_1,B_2,...,B_6$. The grey circle represents the set $A$. We can reproduce the set $A$ by adding up the intersections of $A$ with each $B_i$.}
+  \label{fig:marginfig}
+\end{marginfigure}
+
+
+The definition leads to two very important properties in statistics. If $\{B_1, ..., B_n\}$ is a collection of mutually exclusive events wherein each event has a nonzero probability and $\Omega = B_1 \cup B_2 \cup ... \cup B_n$, then for any event $A$, 
+
+\emph{Theorem of Total Probabilities:}
+$$
+P(A) = \sum_{j=1}^{n}{P(A|B_j)P(B_j)}
+$$
+
+\emph{Bayes' Theorem:}
+$$
+P(B_k | A) = \frac{P(A|B_k)P(B_k)}{\sum_{j=1}^{n}{P(A|B_j)P(B_j)}}
+$$
+Note that $\sum_{j=1}^{n}{P(A|B_j)P(B_j)}$ in the denominator is equal to $P(A)$ based on the Theorem of Total Probabilities.
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Foundations of Bayesian statistics
+\end{tabular}
+\end{margintable}
+
+Bayes' theorem is a fundamental concept in probability theory that allows us to update our beliefs or knowledge about an event or hypothesis based on new evidence or information. It provides a mathematical framework for incorporating prior knowledge and observed data to calculate the probability of an event or hypothesis given the available evidence.
+
+Suppose that we wish to make inferences on an unknown parameter $\mu$. We are able to obtain some data $X$. Without reference to the data, $P(\mu)$ refers to our \emph{prior} distribution, representing the initial level of uncertainty we have regarding this parameter. Meanwhile, the probability $P(X|\mu)$ refers to the \emph{likelihood} that we would have observed $X$ given $\mu$. Then, we can update the distribution on $\mu$ this time after having observed the data through $P(\mu | X)$, referred to as the \emph{posterior} distribution. Using Bayes' theorem, we find that
+$$
+P(\mu | X) = \frac{P(X|\mu)P(\mu)}{\sum_{\mu}{P(X|\mu)P(\mu)}} = \frac{P(X|\mu)P(\mu)}{P(X)}
+$$
+
+In Bayesian statistics, the data $X$ is taken to be constant. Therefore, in the above equation, $P(X)$ is constant. It's common practice to remove this expression and focus on the numerator. This becomes
+$$
+P(\mu | X) \propto P(X|\mu)P(\mu)
+$$
+replacing the equality with $\propto$ since the two are no longer exactly equal. This produces the fundamental structure of Bayesian analysis, which states that
+$$
+posterior \propto likelihood \times prior
+$$
+
+\begin{margintable}
+\begin{tabular}{c} 
+    Frequentist Statistics \\
+    Bayesian Statistics
+\end{tabular}
+\end{margintable}
+
+
+This brings us to the topic of another way of differentiating the fields of Statistics: that is, into either the \emph{Frequentist} or the \emph{Bayesian} camp.
+
+The frequentist approach emphasizes the concept of sampling variability, where repeated sampling from the population under the same conditions would yield different sample results. In other words, we treat the parameter $\mu$ as fixed, while the sample data $X$ is random on account of it being observed multiple times.
+
+On the other hand, we have seen that Bayesian statistics takes the entirely opposite perspective by incorporating prior knowledge and beliefs into the statistical analysis. It utilizes Bayesian probability theory to update and revise prior beliefs based on observed data, resulting in posterior probabilities that represent updated beliefs. More specifically, we treat the parameter $\mu$ as random on account of having a prior and posterior distribution over it, while the sample data $X$ is observed once and is therefore treated as fixed.
+
+Both camps are treated in contemporary statistics as equally valid, with their unique set of advantages and disadvantages. Frequentist statistics tend to have closed-form solutions and are therefore easily implemented by practitioners outside of Statistics. The reliance on frequencies and sampling distributions means that inference is best done on large samples, with increasing amounts of data required to compensate for model complexity. On the other hand, Bayesian statistics tend to be more computationally involved due to the flexibility offered by the inclusion of prior distributions. Though that same flexibility proves useful in handling complex models and small sample sizes.
+
+We now define independent events.
+
+Independence is a very important property in data analysis. When performing analysis on "correlations" and "regressions", what we are really analyzing is the dependence (or independence) of a set of random variables. When two variables are statistically independent, knowing the value or occurrence of one variable provides no information about the value or occurrence of the other variable.
+
+Two events $A$ and $B$ are said to be \emph{independent} events if and only if any one of the following conditions is satisfied:
+
+\begin{enumerate}
+    \item $P(A|B) = P(A)$, if $P(B) > 0$
+    \item $P(B|A) = P(B)$, if $P(A) > 0$
+    \item $P(A \cap B) = P(A)P(B)$
+\end{enumerate}
+
+Otherwise, the events are said to be \emph{dependent}.
+
+In other words, if events A and B are statistically independent, the probability of event A happening does not depend on whether event B happens or vice versa. The occurrence of one event does not influence or affect the occurrence of the other event.
+
+In addition to this, we note that if $A$ and $B$ are independent, so are $A^c$ and $B$, $A$ and $B^c$, and $A^c$ and $B^c$. Also, there is a difference between mutually exclusive events and independent events, which is a common source of confusion among students.
+\end{document}

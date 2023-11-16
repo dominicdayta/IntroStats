@@ -1,0 +1,607 @@
+\documentclass{article}
+
+\usepackage{kafkanotes}
+
+%Judul dan Penulis
+\title{II. Foundations of Inference}
+\author{Dayta, Dominic}
+
+\begin{document}
+
+%Halaman Judul
+\begin{titlepage}
+\thispagestyle{empty}
+\maketitle
+
+%Abstrak
+\begin{abstract}
+We continue our discussion on probability, this time by defining random variables and building the concept of probability distributions. Afterwards, we build up frequentist statistical inference from its foundations. We introduce sampling distributions, laws of large numbers, and the central limit theorem. 
+
+\textit{Please note that the following lecture notes have been prepared specifically for our Stat 195 class. Please do not disseminate.}
+\end{abstract}
+
+\tableofcontents
+\end{titlepage}
+
+%Geometri untuk halaman konten
+\newgeometry{top=20mm,bottom=25mm,right=80mm,left=20mm}
+
+%================KONTEN DIMULAI DISINI================%
+
+\section{Probability Distributions}
+
+In our previous lecture, we discussed the evaluation of probabilities for events defined as subsets of the sample space. However, to perform more complex operations and analyses involving events, we need to introduce the concept of a random variable.
+
+Recall that a function is a mapping from one set to another. It relates the elements of the first set (called the domain) to elements of the second set (called the range). For example, consider the function $f(x) = x + 2$, where $x$ is a real number. This function takes a real number as input and produces another real number as output by adding 2 to the input.
+
+Now, let's consider the random experiment of flipping a fair coin twice. The sample space for this experiment consists of four possible outcomes:
+
+$$
+\Omega = \{ HH, HT, TH, TT \}
+$$
+
+Let $X$ be the number of heads observed. Each element of the sample space will correspond to a specific value of $X$. More specifically, for $\omega \in \Omega$,
+
+$$
+\begin{aligned}
+\omega &= HH &\to X &= 2 \\
+\omega &= HT &\to X &= 1 \\
+\omega &= TH &\to X &= 1 \\
+\omega &= TT &\to X &= 0 \\
+\end{aligned}
+$$
+
+We now have the necessary fundamentals to define the random variable.
+
+A random variable is a function that maps each sample point to a real number. In the above example, $X$\sidenote{Note: We will be using an uppercase letter to denote a random variable in the general sense. However, if we wish to indicate that it takes on some arbitrary value, then that value will be denoted by the corresponding lowercase letter. Thus, $X = x$ means that the random variable $X$ takes on the value $x$.} is our random variable, and it takes on the domain $\{ 0, 1, 2 \}$.
+
+The concept of a random variable will provide us with a new set of more complex ways of expressing events. Having a mapping $X$ on the real number line allows us to perform equality and inequality comparisons, for instance:
+
+\begin{itemize}
+    \item $X\leq a$ : event containing all sample points whose associated value for the random variable $X$ is less than or equal to $a$, where $a$ is a specified real number.
+    \item $X > a$ : event containing all sample points whose associated value for the random variable $X$ is greater than $a$, where $a$ is a specified real number
+    \item $a < X < b$ : event containing all sample points whose associated value for the random variable $X$ is in between $a$ and $b$, where $a$ and $b$ are specified real numbers
+\end{itemize}
+
+Equally important is that the mapping $X$ allows us to explore different transformations and arithmetic operations. We will be exploring these in more detail as we proceed with the lecture.
+
+Let's explore some more important aspects of random variables. In the previous lecture, we differentiated between discrete and continuous random variables. With the concept of the sample space, we can now distinguish between the two more rigorously as follows.
+
+If a sample space contains a finite number of possibilities or an unending sequence with as many elements as there are whole numbers, it is called a \emph{discrete sample space}. A random variable defined over a discrete sample space is called a \emph{discrete random variable}.
+
+On the other hand, if a sample space contains an infinite number of possibilities equal to the number of points on a line segment, it is called a \emph{continuous sample space}. Likewise, a random variable defined over a continuous sample space of possible values is called a \emph{continuous random variable}.
+
+\subsection{Probability Distributions}
+
+In the previous lecture, we defined an abstract function $P$ for evaluating probabilities on events. This time, we define the probability function for random variables. However, such a definition should naturally be adjusted between discrete and continuous random variables.
+
+\subsubsection{Probability Mass Function}
+
+A \emph{probability mass function} (PMF) is used for discrete random variables. For a random variable $X$, $p(X)$ (with the lowercase $p$) maps to the probability of each possible outcome or value that the random variable can take. The PMF assigns a probability to each discrete value and represents the distribution of probabilities across the entire range of the random variable. For instance, given a real number $a$ on the domain of $X$, $p(X = a)$ gives the probability that $X$ takes on the specific value of $a$.
+
+\begin{margintable}
+\centering
+\begin{tabular}{|| c c ||} 
+ \hline
+ $X$ & $p(X)$ \\ [0.5ex] 
+ \hline\hline
+ 0 & $\frac{1}{4}$ \\ 
+ 1 & $\frac{1}{2}$ \\
+ 2 & $\frac{1}{4}$ \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:coins} Probability Mass Function (PMF) written in table form for the random variable $X$ = the number of heads after tossing a coin twice.}
+\end{margintable}
+
+Each of the possible values of $X$ are called \emph{mass points}, with the function assigning a certain probability value to each. If $X$ takes on a value $x^{*}$ that does not have a valid mapping in the sample space, then $p(X = x^{*}) = 0$. For instance, in the experiment of tossing a coin twice, with $X$ being the number of heads that come up, there can only be up to 2 heads in the sample space. Thus, $p(X = 3) = 0$.
+
+The PMF can be written as a formula, if such a formula exists. Alternatively, the PMF can also be written as a table, listing down each mass point $X$ and its corresponding probability $p(X)$, as seen in Table \ref{tab:coins} for the coin tossing experiment.
+
+Given a formula or a table, how can we verify if $p()$ is a valid PMF? We use the property that
+
+$$
+\sum_{x}{p(X = x)} = 1
+$$
+for any discrete random variable $X$. That is, the sum of the probabilities for all valid mass points $X$ should be equal to 1.
+
+\subsubsection{Probability Density Function}
+
+On the other hand, a \emph{probability density function} (PDF) is used for continuous random variables. For a random variable $X$, $f(X)$ (with the lowercase $f$) describes the probability \emph{density} of the random variable over a continuous range of values. Unlike a PMF, a PDF \emph{does not provide the probability} of a specific value but instead provides the relative likelihood of the variable on that particular value (i.e., $f(X = a)$ is not the probability that $X = a$)\sidenote{Think about why this is so in the context of continuous random variables}. Instead, the area under the PDF curve over a specific interval (its integral) represents the probability of the random variable falling within that interval.
+
+The PDF is much more complicated than the PMF and for this reason is more typically written in formula. For instance, a variable $X$ for the amount of time waited until the occurrence of a certain event is typically modeled with the Exponential distribution (we will explore this in subsequent sections), given by the PDF
+
+$$
+f_X(x) = \lambda e^{-\lambda x}
+$$
+for $x \geq 0$, where $\lambda$ is the average waiting time for this event. Suppose that $\lambda = 1$ minute, we can evaluate the density for $X = 1$ unit as
+
+$$
+f_X(x) = e^{-1} = \frac{1}{e}
+$$
+but keep in mind that this is not the probability that the waiting time will be 1 minute. As we mentioned, probabilities can be evaluated from the PDF only in intervals or ranges. Suppose we wish to know the probability that the waiting time will be between 1 and 2 minutes. This will be equal to the area under the curve given by
+
+$$
+\begin{aligned}
+\int^{2}_{1}{f_X(x)dx} &= \int^{2}_{1}{e^{-x}dx} \\
+& = [-e^{-2} + c] - [-e^{-1} + c] \\
+& = \frac{1}{e} - \frac{1}{e^2} \\
+& = \frac{e - 1}{e^2} \\
+& \approx 0.2325442
+\end{aligned}
+$$
+
+Similar to the PMF, we can verify if a given PDF is valid if the sum across all valid points are equal to 1. However, because $X$ is continuous, this becomes a sum across infinitely many points, which is given by the integral
+
+$$
+\int^{\infty}_{-\infty}{f(x)dx} = 1
+$$
+
+\subsubsection{Cumulative Distribution Functions}
+
+In many cases, it can be much more convenient to think about the probability in terms of the \emph{cumulative distribution function}, also referred to interchangeably as the \emph{cumulative density function}.
+
+The cumulative distribution function (CDF) of a random variable $X$, denoted by $F(X)$, is a function defined for any real number $x$ as,
+$$
+F(X=x)=P(X \leq x)
+$$
+
+For a discrete random variable $X$, we can derive the CDF through its PMF $p$ by the sum
+
+$$
+F(X = x) = \sum^{X = x}_{X = -\infty}p(X)
+$$
+in other words, the sum of the probability over all mass points up to $x$.
+
+Deriving the CDF for a continuous random variable $X$ on the other hand requires applying the integral
+
+$$
+F(X = x) = \int^{x}_{-\infty}f(x)dx
+$$
+
+The CDF becomes especially convenient when dealing with continuous random variables, as $F(X)$ maps directly to a probability, whereas the PDF does not directly provide such probability values. That is, $F(X = a)$ is the probability that $X$ is at most $a$. Given the form of the CDF, we can also produce the probability of a continuous random variable within a specified range without having to go through integration.
+
+Recall in our example of an exponentially distributed random variable $X$. Its equivalent CDF is given by
+
+$$
+F(X = x) = 1 - e^{-x}
+$$
+
+So, the probability that $X$ is between 1 and 2 minutes will be,
+
+$$
+P(1 \leq X \leq 2) = F(2) - F(1) = -e^{-2} - [-e^{-1}] = 0.2325442
+$$
+
+Although it should be noted that not all PDFs have a simple, closed-form CDF.
+
+Below are some more properties of the CDF:
+
+\begin{enumerate}
+\item $F_X(-\infty) = \lim_{x \to -\infty}{F_X(x) = 0}$ and $F_X(+\infty) = \lim_{x \to +\infty}{F_X(x) = 1}$
+\item $F_X()$ is a monotone, non-decreasing function; that is, for any $a \leq b$ in the domain $X$, $F_X(a) \leq F_X(b)$
+\item $F_X()$ is continuous to the right; that is, $\lim_{h \to 0^{+}}{F_X(x + h) = F_X(x)}$
+\end{enumerate}
+
+We will put a particular focus on the third property. Note that approaching from the right by some fractionally small $h$ is only really possible for continuous random variables. Nevertheless, from this property it follows that
+
+$$
+F(X \leq a) = F(X < a)
+$$
+which makes computation of certain probabilities convenient when dealing with CDFs.
+
+\subsection{Expectations and Variances}
+
+\subsubsection{Expectations}
+
+The expectation of a random variable $X$, denoted as $E(X)$ or $\mu$, is a measure of the average value or central tendency of $X$. For a discrete random variable, the expectation is calculated as the sum of the product of each possible value of $X$ and its corresponding probability. 
+
+$$
+\begin{aligned}
+E[X] & = \sum_{i=1}^{n}{x_i p(X = x_i)} \\
+E[X] & = \int_{x}{x f(X = x)dx}
+\end{aligned}
+$$
+
+As an example, let's find the expected number of heads ($X$) in the experiment where we toss a coin twice. This random variable has three possible values, $X \in \{0, 1, 2 \}$ with probabilities $\frac{1}{4}, \frac{1}{2}, \frac{1}{4}$, respectively.
+
+Thus, we can easily solve for the expected value as
+
+$$
+E(X) = \sum_{i=1}^{3}{x_i p(X = x_i)} = 0 \times \frac{1}{4} + 1\times \frac{2}{4} + 2 \times \frac{1}{4} = \bigg(\frac{2}{4} + \frac{2}{4} \bigg) = 1
+$$
+
+In a tossing a fair coin twice, the number of heads to be expected is 1.
+
+
+We can also compute for the expectations of functions of $X$. Let $X$ be a discrete random variable with probability mass function $p(X)$ and $n$ mass points. Suppose $Y=g(X)$ is also a discrete random variable, then the expected value of $g(X)$ is
+
+$$
+E[g(X)] = \sum_{i=1}^{n}{g(X = x_i)p(X = x_i)}
+$$
+
+Equivalently for a continuous random variable $X$ with density function $f(X)$, the expectation of its function $Y = g(X)$ is given by
+
+$$
+E[g(X)] = \int_{x}{g(X = x)f(X = x)}
+$$
+
+\begin{margintable}
+\centering
+\begin{tabular}{||c c c||} 
+ \hline
+ $X$ & $Y$ & $p(X)$ \\ [0.5ex] 
+ \hline\hline
+ 0 & 500 & 0.40 \\ 
+ 1 & 2000 & 0.20 \\
+ 2 & 3500 & 0.15 \\
+ 3 & 5000 & 0.10 \\
+ 4 & 6500 & 0.08 \\
+ 5 & 8000 & 0.06 \\
+ 6 & 9500 & 0.01 \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:car} Number of cars sold ($X$) and daily earnings ($Y$) of a used car salesman.}
+\end{margintable}
+
+A used car dealer finds that in any day, the probability of selling no car is 0.4, one car is 0.2, two cars is 0.15, 3 cars is 0.10, 4 cars is 0.08, five cars is .06, and six cars is 0.01. Let $X$ = number of cars sold and $Y = 500 + 1500X$ represent the salesman’s daily earnings. The corresponding probability mass function can be found in Table \ref{tab:car}.
+
+$$
+\begin{aligned}
+E(Y) & = E[g(X)]= \sum{g(X)p(X)} \\
+& = (500+(1500 \times 0)) \times 0.4+ (500+(1500 \times 1)) \times 0.2+(500+(1500 \times 2)) \times 0.15 \\
+& + (500+(1500 \times 3)) \times 0.10+(500+(1500 \times 4)) \times 0.08+(500+(1500 \times 5)) \times 0.06 \\
+& + (500+(1500 \times 6)) \times 0.01 = P2720
+\end{aligned}
+$$
+
+\subsubsection{Variance}
+
+The variance of a random variable $X$, denoted as $Var(X)$ or $\sigma^2$, measures the spread or dispersion of $X$ around its expected value. It quantifies how much $X$ deviates from its average value. Let $X$ be the random variable with mean $\mu$, then the variance of $X$ is
+
+$$
+\sigma^2 = Var(X) = E[(X - \mu)^2]
+$$
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/translate.png}
+  \caption{The distribution of a random variable $X$ and $X + 2$, translated two units to the right (blue). The center changes accordingly, but the width (variability) of the distribution stays the same.}
+  \label{fig:translated}
+\end{marginfigure}
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/scaled.png}
+  \caption{The distribution of a random variable $X$ and $2X$, scaled by a factor of 2 (blue). Both the center and the width of the distribution are affected.}
+  \label{fig:scaled}
+\end{marginfigure}
+
+To facilitate a more efficient process, we use the computational formula given below
+
+$$
+Var(X) = E(X^2) - [E(X)]^2
+$$
+
+The \emph{standard deviation} $\sigma$ of $X$ is the positive square root of the variance $\sigma^2$. As discussed before, the variance of $X$ is a measure of dispersion.
+
+We explore some basic properties of the mean and variance below.
+
+\begin{itemize}
+\item $E(X - \mu) = 0$
+\item $E(aX + b) = a E(X) + b$
+\item $E(X + Y) = E(X) + E(Y)$
+\item $E(X - Y) = E(X) - E(Y)$
+\item $Var(aX + b) = a^2 Var(X)$
+\end{itemize}
+
+The above properties reveal an important distinction between the expected value and the variance under linear transformations. First, given a random variable of $X$, the addition of a constant $b$ is equivalent to moving ("translating") the entire distribution $b$ units to the right. In Figure \ref{fig:translated} we find that this results in the center $E(X)$ of the distribution also being moved by $b$ units, thus $E(X + b) = E(X) + b$. However, the variability, which can be observed through the width of the distribution, remains unaffected, and therefore $Var(X + b) = Var(X)$.
+
+On the other hand, multiplying $X$ by a factor of $a$ is equivalent to "scaling" the distribution by a factor of $a$. Both the mean and the variance are affected, as seen in Figure \ref{fig:scaled}, visualizing the property that $E(aX) = a E(X)$ and $Var(aX) = a^2 Var(X)$.
+
+The following apply only if $X$ and $Y$ are independent:
+
+\begin{itemize}
+\item $Var(X + Y) = Var(X) + Var(Y)$
+\item $Var(X - Y) = Var(X) - Var(Y)$
+\end{itemize}
+
+If independence does not hold, then the above property will still apply after adjusting for their \emph{covariance}. Covariance is a measure of the relationship between the two random variables. It describes how changes in one variable are related to changes in another variable. The covariance between two random variables $X$ and $Y$, denoted as $Cov(X, Y)$ or $\sigma(X, Y)$, is calculated as the expected value of the product of the deviations of X and Y from their respective expected values. Mathematically, it is defined as:
+
+$$
+Cov(X, Y) = E[(X - E[X])(Y - E[Y])]
+$$
+
+The resulting properties are then
+
+\begin{itemize}
+\item $Var(aX + bY) = a^2 Var(X) + 2ab Cov(X,Y) + b^2 Var(Y)$
+\item $Var(aX - bY) = a^2 Var(X) - 2ab Cov(X,Y) + b^2 Var(Y)$
+\end{itemize}
+
+Although we will explore it in more detail very later on in this course, the covariance is also related to the correlation coefficient. The correlation coefficient simply scales the covariance into the range of $[-1,1]$, making it easier to interpret. The correlation coefficient can be computed as
+
+$$
+\rho = \frac{Cov(X,Y)}{[Var(X) Var(y)]^{1/2}}
+$$
+
+Having $Cov(X,Y) > 0$ and therefore $\rho > 0$ means that $X$ and $Y$ are positively associated. This means that an increase in $X$ generally corresponds with some increase in $Y$. On the other hand, $Cov(X,Y) < 0$ and consequently $\rho < 0$ means that they are negatively associated, or that higher $X$ tends to associate with a decrease in $Y$. Finally, $Cov(X,Y) = \rho = 0$ is indicative of independence between $X$ and $Y$. We will revisit this idea of association during our lecture on correlation and regression analysis.
+
+\subsection{Some Common Distributions}
+
+A \emph{parameter} is a constant that determines the specific form of the probability distribution. It carries vital information like the shape of the distribution, the location of the distribution, and other characterizations. For the following distributions, we will find that each distribution has a unique set of parameters that determine such qualities in their resulting mass/density functions.
+
+For simpler notations, we usually refer to these distributions by their parametric form. If a random variable $X$ is said to follow a distribution $h$ determined by parameter $\theta$, we write this as $X \sim h(\theta)$.
+
+One important observation that we will have about these distributions is that the form of their mass/density functions are very consistent, differing only depending on the value of the parameter $\theta$. This means that as long as we know the value of $\theta$, we can already make statements about the probabilities of events in this distribution. Such distributions are called \emph{parametric distributions}. Consequently, statistical methodologies that are based on such distributions are called \emph{parametric methods}.
+
+Parametric distributions hold a critical place in many early statistical techniques because of their convenience. If we wish to make inferences about an entire population, we can simply focus on obtaining an estimate for $\theta$ (e.g., through a random sample). Once we have obtained the estimate, we can easily produce confidence intervals, or make probability statements about specific events.
+
+\subsection{Distribution for Binary Data}
+
+The \emph{Bernoulli distribution} is a discrete probability distribution that models a random experiment with two possible outcomes: success and failure. A random variable $X$ is called a \emph{Bernoulli random variable} if it follows the Bernoulli distribution, taking on the value 1 (success) with probability $p$ and the value 0 (failure) with probability $q = 1 - p$. Mathematically, the probability mass function (PMF) of a Bernoulli random variable X is given by:
+
+$$
+p(X = x) = p^x (1 - p)^{1 - x},
+$$
+where x is either 0 or 1. We can write this more simply using our parametric notation, $X \sim Bernoulli(p)$.
+
+The parameter $p$ represents the probability of success, and it lies between 0 and 1. It describes the likelihood of the desired outcome occurring in a single trial. The complement of $p$, $1 - p$, represents the probability of failure.
+
+The expected value (or mean) of a Bernoulli random variable is $E[X] = p$, indicating that on average, the proportion of successes in a series of independent Bernoulli trials is equal to p. The variance of $X$ is $Var(X) = p(1 - p)$, which quantifies the spread or dispersion of the random variable around its expected value.
+
+The Bernoulli distribution is widely used in various fields, especially in binary or dichotomous settings. It is often employed to model outcomes such as yes/no, heads/tails, success/failure, or presence/absence. However, by itself a Bernoulli random variable is often too simple for practical use. It often is more convenient (and more realistic) not only to consider a single Bernoulli variable, but rather an entire set of them. For this, we define the binomial experiment.
+
+A \emph{binomial experiment} is one that possesses the following properties:
+
+\begin{itemize}
+    \item The experiment consists of $n$ identical trials.
+    \item Each trial results in only one of two outcomes: a “success” or a “failure” (each trial is a Bernoulli variable).
+    \item The probability of success on a single trial is equal to $p$ and remains the same from trial to trial. The probability of failure is equal to $q = 1 - p$.
+    \item The trials are independent.
+\end{itemize}
+
+A \emph{binomial distribution} describes how frequent a “yes” appears in a “yes” / “no” (one or the other) experiment repeated for a fixed number of time. The random variable involved in a binomial experiment is called a \emph{binomial random variable}, which counts the number of “successes”  out of $n$ trials.
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/binom.png}
+  \caption{Plot of the PMF (top) and CDF (bottom) of a binomial random variable $X \sim Bi(10, 0.5)$}
+  \label{fig:binom}
+\end{marginfigure}
+
+For instance, consider the Binomial experiment of a student randomly guessing a multiple choice exam consisting of 10 items. In this example, the binomial random variable is the number of answers that the student correctly guesses out of the 10 items. Alternatively, another binomial random variable that can be considered for this experiment is the number of incorrect answers out of 10 items
+
+Let $X$ be the number of successes observed in $n$ trials. From this, we can tell that $X$ is a discrete random variable. $X$ is said to follow a binomial distribution if its PMF is given by:
+
+$$
+\begin{aligned}
+p(X = x)={{n}\choose{x}} p^x (1-p)^{n - x}, && x = 0,1,2,…,n
+\end{aligned}
+$$
+where $n$ and $p$ are the parameters of the distribution, $p$ is any value between 0 and 1, and $n$ is any positive integer.
+
+We can simply write $X \sim Bi(n,p)$. Note that $X$ is no longer a binary random variable in the same sense that a $Z \sim Bernoulli(p)$ is binary. Rather, $X$ is a sum over Bernoulli random variables. That is, for $n$ trials, $Z_i$ for $i \in \{1,2,...,n\}$, we have
+
+$$
+X_i = \sum^{n}_{i}{Z_i}
+$$
+Moreover, this distribution has the following mean and variance:
+$$
+\begin{aligned}
+E(X) & = np \\ 
+Var(X) &= np(1 - p)
+\end{aligned}
+$$
+
+\subsection{Distribution for Count Data}
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/pois.png}
+  \caption{Plot of the PMF (top) and CDF (bottom) of a Poisson random variable $X \sim Pois(3)$}
+  \label{fig:pois}
+\end{marginfigure}
+
+The \emph{Poisson random variable} is a discrete random variable that models the number of events that occur within a fixed interval of time, space, or other discrete unit, when the events occur independently and at a constant average rate. It is named after the French mathematician Siméon Denis Poisson, who introduced it in the early 19th century. This variable is widely used in various fields to model count data, where the focus is on the number of occurrences of a specific event within a given time or space.
+
+The Poisson random variable $X$ follows the Poisson distribution if it takes on non-negative integer values $X \in \{0, 1, 2, ...\}$ and has a probability mass function (PMF) given by:
+
+$$
+P(X = x) = \frac{e^{-\lambda} \lambda^x}{x!},
+$$
+where $\lambda$ is the average rate or intensity parameter of the Poisson distribution. The parameter $\lambda$ represents the expected number of events occurring in the given interval.
+
+The expected value (or mean) of a Poisson random variable is $E[X] = \lambda$, indicating that on average, $\lambda$ events occur within the specified interval. The variance of $X$ is $Var(X) = \lambda$, which is equal to its expected value. Therefore, the Poisson distribution has a unique property that its variance is equal to its mean.
+
+The Poisson distribution is commonly used to model a wide range of count data, such as the number of customer arrivals in a time period, the number of defects in a product, the number of phone calls received in an hour, or the number of accidents in a year. It is particularly useful in situations where the events are relatively rare and independent, and the focus is on the occurrence of events rather than their specific timing or order.
+
+\subsection{Distribution for Waiting Times}
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/exp.png}
+  \caption{Plot of the PMF (top) and CDF (bottom) of a Exponential random variable $X \sim Exp(1)$}
+  \label{fig:exp}
+\end{marginfigure}
+
+The exponential random variable is a continuous probability distribution used to model the time between events in a Poisson process, where events occur independently at a constant average rate. It is often employed to model wait times, inter-arrival times, or lifetimes of certain events. The exponential distribution is closely related to the Poisson distribution and provides a framework for analyzing continuous data associated with time.
+
+The exponential random variable, denoted as $X$, follows the exponential distribution if it takes on non-negative real values and has a probability density function (PDF) given by:
+
+$$
+f(x) = \lambda \exp{\{- \lambda x\}},
+$$
+for the exponential function $\exp{\{ x \}} = e^x$. The parameter $\lambda$ is the rate parameter of the exponential distribution, representing the average rate at which events occur or the reciprocal of the average inter-arrival time.
+
+The expected value (or mean) of an exponential random variable is $E[X] = 1/\lambda$, indicating that, on average, the expected time between events is equal to $1/\lambda$. The variance of $X$ is $Var(X) = 1/\lambda^2$, which quantifies the spread or dispersion of the random variable around its mean.
+
+The exponential distribution is often used to model wait times or inter-arrival times between consecutive events. For example, it can be applied to model the time between customer arrivals at a service desk, the time between occurrences of machine failures, or the time between phone calls in a call center.
+
+The exponential distribution exhibits the memoryless property, which implies that the probability distribution of future events does not depend on the elapsed time since the last event. In other words, the distribution of waiting times remains the same regardless of how much time has already passed. This memoryless property makes the exponential distribution particularly suitable for modeling events that occur independently and have no residual effects.
+
+The exponential distribution is widely used in various fields, including queuing theory, reliability analysis, telecommunications, and inventory management. It provides a probabilistic framework for understanding and predicting waiting times and inter-arrival times, allowing for efficient resource allocation and system optimization.
+
+\subsection{Normal Distribution}
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/norm.png}
+  \caption{Plot of the PMF (top) and CDF (bottom) of a normal random variable $X \sim N(0, 1)$}
+  \label{fig:norm}
+\end{marginfigure}
+
+The \emph{Normal distribution}, also known as the Gaussian distribution or bell curve, is a continuous probability distribution that is widely used in statistics and probability theory. It is one of the most important and well-known distributions due to its numerous applications in various fields.
+
+The normal random variable, denoted as $X$, follows a normal distribution if it takes on real values and has a probability density function (PDF) given by:
+
+$$
+f(x)= \frac{1}{2\pi} \exp{\bigg\{- \frac{(x - \mu)^2}{2\sigma^2}\bigg\}}
+$$
+
+We find that the normal distribution is parametrized only by its mean $\mu$ and variance $\sigma^2$. These two values specify the location and the scale of the normal distribution, respectively, and in consequence determines what probability density will be assigned to $x$.
+
+If $X$ follows the normal distribution, we could simply write this down as $X \sim N(\mu,\sigma^2)$.
+
+If $X \sim N(\mu,\sigma^2)$, then $E(X) = \mu$ and $Var(X) = \sigma^2$.
+
+The normal distribution is symmetric around its mean, with the mean representing the center of the distribution. The variance and standard deviation determine the spread or dispersion of the distribution, with larger values of $\sigma$ resulting in wider distributions. The normal curve approaches the horizontal axis asymptotically as we proceed in either direction away from the mean. Because it is a valid PDF, the total area under the curve and above the x-axis is equal to 1.
+
+Unlike the Bernoulli, Poisson, and Exponential distributions, the normal distribution is not typically associated to being a model for a specific type of data. Rather, the normal distribution is an arrangement of a dataset where most values cluster in the middle and the rest taper off symmetrically towards either extreme. The normal distribution is widely used in statistical analysis because it results in convenient, closed-form formulas.
+
+$$
+Z = \frac{X - \mu}{\sigma} \sim N(0,1)
+$$
+the standard normal distribution.
+
+$$
+Z = \frac{\overline{X} - \mu}{\sigma/\sqrt{n}} \sim N(0,1)
+$$
+
+There is a misconception that the normal distribution models "all" kinds of data in nature. More strongly, there is a mistaken assumption that everything follows the normal distribution. In reality, very little natural processes or practical datasets follow the normal distribution. However, as we will learn in the next section, distributions over sample statistics (not the data themselves) in the limit begin to resemble the normal distribution.
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{images/norms.png}
+  \caption{Comparisons of density functions for various parametrizations of the normal distribution.}
+  \label{fig:norms}
+\end{marginfigure}
+
+\subsubsection{Student's $t$ distribution}
+
+The Student's $t$ distribution is a continuous probability distribution that is widely used in statistical inference and hypothesis testing when the sample size is small and the population standard deviation is unknown. It is named after William Sealy Gosset, who published under the pseudonym "Student". The $t$ distribution is similar to the normal distribution but has heavier tails, making it more robust against outliers and departures from normality.
+
+The Student's $t$ random variable, denoted as $t$, follows the $t$ distribution with $\nu$ degrees of freedom. The degrees of freedom parameter, $\nu$, determines the shape of the $t$ distribution and reflects the sample size used in the analysis (depending on the application, $\nu \approx n-1$). As $\nu$ increases, the $t$ distribution approaches the standard normal distribution $N(0,1)$.
+
+The probability density function (PDF) of the Student's $t$ distribution is given by:
+
+$$
+f(t) = \frac{\Gamma(\frac{\nu + 1}{2})}{\sqrt{\nu \pi} \Gamma(\frac{\nu}{2})}{\bigg( 1 + \frac{x^2}{\nu} \bigg)}^{- \frac{\nu + 1}{2}},
+$$
+where $\Gamma$ denotes the gamma function
+$$
+\Gamma(n) = (n - 1)!
+$$
+
+The Student's t distribution is related to the normal distribution through the central limit theorem. When the sample size is large, the $t$ distribution approximates the standard normal distribution. This allows us to use the $t$ distribution as an approximation for hypothesis testing and confidence interval estimation when the population standard deviation is unknown and the sample size is sufficiently large.
+
+The t distribution is particularly useful when the sample size is small. In such cases, the $t$ distribution accounts for the increased uncertainty due to the limited amount of data. It provides more robust estimates and inferential procedures that are less sensitive to outliers and departures from normality compared to the normal distribution.
+
+More directly, suppose we have $X \sim N(\mu, \sigma^2)$, but the value of $\sigma$ is unknown. Also suppose we compute the sample mean $\overline{X}$ from a sample of size $n$. We can estimate $\sigma$ by the sample standard deviation $s$. Then, we can produce $Z$ as
+
+$$
+Z = \frac{\overline{X} - \mu}{s/\sqrt{n}} \sim t_{\nu = n - 1}
+$$
+with the uncertainty inherent in using estimator $s$ instead of some definite, known value $\sigma$ resulting in $Z$ following the $t$ distribution instead of becoming standard normal.
+
+The Student's $t$ distribution is commonly used in various statistical analyses and procedures, such as t-tests for comparing means, confidence intervals for means, and regression analysis when dealing with small sample sizes. It also serves as the basis for many statistical techniques and models, including the analysis of variance (ANOVA) and the construction of tolerance intervals.
+
+\subsubsection{Chi-Square Distribution}
+
+The \emph{Chi-square distribution} is a continuous probability distribution that arises in various statistical analyses and hypothesis testing procedures. It is widely used in fields such as inferential statistics, goodness-of-fit tests, and regression analysis.
+
+The chi-square random variable follows the chi-square distribution with $\nu$ degrees of freedom. We denote this as $X \sim \chi^2(\nu)$ or, more commonly, $X \sim \chi^2_\nu$ like with the $t$ distribution. The degrees of freedom parameter, $\nu$, determines the shape and characteristics of the chi-square distribution. It reflects the number of independent standard normal random variables squared and summed to form the chi-square random variable. That is, given $Z_1, Z_2, ..., Z_n$ with each $Z_i \sim N(0,1)$ as i.i.d. (independent, identically-distributed),
+
+$$
+X = Z^2_1 + Z^2_2 + ... + Z^2_n \sim \chi^2_{\nu = n}
+$$
+
+The PDF of the chi-square random variable is given by
+$$
+f(x) = \frac{1}{2^{\nu / 2} \Gamma(\nu / 2)} x^{\nu/2 - 1} e^{-x/2}
+$$
+with $\Gamma(x)$ representing the gamma function.
+
+The chi-square distribution is non-negative and skewed to the right. Its shape and degrees of freedom influence various statistical properties associated with the distribution. As the degrees of freedom increase, the chi-square distribution becomes more symmetric and approaches a bell shape, similar to the normal distribution.
+
+The chi-square distribution is commonly used for hypothesis testing and constructing confidence intervals. It is particularly useful in situations involving categorical data, comparing observed frequencies to expected frequencies, and assessing the goodness-of-fit of models. For example, chi-square tests are frequently employed to evaluate whether observed data fits a specific distribution or to test the independence of categorical variables in contingency tables.
+
+\subsection{Other Distributions}
+
+For the sake of brevity, we have focused on five widely used distributions in statistics. However, this list is not comprehensive and leaves out other important distributions that have proved to be useful in (at times even the centerpiece of) certain applications.
+
+For instance, the \emph{Geometric distribution} models the number of trials needed to achieve the first success in a sequence of independent Bernoulli trials, where each trial has the same probability of success, denoted as p. It is commonly used in situations involving a sequence of repeated trials until a specific event occurs. Applications include modeling the number of attempts to achieve a certain outcome, such as the number of rolls of a die until a specific number appears.
+
+Also similar to the Binomial distribution is the \emph{Hypergeometric distribution}, which models the probability of obtaining a specific number of successes in a fixed number of draws from a finite population without replacement. It is used when sampling without replacement from a population of known size and composition. The hypergeometric distribution is employed in areas such as quality control, genetics, and survey sampling, where the population characteristics must be taken into account.
+
+The \emph{Cauchy distribution} is a continuous probability distribution that has heavy tails and lacks a defined mean or variance. It is often used in situations where extreme values are more likely to occur compared to other symmetric distributions such as the normal distribution. The Cauchy distribution has applications in physics, signal processing, and robust statistics.
+
+The \emph{Weibull distribution} is a versatile continuous probability distribution that can model a wide range of behaviors, including increasing, decreasing, or constant failure rates over time. It is commonly used in reliability analysis to model the time until failure or survival times. The Weibull distribution is also employed in engineering, life sciences, and survival analysis.
+
+The \emph{Dirichlet distribution} is a multivariate probability distribution defined on the simplex, which is a generalization of the unit interval to higher dimensions. It is widely used in Bayesian statistics as a prior distribution for representing uncertainty in the proportions or probabilities of a categorical variable. The Dirichlet distribution finds applications in topics such as natural language processing, topic modeling, and image processing.
+
+We will be returning to some of the above distributions in later lectures, either in exercises or as supplementary material to related topics.
+
+\section{Statistical Inference}
+
+\subsection{Framework of Statistical Inference}
+
+The field of \emph{Statistical Inference} involves making predictions, inferences, or decisions about a population based on information obtained from a sample. It encompasses two primary components: \emph{estimation} and \emph{hypothesis testing}.
+
+At the heart of statistical inference is the notion of the sampling distribution. When we collect a sample from a population, we calculate a sample statistic (such as the sample mean or sample proportion). The sampling distribution represents the distribution of that sample statistic across all possible samples of the same size from the population. It provides valuable insights into the variability and properties of the sample statistic and allows us to make probabilistic statements about its relationship to the population parameter.
+
+In estimation, we use the information from the sample to estimate an unknown population parameter. For example, we may estimate the population mean, proportion, variance, or any other parameter of interest. \emph{Point estimation} involves providing a single best estimate for the population parameter, typically using the sample statistic as the point estimator. For instance, the sample mean is often used to estimate the population mean. However, point estimates do not convey the uncertainty associated with the estimation process.
+
+This is where \emph{interval estimation} comes into play. An interval estimate provides a range of values within which the population parameter is likely to lie with a specified level of confidence. Confidence intervals are commonly used in estimation, and they take into account the variability in the sampling distribution. The wider the confidence interval, the greater the uncertainty in the estimation.
+
+On the other hand, hypothesis testing involves making decisions about a population based on a sample, usually regarding a specific claim or hypothesis. The process begins with formulating a \emph{null hypothesis} ($H_0$) and an alternative hypothesis ($H_1$). The null hypothesis typically represents a default or no-effect assumption, while the alternative hypothesis represents the claim we want to test.
+
+Through hypothesis testing, we assess the evidence in the sample to either reject or fail to reject the null hypothesis. This is done by examining the likelihood of observing the sample data under the assumption that the null hypothesis is true, which is quantified by the p-value. If the p-value is smaller than a predefined significance level ($\alpha$), we reject the null hypothesis in favor of the alternative hypothesis.
+
+The relationship between estimation and hypothesis testing is closely intertwined. In fact, point estimation can be seen as a simplified form of hypothesis testing. For example, estimating the population mean with a sample mean is equivalent to testing a hypothesis about the population mean, where the null hypothesis is that the population mean is equal to the sample mean.
+
+\subsection{Statistics and Sampling Distributions}
+
+Using a particular probability sampling method and collecting $n$ observations, we have the random sample $(X_1,X_2,…,X_n)$, where $X_1$ is the measure taken from the 1st member of the sample, $X_2$ is taken from the 2nd member, and so on until the $n$th and last member of the sample. Given this sample, we can then compute the statistic, $t$ which is obtained from the sample through the function $T$:
+
+$$
+t = T(X_1, X_2, ..., X_n)
+$$
+
+For example, the sample mean is obtained from the sample using the formula
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n}{X_i}
+$$
+and the sample standard deviation
+$$
+s = \frac{1}{n-1} \sum_{i=1}^{n}{(X- \bar{X})^2}
+$$
+
+The above definition gives us some important insights regarding the statistics. Being a function of the random variables $(X_1,X_2,…,X_n)$, a statistic is in itself a random variable also. This means that as a random variable, the value of a statistic depends on the outcome of the random experiment of selecting $n$ elements from a population using a probability sampling method.
+
+Also, its value will vary from sample to sample. It is impossible to predict with certainty what the realized value of the statistic will be. It is only when we have actually selected our sample that we can compute for its value. Lastly, as a random variable, it must have a probability distribution.
+
+For this we define the \emph{sampling distribution}, which is simply the probability distribution of a statistic. Even if the realized value of a statistic cannot be predicted with utmost certainty, we can use its sampling distribution to understand how its value changes from one sample to another (or its behavior in terms of probability).
+
+Because the statistic can also take on different values, similar to the random variable (as it is a random variable also), we can also measure the variability of the statistic. Where the random varaible has a standard deviation, the standard error of a statistic is referred to as its \emph{standard error}.
+
+We have a special term for the standard deviation of a statistic because we will use it to measure the reliability of our statistic.
+
+A small standard error indicates that the computed values of our statistic in the different samples generated are close to one another., so that even if we know that the values of a statistic varies from one sample to another, a small standard error gives us an assurance that at least the variation among their values is not too large. 
+
+\subsection{Central Limit Theorem}
+
+The \emph{Central Limit Theorem (CLT)} is a fundamental concept in statistics and probability theory, with profound implications for data analysis and decision-making. It states that, under certain conditions, the sampling distribution of the mean (or sum) of a large number of independent and identically distributed (i.i.d.) random variables will be approximately normally distributed, regardless of the original distribution of the individual random variables.
+
+To apply the CLT successfully, several conditions must be met. First and foremost, the data should be collected through a random sampling process, ensuring that each observation is independent of the others. This is critical to ensure that the results can be generalized to the entire population accurately. Additionally, the individual random variables must be independent of each other, meaning that the outcome of one variable does not influence the outcome of another. Moreover, each random variable in the sample should be drawn from the same probability distribution, having the same mean ($\mu$) and standard deviation ($\sigma$).
+
+The implications of the Central Limit Theorem are far-reaching and have significant practical applications. One of the primary implications is the approximation to normality. With a sufficiently large sample size and the fulfillment of the aforementioned conditions, the sampling distribution of the sample mean (or sum) will closely follow a normal distribution, even if the underlying data comes from a non-normal distribution.
+
+Another important implication relates to the sample mean and standard deviation. The mean of the sampling distribution of the sample mean will be equal to the population mean ($\mu$), and the standard deviation of the sampling distribution (standard error) will be equal to the population standard deviation ($\sigma$) divided by the square root of the sample size ($n$). This information is essential for constructing confidence intervals and making inferences about population parameters.
+
+\end{document}

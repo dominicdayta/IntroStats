@@ -1,0 +1,434 @@
+\documentclass{article}
+
+\usepackage{kafkanotes}
+\usepackage{amsmath}
+\usepackage{multirow}
+
+%Judul dan Penulis
+\title{III. Estimation and Hypothesis Testing}
+\author{Dayta, Dominic}
+
+\begin{document}
+
+%Halaman Judul
+\begin{titlepage}
+\thispagestyle{empty}
+\maketitle
+
+%Abstrak
+\begin{abstract}
+The previous lectures have built up some preliminary knowledge needed for understanding statistical inference, particularly probabilities and sampling distributions. This week, we focus on putting these concepts into practice through estimation and some basic hypothesis testing.
+
+\textit{Please note that the following lecture notes have been prepared specifically for our Stat 195 class. Please do not disseminate.}
+\end{abstract}
+
+\tableofcontents
+\end{titlepage}
+
+%Geometri untuk halaman konten
+\newgeometry{top=20mm,bottom=25mm,right=80mm,left=20mm}
+
+%================KONTEN DIMULAI DISINI================%
+
+\section{Estimation}
+\subsection{Basic Concepts in Estimation}
+
+At the heart of estimation lies the primary problem: we encounter an unknown population parameter, and our objective is to make an educated guess about its value using information gathered from a sample.
+
+To illustrate this, let's consider a practical scenario. Suppose we want to determine the mean income of all Filipino families living in Metro Manila. However, it is impractical to survey every single family in the entire region due to time, cost, and resource constraints. Instead, we take a sample of 1000 families and use the data from this sample to estimate the mean income for the entire population.
+
+One common approach to estimation is point estimation. In point estimation, we aim to derive a single value that serves as our best guess for the population parameter. For instance, after analyzing the sample data, we might use a statistical formula to estimate that the mean income of Filipino families is 20,000 pesos. Here, the value 20,000 pesos is the point estimate, which is based on the point estimator (e.g., the sample mean or sample proportion).
+
+On the other hand, interval estimation takes a slightly different approach. Instead of providing a single point estimate, interval estimation yields a range of values within which the true population parameter is likely to lie. To be more precise, we construct a confidence interval, which is a range with an associated level of confidence that the true parameter falls within it. For instance, we might find that we are 95\% confident that the true mean income of Filipino families falls between 15,000 and 25,000 pesos.
+
+Both point and interval estimation have their merits. Point estimates provide a straightforward, single value that represents our best guess for the population parameter, but they lack information about the uncertainty surrounding the estimate. On the contrary, interval estimates address this uncertainty by providing a range of plausible values, accounting for the variability in the sample data and the sampling process.
+
+To clarify the terminology, a point estimator is a statistical rule or formula that guides us in calculating the point estimate based on the measurements in the sample. The point estimate, as mentioned earlier, is the actual value obtained by applying the point estimator to the sample data. For example, if we use the sample mean (denoted by $\overline{X}$) as our point estimator for the mean income of Filipino families, and after analyzing the data, we obtain $\overline{X} = 20,000$ pesos, then 20,000 pesos becomes our point estimate.
+
+On the other hand, an interval estimator of the unknown value of the population parameter is a rule that tells us how to calculate two numbers based on sample data that will form an interval within which we expect the population parameter to lie with a specified degree of confidence. The realized pair of numbers computed from this estimator, say $(a,b)$, is called an interval estimate or confidence interval estimate.
+
+An interval estimate conveys more information than a point estimate. In interval estimation, we look at the length of the interval and the specified level of confidence.
+
+In this context, let's consider a practical example where we want to estimate the average income of all Filipino employees. After analyzing a sample of data, we obtained a 95\% confidence interval estimate, which is (10,000 pesos, 30,000 pesos).
+
+In a $100(1-\alpha)$\% confidence interval estimate, the fraction $1-\alpha$ represents the confidence coefficient, indicating the level of confidence associated with the interval estimate. In this case, $\alpha$ is the significance level or the probability of making a Type I error (rejecting a true null hypothesis). The value of ($1-\alpha$) represents the percentage of confidence that we have in the interval estimate. For example, in a 95\% confidence interval, $\alpha$ is 0.05, and we are 95\% confident that the true parameter falls within the interval.
+
+The interval estimate consists of two components: the lower confidence limit and the upper confidence limit. These are the endpoints of the interval, which determine the range within which we believe the true parameter lies. In our example, the lower confidence limit is 10,000 pesos, and the upper confidence limit is 30,000 pesos.
+
+The length of the confidence interval is defined as the difference between the upper and lower confidence limits. A narrower confidence interval indicates higher precision in estimation, while a wider interval suggests more uncertainty in the estimate. In our case, the length of the confidence interval is 20,000 pesos (30,000 - 10,000), and it represents the range within which we are 95\% confident the average income of all Filipino employees lies.
+
+Now, let's focus on the correct interpretation of a confidence interval. It is essential to understand that the confidence interval is a result of a sampling procedure, and it provides a range of plausible values for the population parameter. If we were to take repeated samples of the same size from the population and compute 95\% confidence intervals for each sample, we would expect that 95\% of these intervals would contain the true unknown value of the population parameter.
+
+In the context of our example, the correct interpretation of the 95\% confidence interval for the average income of all Filipino employees would be as follows: "We are 95\% confident that the true average income of all Filipino employees lies within the interval of 10,000 pesos to 30,000 pesos." This means that if we were to repeat the sampling and interval estimation process many times, we would expect about 95\% of the resulting intervals to capture the unknown true average income.
+
+\subsubsection{Properties of a Good Estimator}
+
+A good estimator should possess certain desirable properties, including being unbiased, reliable, and efficient.
+
+Firstly, an estimator is considered unbiased if, on average, the estimates it produces from repeated sampling from the same population center around the true value of the parameter being estimated. In other words, the expected value of the estimator is equal to the parameter it aims to estimate. This means that, over many samples, the estimator neither consistently overestimates nor underestimates the true value but provides an accurate estimation.
+
+It is important to note that multiple unbiased estimators can exist for a particular parameter. For instance, in symmetric distributions, like the normal distribution, the sample mean, median, and mode are all unbiased estimators of the population mean. However, while unbiasedness is a desirable property, it does not necessarily make an estimator the best choice.
+
+To evaluate the performance of unbiased estimators, we consider their reliability, which is determined by the standard error of the estimator. The standard error represents the average amount of variability or uncertainty in the estimates obtained from different samples. A smaller standard error indicates higher reliability because it means that the estimates are more likely to be close to the true parameter value.
+
+Among all the possible unbiased estimators, the one with the smallest variance (or equivalently, the smallest standard error) is considered the most efficient estimator. The efficiency of an estimator is a measure of how well it utilizes the available sample data to produce accurate estimates. An efficient estimator minimizes the spread of estimates and provides estimates with the least variability around the true value.
+
+The sample mean ($\overline{x}$) is a prime example of an efficient estimator. When sampling from a normal distribution, the sample mean is not only unbiased but also has the smallest variance among all unbiased estimators, making it the most efficient estimator for the population mean ($\mu$). Similarly, the sample variance ($s^2$) is an unbiased and efficient estimator for the population variance ($\sigma^2$) in normal distribution sampling.
+
+However, it's essential to recognize that the notion of efficiency depends on the underlying distribution and the sampling method. In different situations, other estimators may be more efficient for specific parameters or sampling scenarios.
+
+A "good" confidence interval estimate is characterized by two main criteria: narrowness and a large confidence coefficient. However, these two aspects are often in tension with each other, leading to a trade-off in interval estimation.
+
+The first criterion, narrowness, refers to the desire for the confidence interval to be as tight as possible. A narrower interval indicates that we have a more precise estimate of the population parameter, and it helps us to narrow down the potential range of values that the parameter could take. A narrow confidence interval reflects the availability of substantial information in the sample, leading to a more accurate and focused estimate.
+
+On the other hand, the second criterion, a large confidence coefficient, refers to the level of confidence associated with the interval estimate. A higher confidence coefficient, often denoted by $1-\alpha$, means that we are more confident in the interval capturing the true population parameter. For instance, in a 95\% confidence interval, $\alpha$ is 0.05, and we have 95\% confidence that the true parameter lies within the interval. Larger confidence coefficients correspond to greater certainty in our estimates, which is desirable in many practical situations.
+
+However, there exists an inherent trade-off between narrowness and a large confidence coefficient in interval estimation. As we increase the confidence coefficient (e.g., moving from 90\% to 95\% or 99\% confidence), the level of certainty in our estimates rises. Nonetheless, this increase in confidence comes at the cost of widening the interval. A wider interval signifies more uncertainty and a larger range of potential values for the parameter.
+
+\subsection{Point Estimation in Mean, Proportion, and Variance}
+
+Table \ref{tab:pointests} summarizes the different target parameters and point estimators for three quantities with which we are concerned in this lecture: the mean, variance, and proportion.
+
+\begin{table}[h]
+\begin{tabular}{lll}
+\hline
+\textbf{Target Quantity} & \textbf{Parameter} & \textbf{Estimator} \\ \hline
+Mean  & $\mu$ & $\overline{x}$ \\
+Variance & $\sigma^2$ & $s^2$ \\
+Proportion & $p = \frac{\sum_{i=1}^{N}{X_i}}{N}$ & $\hat{p} = \frac{\sum_{i=1}^{n}{X_i}}{n}$ \\ 
+& & \\ \hline \hline
+\caption{\label{tab:pointests} Point Estimators}
+\end{tabular}
+\end{table}
+
+Estimation for the population mean proceeds simply: the point estimator for the population mean $\mu$ is the sample mean $\overline{x} = \frac{1}{n}\sum{X_i}$. Meanwhile, for the population variance $\sigma^2$, the point estimator is the sample variance obtained by adding up the square deviations of the sample observations from the sample mean $\overline{x}$, divided by $n-1$:
+
+$$
+s^2 = \frac{1}{n-1} \sum_{i=1}^{n}{\big( X_i - \overline{X} \big)^2}
+$$
+
+A novel problem is the estimation of proportions. Proportions are typically used in the context of quantifying how many of a certain group (e.g., a population, a sample) meet a certain characteristic. To illustrate the concept of proportions, let's consider an example: determining the proportion of voters who support candidate Z during an election in a certain location. In this scenario, we are interested in knowing what fraction of the population of interest aligns with a particular characteristic, which, in this case, is supporting candidate Z.
+
+Suppose there are a total of 1,000 individuals in the location under consideration. To estimate the proportion of voters who support candidate Z, we would collect a sample from this population and record whether each individual in the sample is a supporter of candidate Z or not. Let's say we randomly selected 300 individuals, and among them, 150 are found to be supporters of candidate Z.
+
+To calculate the proportion of voters in favor of candidate Z, we simply divide the number of supporters in the sample (150) by the total sample size (300). This yields a proportion of 0.5, or 50\%. In other words, based on our sample data, we estimate that 50\% of the voters in the location support candidate Z.
+
+We can redefine this in a manner that is more suitable for statistical modeling as follows. Suppose we define our variable $X$ as a 0/1 indicator (a Bernoulli variable) for whether the $i$th individual meets the characteristic. Mathematically, this is written as:
+
+$$
+X_i = \begin{cases}
+      1 & i\text{th element possess the characteristic} \\
+      0 & \text{otherwise}
+    \end{cases}
+$$
+
+Therefore, in the population, $\sum_{i=1}^{N}{X_i}$ will represent the total number of items that meet this characteristic. And $p = \frac{\sum_{i=1}^{N}{X_i}}{N}$ represents the corresponding proportion out of the population size $N$. In Table \ref{tab:pointests} we find that this is estimated by $\hat{p} = \frac{\sum_{i=1}^{n}{X_i}}{n}$. An important thing to note from this is that the form of the poportion $p$ is exactly that of the population mean, and $\hat{p}$ is the sample mean.
+
+\subsection{Interval Estimation in Mean, Proportion, and Variance}
+
+The interval estimate incorporates more information into the point estimator by accounting for the variability inherent in the sampling distribution. Essentially, the process of obtaining the interval estimate requires capturing the endpoints at which the probability in the sampling distribution becomes equal to $1-\alpha$ for set value of $\alpha$.
+
+Table \ref{tab:intervals} provides the different interval estimators for the population mean.
+
+\begin{table}[h]
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Interval Estimator} \\ \hline
+Case 1: $\sigma^2$ is known  & $\overline{x} \mp Z_{(\alpha/2)} \times \frac{\sigma}{\sqrt{n}}$ \\
+Case 2: $\sigma^2$ is unknown and $n \leq 30$ & $\overline{x} \mp t_{(\alpha/2, \nu = n-1)} \times \frac{s}{\sqrt{n}}$ \\
+Case 3: $\sigma^2$ is unknown and $n > 30$ & $\overline{x} \mp Z_{(\alpha/2)} \times \frac{s}{\sqrt{n}}$  \\ \hline \hline
+\end{tabular}
+\caption{\label{tab:intervals} Interval Estimators for the Mean}
+\end{table}
+
+The interval estimates for the population mean require information on the population variance, as the sampling distribution of the population mean is dependent on this information. Thus, the different cases for interval estimation represent differing levels of availability of information regarding population variance: Case 1 is when the variance is known, Case 2 is for when it is unknown but can be estimated with a small sample ($n \leq 30$), and Case 3 is when it is unknown but can be estimated with a large sample ($n > 30$).
+
+On the other hand, the sampling distribution of the variance is the Chi Square, and requires only information on the the degrees of freedom. Therefore, interval estimation of the population variance is consequently much simpler:
+
+$$
+\frac{(n-1)S^2}{\chi^2_{\alpha/2, n-1}} \leq \sigma^2 \leq \frac{(n-1)S^2}{\chi^2_{1 - \alpha/2, n-1}}
+$$
+
+Finally, for interval estimation on the proportion, we recall the observation from the previous section that $p$ and $\hat{p}$ are the population and sample means, respectively. Note that if we define $Y = \sum_{i=1}^{n}{X_i}$ where the $X_i$ are independent Bernoulli random variables, then $Y \sim Bi(n,p)$. Thus, $E{Y} = np$. And, from our point estimator $\hat{p} = Y/n$, we know then that $E(\hat{p}) = E(Y/n) = np / n = p$. Similarly, the standard error $s.e.(\hat{p}) = \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$.
+
+Following the Central Limit Theorem, we can then use the fact that $\hat{p} \to Normal\big(p, \frac{p(1-p)}{n} \big)$ as long as $np \geq 5$ and $n(1-p) \geq 5$. Thus, we can approximate the $100(1-\alpha)$\% confidence interval using
+
+$$
+\hat{p} \mp Z_{\alpha/2} \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+$$
+
+\subsection{Independent and Related Sampling}
+
+Independent sampling refers to the situation where the selection of a sample from one population is completely unrelated to the selection of a sample from another population. In this method, random samples are taken separately from each population, and the same response variable is recorded for each individual. For instance, consider a study aimed at comparing the average height of males and females. To achieve this, researchers randomly select 10 males and 10 females, measure their heights, and then compare the results. Since the selection of individuals from each group is independent, we have independent samples.
+
+Similarly, in experimental studies, independent sampling occurs when participants are randomly assigned to different treatment conditions, and the same response variable is measured for each individual unit. For example, in a drug trial, participants are randomly assigned to either a control group or a treatment group, and their response to the drug is recorded independently of each other.
+
+On the other hand, related, matched, paired, or dependent sampling arises when the selection of the sample from one population is somehow related or dependent on the selection of the sample from another population. This occurs when individuals in the two samples are paired or matched based on specific criteria before data collection. The same response variable is then measured for all individuals in each pair or group.
+
+One common scenario of dependent sampling is when each individual is measured twice under different conditions. For instance, in an educational study, researchers might administer a diagnostic exam to a group of students at the beginning of the semester and then give the same exam to the same students after the semester ends. The goal is to assess whether the students' competencies in the subject improved. Since each student's performance is being compared to their own previous performance, the samples are dependent or related.
+
+Another example of dependent sampling is when similar individuals are paired prior to an experiment, and each member of a pair receives a different treatment. The response variable is then measured for all individuals within each pair. For instance, in a study examining the perception of love in married couples, researchers may have each husband and wife rate how much they love their partner. The responses from husbands and wives are paired, as they are related to the same marital relationship.
+
+\subsubsection{Interval Estimation for Independent Populations}
+
+When performing estimation between two independent populations, often our purpose is comparative: is the average of one population greater than, less than, or equal that of another population? We will explore this idea more concretely in the hypothesis testing section of this lecture.
+
+In the meantime, Table \ref{tab:quantities} summarizes the notation we use for the two population case. Overall, our objective is to make a certain statement about the difference between population mean $\mu_X$ in the first population and $\mu_Y$ in the second population. To do this, we use the sampling distribution resulting from the difference of their corresponding sample means, $(\overline{X} - \overline{Y})$.
+
+\begin{table}[h]
+\begin{tabular}{lll}
+\hline
+\textbf{Quantity}             & \textbf{First Population} & \textbf{Second Population} \\ \hline
+Population Mean               & $\mu_X$ & $\mu_Y$ \\
+Population Standard Deviation & $\sigma_X$ & $\sigma_Y$ \\
+Sample Mean                   & $\overline{X}$ & $\overline{Y}$ \\
+Sample Standard Deviation     & $S_X$ &  $S_Y$ \\
+Sample Size                   & $n_1$ & $n_2$ \\ \hline \hline
+\end{tabular}
+\caption{\label{tab:quantities} Quantities of Interest in the Two Population Case}
+\end{table}
+
+Because of some neat properties of the normal distribution and the Central Limit Theorem, it turns out that the difference $(\overline{X} - \overline{Y})$ in the large sample case also follows a normal distribution. Thus, similar to the one population case, identifying the correct sampling distribution (and, in consequence, the test statistic) to use requires identifying whether their variances are known. There is, however, an additional consideration of whether they come from populations with homogeneous variances, i.e. $\sigma^2_X = \sigma^2_Y$.
+
+Their test statistics are described below, by Table \ref{tab:indintervals}.
+
+\begin{table}[h]
+\bgroup
+\def\arraystretch{2.0}%  1 is the default, change whatever you need
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Interval Estimator} \\ \hline
+Case 1: $\sigma^2_X$ and $\sigma^2_Y$ are both known  & $\big(\overline{X} - \overline{Y} \big) \mp Z_{\alpha/2} \sqrt{\frac{\sigma^2_X}{n_1} + \frac{\sigma^2_Y}{n_2}}$ \\
+Case 2: $\sigma^2_X$ or $\sigma^2_Y$ are unknown and  $\sigma^2_X = \sigma^2_Y$ & $\big(\overline{X} - \overline{Y} \big) \mp t_{\alpha/2, \nu = n_1 + n_2 - 2} \sqrt{S^2_p \big(\frac{1}{n_1} + \frac{1}{n_2} \big)}$ \\
+& $S^2_p = \frac{(n_1 - 1)S^2_X + (n_2 - 1)S^2_Y}{n_1 + n_2 - 2}$ \\
+Case 3: $\sigma^2_X$ or $\sigma^2_Y$ are unknown and $\sigma^2_X \neq \sigma^2_Y$ & $\big(\overline{X} - \overline{Y} \big) \mp t_{\alpha/2, \nu} \sqrt{\frac{s^2_X}{n_1} + \frac{s^2_Y}{n_2}}$ \\
+& $\nu = \frac{(s^2_X / n_1 + s^2_Y / n_2)^2}{\frac{(s^2_X/n_1)^2}{n_1 - 1} + \frac{(s^2_Y/n_2)^2}{n_2 - 1}}$ \\ 
+Case 4: $\sigma^2_X$ or $\sigma^2_Y$ are unknown and $n_1 > 30$ and $n_2 > 30$ & $\big(\overline{X} - \overline{Y} \big) \mp Z_{\alpha/2} \sqrt{\frac{s^2_X}{n_1} + \frac{s^2_Y}{n_2}}$ \\ \hline \hline
+\end{tabular}
+\egroup
+\caption{\label{tab:indintervals} Interval Estimators for the Mean Difference of Two Independent Populations}
+\end{table}
+
+And then again, we may be interested in the difference in proportions of two populations. For the proportions case, we adopt mostly similar notations, though this time the first population has proportion $p_1$, while the second has $p_2$. These are estimated in their corresponding samples by $\hat{p}_1$ and $\hat{p}_2$. Recalling our observation that the population and sample proportions take the same form as the population and sample means, this means we can still use the normal distribution to represent its sampling distribution. Thus, the confidence interval is given by:
+
+$$
+(\hat{p}_1 - \hat{p}_2) \mp Z_{\alpha/2} \sqrt{\frac{\hat{p}_1 (1 - \hat{p}_1) }{n_1} + \frac{\hat{p}_2 (1 - \hat{p}_2) }{n_2}}
+$$
+
+\subsubsection{Interval Estimation for Dependent Populations}
+
+Much of the complexities involved in estimating the difference between two means in the independent populations case comes from there having two separate distributions that comes as a consequence of independence. In the dependent populations case, also known as the paired samples t-test, testing for the difference $\mu_X - \mu_Y$ entails simply estimating the mean of a new variable that represents the per-sample $X$ and $Y$ differences.
+
+Let $(X_1, Y_1), (X_2, Y_2), ..., (X_n, Y_n)$ be the sample data. We denote the variable $D_i = X_i - Y_i$ for $i = 1,2,...,n$. We can then define the difference variable $D$ and its corresponding standard deviation $D$:
+
+$$
+\begin{aligned}
+\overline{D} = \frac{1}{n} \sum_{i=1}^{n}{D_i} && S_D = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n}{D_i - \overline{D}}}
+\end{aligned}
+$$
+
+The average $\overline{D}$ now represents the mean difference $\mu_X - \mu_Y$. However, because we have restated the problem into only estimating on $D$, the interval estimator reverts to that of the single populations case:
+
+$$
+\overline{D} \mp t_{\alpha/2, \nu = n - 1} \frac{S_D}{\sqrt{n}}
+$$
+
+\section{Hypothesis Testing}
+
+\subsection{Basic Concepts}
+
+The primary goal of hypothesis testing is to determine whether there is sufficient evidence to support a particular claim, or alternatively if there is no substantial basis to believe it.
+
+To conduct a hypothesis test, researchers typically start with two competing statements: the null hypothesis (denoted by Ho) and the alternative hypothesis (denoted by Ha or H1). These hypotheses are constructed as non-overlapping statements, with only one of them being true, as they represent contradictory possibilities. The null hypothesis is the claim that the researcher doubts to be true or seeks to challenge. In contrast, the alternative hypothesis is the operational statement of the theory that the researcher believes to be true and wishes to demonstrate through the sample data.
+
+For instance, consider a scenario where a light bulb manufacturer aims to examine the mean burning time of a new bulb they plan to market. The leading brand in the market has a mean burning time of 2000 hours, and the manufacturer wants to prove that their new bulb has a longer mean burning time. In this case, the null hypothesis would be that the mean burning time of the new bulb is equal to 2000 hours (Ho: $\mu = 2000$ hours), while the alternative hypothesis would state that the mean burning time is greater than 2000 hours (Ha: $\mu > 2000$ hours).
+
+Once the null and alternative hypotheses are defined, researchers collect a random sample and analyze the data to obtain a sample statistic (e.g., sample mean or proportion). They then use statistical techniques to calculate the probability of observing the sample result or a more extreme result, assuming that the null hypothesis is true. This probability is called the p-value.
+
+If the p-value is sufficiently small (usually below a predetermined significance level, such as 0.05), researchers reject the null hypothesis in favor of the alternative hypothesis. This indicates that there is strong evidence to support the claim made in the alternative hypothesis. On the other hand, if the p-value is larger than the significance level, researchers fail to reject the null hypothesis, suggesting that there is no significant evidence to support the claim in the alternative hypothesis.
+
+\begin{margintable}
+\centering
+\begin{tabular}{|| c c ||} 
+ \hline
+ Null & Alternative \\ [0.5ex] 
+ \hline\hline
+$\mu = \mu_0$   & $\mu > \mu_0$ \\
+        & $\mu < \mu_0$ \\
+        & $\mu \neq \mu_0$ \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:hypotheses} Null Hypothesis \& Possible Alternative Hypotheses.}
+\end{margintable}
+
+A one-tailed test of hypothesis is a test where the alternative hypothesis specifies a one- directional difference for the parameter of interest. A two-tailed test of hypothesis is a test where the alternative hypothesis does not specify a directional difference for the parameter of interest.
+
+A test statistic is a statistic whose value is calculated from sample measurements and on which the statistical decision will be based. The two possible decisions are: Reject Ho, or Do not reject Ho
+
+The critical region or rejection region is the set of values of the test statistic for which the null hypothesis will be rejected. The acceptance region or nonrejection region is the set of values of the test statistic for which the null hypothesis will not be rejected. 
+
+If the computed test statistic falls within the critical region then we reject Ho. Otherwise, we do not reject Ho. The acceptance and rejection regions are separated by the critical value of the test statistic. The location of the region of rejection depends on Ha.
+
+\subsubsection{Type I and II Errors}
+
+\begin{margintable}
+\centering
+\begin{tabular}{|| c c c ||} 
+ \hline
+ & Ho &  \\ 
+ Decision & True & False \\ [0.2ex] 
+ \hline\hline
+Reject Ho & Type I &  - \\
+Do Not Reject Ho & - & Type II  \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:errors} Table of decisions and actual truth of the null hypothesis Ho.}
+\end{margintable}
+
+A Type I error is the error made by rejecting the null hypothesis when it is actually true. Type II error is the error made by not rejecting the null hypothesis when it is actually false. 
+
+For instance, suppose that we are testing between two hypothesees:
+
+\begin{itemize}
+    \item Ho: The suspect of a specific crime is innocent
+    \item Ha: The suspect of a specific crime is guilty.
+\end{itemize}
+
+A Type I error is committed when we conclude that a suspect is guilty when he is actually innocent. On the other hand, a Type II Error is committed when we conclude that a suspect is innocent when he is actually guilty.
+
+The level of significance, denoted by $\alpha$, is the maximum probability of a Type I Error that a researcher is willing to commit. Common values for $\alpha$ are 0.01, 0.05, and 0.1. For example, if $\alpha = 0.01$, we are assured that when we decide to reject Ho, the probability that this decision is wrong will not exceed 0.01 (which is relatively small!). The level of significance affects the size of the critical region: for larger $\alpha$ values, the critical region will also be larger. Hence, a lower level of significance implies a “stricter” test, in the sense that it makes it difficult to reject Ho.
+
+\subsubsection{P-Values}
+
+Recall that we make our statistical decision based on whether the computed test statistic falls within the critical region or not.
+
+An alternative method is to use p-values. The p-value is the probability of obtaining a sample whose computed test statistic is as extreme or more extreme (in the direction specified by the alternative hypothesis, Ha) than the observed value, assuming that the null hypothesis is true. In other words, it quantifies the likelihood of observing the data we have or more extreme data if the null hypothesis were actually true.
+
+To make a decision using p-values, we compare the p-value to a pre-determined significance level $\alpha$. The significance level represents the threshold for the strength of evidence required to reject the null hypothesis.
+
+If the p-value is less than or equal to $\alpha$, it means that the observed data is unlikely to occur under the assumption of the null hypothesis being true. In this case, we reject Ho, as the evidence suggests that the null hypothesis is not supported by the data. On the other hand, if the p-value is greater than $\alpha$, the observed data is reasonably likely to occur by chance under the null hypothesis. Thus, we fail to reject Ho, as there is insufficient evidence to support the alternative hypothesis.
+
+\subsubsection{Steps For Hypothesis Testing}
+
+We can now summarize the steps involved in hypothesis testing as follows:
+
+\begin{enumerate}
+\item State the null and alternative hypotheses
+\item Decide on a level of significance $\alpha$
+\item Select the appropriate test statistic and establish the critical region
+\item Collect the data and compute the value of the test statistic from the sample data
+\item Make the decision. Reject Ho if the value of the test statistic belongs in the critical region. Otherwise, do not reject Ho.
+\item Interpret the results
+\end{enumerate}
+
+\subsection{Hypothesis Testing for Population Mean and Proportion}
+
+In certain cases we wish to test the null hypothesis that the mean of a certain population is equal to some specified value $\mu_0$. When performing this, we can use our knowledge of the sampling distribution for the point estimator $\overline{X}$ as being either the Z or T distributions, and perform the test as given by Table \ref{tab:meantests1}.
+
+\begin{table}[h]
+\bgroup
+\def\arraystretch{2.0}%  1 is the default, change whatever you need
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Test Statistic} \\ \hline
+Case 1: $\sigma$ is known			& $Z = \frac{\overline{X} - \mu_0}{\sigma / \sqrt{n}}$ \\
+Case 2: $\sigma$ is unknown and $n \leq 30$	& $T = \frac{\overline{X} - \mu_0}{s / \sqrt{n}}$ \\
+Case 3: $\sigma$ is unknown and $n \leq 30$	& $Z = \frac{\overline{X} - \mu_0}{s / \sqrt{n}}$ \\ \hline \hline
+\end{tabular}
+\egroup
+\caption{\label{tab:meantests1} Test Statistics for the Hypothesis Test on a Single Population Mean}
+\end{table}
+
+The formulas hold strictly for random samples from a normal distribution and are exact level-$\alpha$ tests.
+The third test provides a good approximate level-$\alpha$ test when the distribution is not normal provided that the sample size is large enough. As a rule of thumb, $n \geq 30$.
+
+We may also wish to test for certain statements regarding the proportion of the population that satisfies a certain criteria. Again recalling our observation that the proportion behaves as the mean in a Bernoulli population, we can also make use of the Z test to perform these tests. Our null hypothesis is that the population proportion $p$ is equal to some pre-specified value $p_0$ ($p = p_0$). This is against the alternative that the proportion is actually greater, less, or simply unequal to $p_0$. The test statistic is given by
+
+$$
+Z = \frac{Y - np_0}{\sqrt{n p_0 (1 - p_0)}}
+$$
+where $Y$ is the number of "successes" in the sample.
+
+\subsection{Hypothesis Testing for Two Populations}
+
+In the two population case, we were simply concerned with testing the hypothesis that the population of some unknown population is equal to a specified value. In many practical applications, we may actually be concerned with more than one population. For two populations in particular, we tend to be concerned with making comparative statements about the means of these populations.
+
+Consider our example of an experiment on whether a new diet pill is actually effective in inducing weight loss among female patients, aged 20 to 30 years old. To perform the experiment, we design a two-sample study, wherein the women in Sample A take the diet pills while undergoing regular exercise for two months. Meanwhile, Sample B also undertake the same level of exercise and general dietary behavior, with only the pills absent from their lifestyles. At the end of the two-month study period, we measure their resulting weights and compare.
+
+In the above example, we are essentially working with two assumed populations: Sample A is purported to be coming from Population A, which is the set of all women aged 20 to 30 years old that take the diet pills while under regular exercise and dieting. On the other hand, Population B is the set of all women of the same demographic characteristics but that do not take the diet pills. We know that weight is our variable of interest. Given $\mu_A$ as the average weight of all the women in Population A, and $\mu_B$ is the average weight of all the women in Population B, what statements can be make about these two populations?
+
+\begin{table}[h]
+\bgroup
+\def\arraystretch{2.0}%  1 is the default, change whatever you need
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Test Statistic} \\ \hline
+Case 1: $\sigma^2_X$ and $\sigma^2_Y$ are both known  & $Z = \frac{\big(\overline{X} - \overline{Y} \big) - d_0}{\sqrt{\frac{\sigma^2_X}{n_1} + \frac{\sigma^2_Y}{n_2}}}$ \\
+Case 2: $\sigma^2_X$ or $\sigma^2_Y$ are unknown and  $\sigma^2_X = \sigma^2_Y$ & $T = \frac{\big(\overline{X} - \overline{Y} \big) - d_0}{\sqrt{S^2_p \big(\frac{1}{n_1} + \frac{1}{n_2} \big)}}$ \\
+& $S^2_p = \frac{(n_1 - 1)S^2_X + (n_2 - 1)S^2_Y}{n_1 + n_2 - 2}$ \\
+Case 3: $\sigma^2_X$ or $\sigma^2_Y$ are unknown and $\sigma^2_X \neq \sigma^2_Y$ & $T = \frac{\big(\overline{X} - \overline{Y} \big) - d_0}{\sqrt{\frac{s^2_X}{n_1} + \frac{s^2_Y}{n_2}}}$ \\
+& $\nu = \frac{(s^2_X / n_1 + s^2_Y / n_2)^2}{\frac{(s^2_X/n_1)^2}{n_1 - 1} + \frac{(s^2_Y/n_2)^2}{n_2 - 1}}$ \\ 
+Case 4: $\sigma^2_X$ or $\sigma^2_Y$ are unknown and $n_1 > 30$ and $n_2 > 30$ & $Z = \frac{\big(\overline{X} - \overline{Y} \big) - d_0}{\sqrt{\frac{s^2_X}{n_1} + \frac{s^2_Y}{n_2}}}$ \\ \hline \hline
+\end{tabular}
+\egroup
+\caption{\label{tab:meantests2} Test Statistics for the Hypothesis Test on the Means of Two Independent Populations}
+\end{table}
+
+If the pill is effective, then we would be equivalent to the statement that $\mu_A < \mu_B$. On the other hand, if the diet pill is detrimental to the weights of the women that take then, then this would mean $\mu_A > \mu_B$. Finally, if the diet pill is simply, generally ineffective, then it should be true that $\mu_A = \mu_B$ (our null hypothesis). Thus, we are interested in testing this null hypothesis against the possible alternative that the diet pills are actually effective ($\mu_A < \mu_B$).
+
+For the following, we adopt the same $X$ and $Y$ samples as in two-population interval estimation. Table \ref{tab:meantests2} summarizes the corresponding test statistics for different tests of hypothesis in this scenario.
+
+It is also possible to test for the difference in proportions of two populations. Assuming the selection of independent samples of size $n_1$ and $n_2$ from two binomial populations, the sample proportions $\hat{p}_1$ and $\hat{p}_2$ are computed and the test is as follows:
+
+where $X$ = number of elements in the 1st sample possessing the characteristic of interest and $Y$ = number of elements in the 2nd sample possessing the characteristic of interest. Note that we require the sample sizes $n_1 \geq 30$ and $n_2 \geq 30$ (or the sample sizes are large).
+
+\subsection{Tests for Independence}
+
+The chi-square ($\chi^2$) test for independence is used to determine whether two categorical variables are related or not. The observations are tallied in an $r \times c$ contingency table, where $r$ is the number of rows and $c$ is the number of columns. An example of a 3x3 contingency table is as follows:
+
+\begin{table}[h]
+\begin{tabular}{lllll}
+\hline
+\multirow{2}{*}{Educational Attainment} & \multicolumn{4}{l}{Number of Children} \\
+                                        & 0 to 1   & 2 to 3   & Over 3  & Total  \\ \hline
+Elementary                              & 14       & 37       & 32      & 83     \\
+Secondary                               & 19       & 42       & 17      & 78     \\
+College                                 & 12       & 17       & 10      & 39     \\
+Total                                   & 45       & 96       & 59      & 200   \\ \hline \hline
+\end{tabular}
+\end{table}
+
+Suppose we wish to test whether the number of  children had by couples depends on their educational attainment. For this test, the null and alternative hypotheses are:
+
+\begin{itemize}
+    \item Ho: The two variables are independent.
+    \item Ha: The two variables are not independent.
+\end{itemize}
+
+The test statistic is given by
+
+$$
+X^2 = \sum_{i=1}^{r}{\sum_{j=1}^{c}{ \frac{(O_{ij} - E_{ij})^2}{E_{ij}} }}
+$$
+
+where $O_{ij}$ is the observed number of cases in the $i$th row of the $j$th column, and $E_{ij}$ is the expected number of cases under Ho for this row and column. $E_{ij}$ is computed from the table as follows:
+
+$$
+E_{ij} = \frac{(i\text{th row total}) \times (j\text{th column total})}{\text{grand total}}
+$$
+
+Our decision rule is to reject Ho if $X^2 > \chi^2{\alpha, \nu = (r-1)(c-1)}$
+
+The test is valid if at least 80% of the cells have expected frequencies of at least 5 and no cell has an expected frequency $\leq 1$. If many expected frequencies are very small, researchers commonly combine categories of variables to obtain a table having larger cell frequencies. Generally, one should not pool categories unless there is a natural way to combine them.
+
+For  a  $2x2$  contingency  table,  a  correction  called  Yates’  correction  for  continuity  is applied. The test statistic then becomes
+
+$$
+X^2 = \sum_{i=1}^{r}{\sum_{j=1}^{c}{ \frac{(|O_{ij} - E_{ij}| - 0.5)^2}{E_{ij}} }}
+$$
+
+This formula may be used if the number of observations $\geq 40$. It may still be used if the number of observations is between 20 and 40 provided that all expected frequencies are > 5. If the above conditions are not met for the $2x2$ case then alternatives may be used.
+
+\end{document}
