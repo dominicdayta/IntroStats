@@ -302,7 +302,7 @@ The following apply only if $X$ and $Y$ are independent:
 
 \begin{itemize}
 \item $Var(X + Y) = Var(X) + Var(Y)$
-\item $Var(X - Y) = Var(X) - Var(Y)$
+\item $Var(X - Y) = Var(X) + Var(Y)$
 \end{itemize}
 
 If independence does not hold, then the above property will still apply after adjusting for their \emph{covariance}. Covariance is a measure of the relationship between the two random variables. It describes how changes in one variable are related to changes in another variable. The covariance between two random variables $X$ and $Y$, denoted as $Cov(X, Y)$ or $\sigma(X, Y)$, is calculated as the expected value of the product of the deviations of X and Y from their respective expected values. Mathematically, it is defined as:
@@ -434,6 +434,12 @@ The expected value (or mean) of an exponential random variable is $E[X] = 1/\lam
 
 The exponential distribution is often used to model wait times or inter-arrival times between consecutive events. For example, it can be applied to model the time between customer arrivals at a service desk, the time between occurrences of machine failures, or the time between phone calls in a call center.
 
+The exponential distribution is also among the few distributions that have a closed-form CDF. The probability of waiting at most $x$ time under the exponential distribution is given by
+
+$$
+F_X(x) = P(X \leq x) = 1 - \exp{\{- \lambda x\}}
+$$
+
 The exponential distribution exhibits the memoryless property, which implies that the probability distribution of future events does not depend on the elapsed time since the last event. In other words, the distribution of waiting times remains the same regardless of how much time has already passed. This memoryless property makes the exponential distribution particularly suitable for modeling events that occur independently and have no residual effects.
 
 The exponential distribution is widely used in various fields, including queuing theory, reliability analysis, telecommunications, and inventory management. It provides a probabilistic framework for understanding and predicting waiting times and inter-arrival times, allowing for efficient resource allocation and system optimization.
@@ -451,7 +457,7 @@ The \emph{Normal distribution}, also known as the Gaussian distribution or bell 
 The normal random variable, denoted as $X$, follows a normal distribution if it takes on real values and has a probability density function (PDF) given by:
 
 $$
-f(x)= \frac{1}{2\pi} \exp{\bigg\{- \frac{(x - \mu)^2}{2\sigma^2}\bigg\}}
+f(x)= \frac{1}{\sqrt{2\pi \sigma^2}} \exp{\bigg\{- \frac{(x - \mu)^2}{2\sigma^2}\bigg\}}
 $$
 
 We find that the normal distribution is parametrized only by its mean $\mu$ and variance $\sigma^2$. These two values specify the location and the scale of the normal distribution, respectively, and in consequence determines what probability density will be assigned to $x$.
@@ -546,53 +552,120 @@ The \emph{Dirichlet distribution} is a multivariate probability distribution def
 
 We will be returning to some of the above distributions in later lectures, either in exercises or as supplementary material to related topics.
 
+\subsection{Exercises}
+
+\begin{enumerate}
+    \item The distribution function of the random variable $X$ is given by \begin{align}
+    F(x) = \begin{cases} 
+    	0 & x < 0 \\
+    	\frac{x}{2} & 0 \leq x < q \\
+    	\frac{2}{3} & 1 \leq x < 2 \\
+    	\frac{11}{12} & 2 \leq x < 3 \\
+    	1 & 3 \leq x
+    \end{cases}
+    \end{align}
+    \begin{enumerate}
+        \item Graph the distribution for $F(x)$
+        \item Compute for $P\{X = 11\}$
+        \item Compute for $P\{X > \frac{1}{2}\}$
+        \item Compute for $P\{2 < X \leq 4 \}$
+    \end{enumerate}
+    
+    \item Two fair dice are rolled. Let $X$ equal the product of the 2 dice. Compute $P\{X = i\}$ for $i = 1, \dots , 36$.
+    \item Four buses carrying 148 students from the same school arrive at a football stadium. The buses carry, respectively, 40, 33, 25, and 50 students. One of the students is randomly selected. Let $X$ denote the number of students who were on the bus carrying the randomly selected student. One of the 4 bus drivers is also randomly selected. Let $Y$ denote the number of students on her bus.
+    \begin{enumerate}
+        \item Without computing, which of $E[X]$ or $E[Y]$ do you think is larger? Why?
+        \item Compute $E[X]$ and $E[Y]$.
+        \item Compute $V[x]$ and $V[Y]$
+    \end{enumerate}
+
+    \item If $E[X] = 1$ and $Var(X) = 5$, find (a) $E[(2 + X)^2]$ and (b) $Var(4 + 3x)$.
+    \item The suicide rate in a certain state is 1 suicide per 100,000 inhabitants per month. Find the probability that in a city of 400,000 inhabitants within this state, there will be 8 or more suicides in a given month.
+    \item You arrive at a bus stop at 10 A.M., knowing that the bus will arrive at some time uniformly distributed between 10 and 10:30. What is the probability that you will have to wait longer than 10 minutes? If, at 10:15, the bus has not yet arrived, what is the probability that you will have to wait at least an additional 10 minutes?
+    \item If $X$ is a normal random variable with parameters $\mu = 10$ and $\sigma^2 = 36$, compute
+    \begin{enumerate}
+        \item $P\{ X > 5 \}$
+        \item $P\{ 4 < X < 16 \}$
+        \item $P\{ X < 8 \}$
+        \item $P\{ X < 20 \}$
+        \item $P\{ X > 16 \}$
+    \end{enumerate}
+    \item The salaries of physicians in a certain speciality are approximately normally distributed. If 25 percent of these physicians earn less than \$180,000 and 25 percent earn more than \$320,000, approximately what fraction earn (a) less than \$200,000? (b) between \$280,000 and \$320,000?
+    \item Let $X$ be a normal random variable with mean 12 and variance 4. Find the value of $c$ such that $P\{X > c\} = 0.10$.
+    \item Two types of coins are produced at a factory: a fair coin and a biased one that comes up heads 55 percent of the time. We have one of these coins but do not know whether it is a fair coin or a biased one. In order to ascertain which type of coin we have, we shall perform the following statistical test: We shall toss the coin 1000 times. If the coin lands on heads 525 or more times, then we shall conclude that it is a biased coin, whereas if it lands on heads fewer than 525 times, then we shall conclude that it is a fair coin. If the coin is actually fair, what is the probability that we shall reach a false conclusion? What would it be if the coin were biased?
+
+\end{enumerate}
+
 \section{Statistical Inference}
 
 \subsection{Framework of Statistical Inference}
 
 The field of \emph{Statistical Inference} involves making predictions, inferences, or decisions about a population based on information obtained from a sample. It encompasses two primary components: \emph{estimation} and \emph{hypothesis testing}.
 
-At the heart of statistical inference is the notion of the sampling distribution. When we collect a sample from a population, we calculate a sample statistic (such as the sample mean or sample proportion). The sampling distribution represents the distribution of that sample statistic across all possible samples of the same size from the population. It provides valuable insights into the variability and properties of the sample statistic and allows us to make probabilistic statements about its relationship to the population parameter.
+At the heart of statistical inference is the notion of the sampling distribution. When we collect a sample from a population, we calculate a sample statistic (such as the sample mean or sample proportion). The sampling distribution represents the distribution of that sample statistic across all possible samples of the same size from the population. It describes the variability and properties of the sample statistic and allows us to make probabilistic statements about its relationship to the population parameter.In estimation, we use the information from the sample to estimate an unknown population parameter. 
 
-In estimation, we use the information from the sample to estimate an unknown population parameter. For example, we may estimate the population mean, proportion, variance, or any other parameter of interest. \emph{Point estimation} involves providing a single best estimate for the population parameter, typically using the sample statistic as the point estimator. For instance, the sample mean is often used to estimate the population mean. However, point estimates do not convey the uncertainty associated with the estimation process.
+For example, we may estimate the population mean, proportion, variance, or any other parameter of interest. \emph{Point estimation} involves providing a single best estimate for the population parameter, typically using the sample statistic as the point estimator. For instance, the sample mean is often used to estimate the population mean. However, point estimates do not convey the uncertainty associated with the estimation process.
 
 This is where \emph{interval estimation} comes into play. An interval estimate provides a range of values within which the population parameter is likely to lie with a specified level of confidence. Confidence intervals are commonly used in estimation, and they take into account the variability in the sampling distribution. The wider the confidence interval, the greater the uncertainty in the estimation.
 
-On the other hand, hypothesis testing involves making decisions about a population based on a sample, usually regarding a specific claim or hypothesis. The process begins with formulating a \emph{null hypothesis} ($H_0$) and an alternative hypothesis ($H_1$). The null hypothesis typically represents a default or no-effect assumption, while the alternative hypothesis represents the claim we want to test.
-
-Through hypothesis testing, we assess the evidence in the sample to either reject or fail to reject the null hypothesis. This is done by examining the likelihood of observing the sample data under the assumption that the null hypothesis is true, which is quantified by the p-value. If the p-value is smaller than a predefined significance level ($\alpha$), we reject the null hypothesis in favor of the alternative hypothesis.
+On the other hand, hypothesis testing involves making decisions about a population based on a sample, usually regarding a specific claim or hypothesis. The process begins with formulating a \emph{null hypothesis} ($H_0$) and an alternative hypothesis ($H_1$). The null hypothesis typically represents a default or no-effect assumption, while the alternative hypothesis represents the claim we want to test.Through hypothesis testing, we assess the evidence in the sample to either reject or fail to reject the null hypothesis. This is done by examining the likelihood of observing the sample data under the assumption that the null hypothesis is true, which is quantified by the p-value. If the p-value is smaller than a predefined significance level ($\alpha$), we reject the null hypothesis in favor of the alternative hypothesis.
 
 The relationship between estimation and hypothesis testing is closely intertwined. In fact, point estimation can be seen as a simplified form of hypothesis testing. For example, estimating the population mean with a sample mean is equivalent to testing a hypothesis about the population mean, where the null hypothesis is that the population mean is equal to the sample mean.
 
 \subsection{Statistics and Sampling Distributions}
 
-Using a particular probability sampling method and collecting $n$ observations, we have the random sample $(X_1,X_2,…,X_n)$, where $X_1$ is the measure taken from the 1st member of the sample, $X_2$ is taken from the 2nd member, and so on until the $n$th and last member of the sample. Given this sample, we can then compute the statistic, $t$ which is obtained from the sample through the function $T$:
-
-$$
-t = T(X_1, X_2, ..., X_n)
-$$
-
+Using a particular probability sampling method and collecting $n$ observations, we have the random sample $(X_1,X_2,\dots,X_n)$, where $X_1$ is the measure taken from the 1st member of the sample, $X_2$ is taken from the 2nd member, and so on until the $n$th and last member of the sample. Given this sample, we can then compute the statistic, $t$ which is obtained from the sample through the function $T$:
+$$t=T(X_1,X_2,\dots,X_n)$$
 For example, the sample mean is obtained from the sample using the formula
-
-$$
-\bar{x} = \frac{1}{n} \sum_{i=1}^{n}{X_i}
-$$
+$$\bar{x}=\frac{1}{n}\sum_{i=1}^{n}{X_i}$$
 and the sample standard deviation
-$$
-s = \frac{1}{n-1} \sum_{i=1}^{n}{(X- \bar{X})^2}
-$$
+$$s=\frac{1}{n-1}\sum_{i=1}^{n}{(X_i-\bar{x})^2}$$
 
-The above definition gives us some important insights regarding the statistics. Being a function of the random variables $(X_1,X_2,…,X_n)$, a statistic is in itself a random variable also. This means that as a random variable, the value of a statistic depends on the outcome of the random experiment of selecting $n$ elements from a population using a probability sampling method.
+The above definition gives us some important insights regarding the statistics. Being a function of the random variables $(X_1,X_2,\dots,X_n)$, a statistic is in itself a random variable also. This means that as a random variable, the value of a statistic depends on the outcome of the random experiment of selecting $n$ elements from a population using a probability sampling method.
 
 Also, its value will vary from sample to sample. It is impossible to predict with certainty what the realized value of the statistic will be. It is only when we have actually selected our sample that we can compute for its value. Lastly, as a random variable, it must have a probability distribution.
 
 For this we define the \emph{sampling distribution}, which is simply the probability distribution of a statistic. Even if the realized value of a statistic cannot be predicted with utmost certainty, we can use its sampling distribution to understand how its value changes from one sample to another (or its behavior in terms of probability).
 
-Because the statistic can also take on different values, similar to the random variable (as it is a random variable also), we can also measure the variability of the statistic. Where the random varaible has a standard deviation, the standard error of a statistic is referred to as its \emph{standard error}.
+Because the statistic can also take on different values, similar to the random variable (as it is a random variable also), we can also measure the variability of the statistic. Where the random variable has a standard deviation, the standard deviation of a statistic is referred to as its \emph{standard error}.
 
-We have a special term for the standard deviation of a statistic because we will use it to measure the reliability of our statistic.
+We have a special term for the standard deviation of a statistic because we will use it to measure the reliability of our statistic. A small standard error indicates that the computed values of our statistic in the different samples generated are close to one another, so that even if we know that the values of a statistic vary from one sample to another, a small standard error gives us an assurance that at least the variation among their values is not too large.
 
-A small standard error indicates that the computed values of our statistic in the different samples generated are close to one another., so that even if we know that the values of a statistic varies from one sample to another, a small standard error gives us an assurance that at least the variation among their values is not too large. 
+\textbf{Example 1: A Small Population Sampling Distribution}
+
+To build an intuition for sampling distributions, let us look at a small, concrete example. Suppose our population consists of $N=3$ graduate students in a lab, and we measure the number of published papers each has. The population values are $X=\{1,3,5\}$. The population mean is:
+
+$$\mu=\frac{1+3+5}{3}=3$$
+The population variance is:
+$$\sigma^2=\frac{(1-3)^2+(3-3)^2+(5-3)^2}{3}=\frac{4+0+4}{3}=\frac{8}{3}\approx2.67$$
+
+Now, consider selecting a sample of size $n=2$ drawn \emph{with replacement}. There are $3^2=9$ possible samples we could draw. Let us list all of them alongside the resulting sample mean ($\bar{x}$) and sample variance ($s^2$). Because each of these 9 samples is equally likely (probability of $1/9$), we can calculate the expected value of the sample mean, denoted as $E(\bar{X})$, by taking the average of all possible sample means:
+
+\begin{margintable}
+\begin{tabular}{l} 
+Sample $(1,1) \rightarrow \bar{x}=1, s^2=0$ \\
+Sample $(1,3) \rightarrow \bar{x}=2, s^2=2$ \\
+Sample $(3,1) \rightarrow \bar{x}=2, s^2=2$ \\ 
+Sample $(1,5) \rightarrow \bar{x}=3, s^2=8$ \\
+Sample $(5,1) \rightarrow \bar{x}=3, s^2=8$ \\
+Sample $(3,3) \rightarrow \bar{x}=3, s^2=0$ \\
+Sample $(3,5) \rightarrow \bar{x}=4, s^2=2$ \\
+Sample $(5,3) \rightarrow \bar{x}=4, s^2=2$ \\
+Sample $(5,5) \rightarrow \bar{x}=5, s^2=0$
+\end{tabular}
+\end{margintable}
+
+$$E(\bar{X})=\frac{1(1)+2(2)+3(3)+2(4)+1(5)}{9}=\frac{1+4+9+8+5}{9}=\frac{27}{9}=3$$
+
+Notice that $E(\bar{X})=\mu=3$. This demonstrates a crucial property: the sample mean is an \emph{unbiased estimator} of the population mean. No matter what the population looks like, on average, the sample mean will target the true population mean.
+
+\textbf{Example 2: A Larger Population for Self-Study}
+
+Now try constructing a sampling distribution on your own. Suppose a machine learning model is tested on $N=5$ benchmark datasets, scoring accuracies of $X=\{70,75,80,85,90\}$. The population mean is $\mu=80$ and the population variance is $\sigma^2=50$.
+
+Find the sampling distribution of the sample mean for a sample of size $n=3$ drawn \emph{without replacement}. (Hint: There are $\binom{5}{3}=10$ possible samples. List them out, find the mean of each, and calculate the expected value $E(\bar{X})$ and variance $Var(\bar{X})$ of those means).
+
+You should find that $E(\bar{X})=80$ (demonstrating unbiasedness again) and the variance of the sample means will be $Var(\bar{X})=\frac{25}{3}\approx8.33$. Because we sampled without replacement from a small, finite population, this variance is found theoretically using the finite population correction factor: $\frac{\sigma^2}{n}\times\frac{N-n}{N-1}$.
 
 \subsection{Central Limit Theorem}
 
@@ -603,5 +676,35 @@ To apply the CLT successfully, several conditions must be met. First and foremos
 The implications of the Central Limit Theorem are far-reaching and have significant practical applications. One of the primary implications is the approximation to normality. With a sufficiently large sample size and the fulfillment of the aforementioned conditions, the sampling distribution of the sample mean (or sum) will closely follow a normal distribution, even if the underlying data comes from a non-normal distribution.
 
 Another important implication relates to the sample mean and standard deviation. The mean of the sampling distribution of the sample mean will be equal to the population mean ($\mu$), and the standard deviation of the sampling distribution (standard error) will be equal to the population standard deviation ($\sigma$) divided by the square root of the sample size ($n$). This information is essential for constructing confidence intervals and making inferences about population parameters.
+
+\textbf{Example 3: Central Limit Theorem in Action}
+
+To see the power of the CLT, suppose the weight of adult male deer in Nara Park has an unknown, possibly skewed distribution with a mean of $\mu=65$ kg and a standard deviation of $\sigma=8$ kg. A random sample of $n=40$ deer is weighed. What is the probability that the average weight of this sample is greater than $67$ kg?
+
+Even though we do not know the shape of the population distribution, our sample size ($n=40$) is large enough (typically $n\geq30$ is considered sufficient) to invoke the Central Limit Theorem. The sampling distribution of the sample mean $\bar{X}$ will be approximately normally distributed with:
+
+\begin{itemize}
+\item Mean: $\mu_{\bar{X}}=\mu=65$
+\item Standard Error: $\sigma_{\bar{X}}=\frac{\sigma}{\sqrt{n}}=\frac{8}{\sqrt{40}}\approx1.265$
+\end{itemize}
+
+We want to find $P(\bar{X}>67)$. First, we convert the sample mean to a standard normal $Z$-score:
+$$Z=\frac{\bar{X}-\mu_{\bar{X}}}{\sigma_{\bar{X}}}=\frac{67-65}{1.265}\approx1.58$$
+Using standard normal distribution tables or software, we find the area to the right of $Z=1.58$:
+$$P(\bar{X}>67)=P(Z>1.58)=1-0.9429=0.0571$$
+There is approximately a $5.71\%$ chance that a random sample of $40$ deer will have an average weight exceeding $67$ kg.
+
+\subsection{Exercises}
+\begin{enumerate}
+\item Explain the difference between point estimation and interval estimation. Provide one advantage that interval estimation holds over point estimation.
+\item Why does the standard error of the sample mean decrease as the sample size $n$ increases? Explain this phenomenon intuitively.
+\item The time spent studying (in hours) for the final exam by students in a certain university has an unknown mean $\mu$ and standard deviation $8$ hours. A random sample of $4$ students was taken to guess the mean study time of all students in the university. What is the (approximate) probability that the sample mean $\bar{X}$ differs from the population mean $\mu$ by less than $4$ hours? That is, approximate $P(|\bar{X}-\mu|<4)$. \emph{(Hint: Recall that $|x|\leq a$ means that $-a\leq x\leq a$. Assume the population of study times is normally distributed since the sample size is small.)}
+\item A random sample of size $n=36$ is taken from a population with mean $\mu=50$ and standard deviation $\sigma=12$. Calculate the expected value and standard error of the sampling distribution of the sample mean.
+\item Using the sampling distribution from Item 4, what is the approximate probability that the sample mean is between $46$ and $54$?
+\item An AI engineer processes a massive text corpus where the number of tokens per sentence has an unknown, right-skewed distribution with $\mu=18$ and $\sigma=5$. If a batch of $n=100$ sentences is randomly sampled, what is the probability that the mean token length of this batch exceeds $19$?
+\item Find the required sample size $n$ if we want the standard error of the sample mean to be exactly $2$, given that the population standard deviation is known to be $\sigma=14$.
+\item A university lecturer is grading lab session reports. The time taken to grade one report has an unknown distribution with a mean of $\mu=15$ minutes and a standard deviation of $\sigma=4$ minutes. For a class of $n=35$ students, find the approximate probability that the total grading time exceeds $9$ hours ($540$ minutes). \emph{(Hint: First, consider what the mean of the 35 reports would have to be for the total time to exceed 540 minutes, then apply the Central Limit Theorem.)}
+\end{enumerate}
+
 
 \end{document}

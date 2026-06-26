@@ -1,0 +1,870 @@
+\documentclass{article}
+
+\usepackage{kafkanotes}
+\usepackage{amsmath}
+\usepackage{multirow}
+
+%Judul dan Penulis
+\title{III. Estimation and Hypothesis Testing}
+\author{Dayta, Dominic}
+
+\begin{document}
+
+%Halaman Judul
+\begin{titlepage}
+\thispagestyle{empty}
+\maketitle
+
+%Abstrak
+\begin{abstract}
+The previous lectures have built up some preliminary knowledge needed for understanding statistical inference, particularly probabilities and sampling distributions. This week, we focus on putting these concepts into practice through estimation and some basic hypothesis testing.
+
+\textit{Please note that the following lecture notes have been prepared specifically for our Stat 195 class. Please do not disseminate.}
+\end{abstract}
+
+\tableofcontents
+\end{titlepage}
+
+%Geometri untuk halaman konten
+\newgeometry{top=20mm,bottom=25mm,right=80mm,left=20mm}
+
+%================KONTEN DIMULAI DISINI================%
+
+\section{Estimation}
+\subsection{Basic Concepts in Estimation}
+
+At the heart of statistical inference lies the problem of estimation: we encounter an unknown population parameter, denoted by $\theta$ (which could be a mean $\mu$, a variance $\sigma^2$, or a proportion $p$), and our objective is to make an educated guess about its value using a sample statistic, known as an estimator, denoted by $\hat{\theta}$.
+
+To illustrate this, suppose we want to determine the true mean income ($\mu$) of all families living in Metro Manila. It is impossible to survey the entire population. Instead, we take a random sample of $n = 1000$ families. We can approach the estimation of $\mu$ in two ways: point estimation and interval estimation.
+
+\textbf{Point Estimation:} 
+A point estimator is a specific statistical formula or function applied to the sample data $X_1, X_2, \dots, X_n$ to derive a single numerical value, known as the point estimate. For instance, we might use the sample mean function $\hat{\mu} = \bar{X} = \frac{1}{n}\sum X_i$ as our estimator. If we calculate this for our 1000 families and get $20,000$ pesos, then $20,000$ is our point estimate. While straightforward, a point estimate provides no information about the uncertainty or potential error of the guess.
+
+\textbf{Interval Estimation:}
+An interval estimator calculates two numbers, a lower limit $L$ and an upper limit $U$, to form a range $(L, U)$ within which we expect the true population parameter to lie with a specified degree of probability. This is called a confidence interval. 
+
+Formally, a $100(1-\alpha)\%$ confidence interval means that the estimator satisfies the condition:
+$$ P(L \le \theta \le U) = 1 - \alpha $$
+
+Here, $\alpha$ is the probability that the interval misses the true parameter (often set to $0.05$ for a $95\%$ confidence level). For example, after analyzing our sample, we might find a $95\%$ confidence interval for the mean income of $(15,000, 25,000)$ pesos. 
+
+\textbf{Interpretation of a Confidence Interval:}
+It is crucial to interpret this correctly. The population parameter $\theta$ is a fixed, albeit unknown, constant—it does not "move." What varies is the interval $(L, U)$ from sample to sample. Saying "we are $95\%$ confident" means that if we were to repeat this sampling process an infinite number of times and compute an interval for each sample, approximately $95\%$ of those constructed intervals would successfully contain the true population mean $\mu$.
+
+\subsection{Properties of a Good Estimator}
+
+Because there are many ways to estimate a parameter, we need mathematical criteria to evaluate and compare estimators. A good estimator should be unbiased and efficient.
+
+\subsubsection{Unbiasedness}
+An estimator $\hat{\theta}$ is an \emph{unbiased} estimator of the parameter $\theta$ if the expected value of the estimator is equal to the true parameter. Mathematically, the bias of an estimator is defined as:
+$$ Bias(\hat{\theta}) = E(\hat{\theta}) - \theta $$
+For an estimator to be unbiased, we must have $Bias(\hat{\theta}) = 0$, or equivalently:
+$$ E(\hat{\theta}) = \theta $$
+This means that over many repeated samples, the estimator does not systematically overestimate or underestimate the true parameter.
+
+\textbf{Example: Proof of Unbiasedness for the Sample Mean} \\
+Is the sample mean $\bar{X}$ a good estimator for the population mean $\mu$? Let's evaluate its expected value. Assume we draw a random sample $X_1, X_2, \dots, X_n$ from a population where $E(X_i) = \mu$.
+$$ E(\bar{X}) = E\left( \frac{1}{n} \sum_{i=1}^{n} X_i \right) $$
+By the linearity of expectation, we can factor out the constant $\frac{1}{n}$:
+$$ E(\bar{X}) = \frac{1}{n} \sum_{i=1}^{n} E(X_i) = \frac{1}{n} (\underbrace{\mu + \mu + \dots + \mu}_{n \text{ times}}) = \frac{1}{n} (n\mu) = \mu $$
+Since $E(\bar{X}) = \mu$, we have proven that the sample mean is an unbiased estimator of the population mean.
+
+\textbf{Example: Proof of Bias for the Uncorrected Sample Variance} \\
+While the sample mean is an unbiased estimator of the population mean, the intuitive "average of squared deviations"—the uncorrected sample variance ($\hat{\sigma}^2$)—is actually a \emph{biased} estimator of the population variance ($\sigma^2$). Let's see why by evaluating its expected value. 
+
+The uncorrected sample variance is defined as:
+$$ \hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2 $$
+
+To find $E(\hat{\sigma}^2)$, we first use a standard algebraic trick: we add and subtract the population mean $\mu$ inside the squared term.
+$$ \sum_{i=1}^{n} (X_i - \bar{X})^2 = \sum_{i=1}^{n} ((X_i - \mu) - (\bar{X} - \mu))^2 $$
+
+Expanding the square yields three terms:
+$$ \sum_{i=1}^{n} ((X_i - \mu)^2 - 2(X_i - \mu)(\bar{X} - \mu) + (\bar{X} - \mu)^2) $$
+
+Distributing the summation over these terms (and noting that $(\bar{X} - \mu)$ is a constant with respect to the summation index $i$):
+$$ \sum_{i=1}^{n} (X_i - \mu)^2 - 2(\bar{X} - \mu) \sum_{i=1}^{n} (X_i - \mu) + n(\bar{X} - \mu)^2 $$
+
+Here, we apply a basic identity. Since $\sum_{i=1}^{n} X_i = n\bar{X}$, the middle term simplifies to $-2(\bar{X} - \mu)(n\bar{X} - n\mu) = -2n(\bar{X} - \mu)^2$. Combining this with the third term leaves us with:
+$$ \sum_{i=1}^{n} (X_i - \bar{X})^2 = \sum_{i=1}^{n} (X_i - \mu)^2 - n(\bar{X} - \mu)^2 $$
+
+Now, we take the expected value of both sides. We know from the definition of variance that $E((X_i - \mu)^2) = \sigma^2$. Furthermore, the variance of the sample mean is known to be $E((\bar{X} - \mu)^2) = \frac{\sigma^2}{n}$:
+$$ E\left( \sum_{i=1}^{n} (X_i - \bar{X})^2 \right) = \sum_{i=1}^{n} E((X_i - \mu)^2) - n E((\bar{X} - \mu)^2) $$
+$$ = \sum_{i=1}^{n} (\sigma^2) - n \left( \frac{\sigma^2}{n} \right) = n\sigma^2 - \sigma^2 = (n - 1)\sigma^2 $$
+
+Finally, we bring back the $\frac{1}{n}$ from our original estimator:
+$$ E(\hat{\sigma}^2) = E\left( \frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2 \right) = \frac{1}{n} (n - 1)\sigma^2 = \frac{n - 1}{n} \sigma^2 $$
+
+Because $E(\hat{\sigma}^2) \neq \sigma^2$, this estimator is \emph{biased}. Specifically, it systematically underestimates the true variance by a factor of $\frac{n-1}{n}$. This mathematical reality is exactly why the unbiased sample variance ($s^2$) used in practice divides by $n - 1$ instead of $n$! 
+
+\emph{(Note: While $s^2$ is an unbiased estimator of $\sigma^2$, the sample standard deviation $s$ remains a slightly biased estimator of $\sigma$ due to a mathematical rule called Jensen's Inequality, which states that the square root of an expected value is not equal to the expected value of a square root.)}
+
+\subsubsection{Efficiency (Reliability)}
+It is possible to have multiple unbiased estimators for the same parameter. To choose between them, we look at their variance, $Var(\hat{\theta})$. The variance measures the spread or standard error of the estimator's sampling distribution. 
+
+Given two unbiased estimators, $\hat{\theta}_1$ and $\hat{\theta}_2$, we say that $\hat{\theta}_1$ is more \emph{efficient} than $\hat{\theta}_2$ if:
+$$ Var(\hat{\theta}_1) < Var(\hat{\theta}_2) $$
+An efficient estimator minimizes the variability from sample to sample, providing estimates that are consistently closer to the true parameter.
+
+\textbf{Example: Comparing Two Unbiased Estimators} \\
+Suppose we want to estimate the mean $\mu$ of a population. We propose two estimators:
+\begin{itemize}
+    \item $\hat{\theta}_1 = \bar{X}$ (the standard sample mean of all $n$ observations).
+    \item $\hat{\theta}_2 = X_1$ (a lazy estimator where we just take the very first observation and ignore the rest).
+\end{itemize}
+First, check for bias. We already know $E(\hat{\theta}_1) = \mu$. For our lazy estimator, $E(\hat{\theta}_2) = E(X_1) = \mu$. Surprisingly, $\hat{\theta}_2$ is also an unbiased estimator!
+
+Now, check for efficiency. Assuming the population has a variance of $\sigma^2$:
+$$ Var(\hat{\theta}_2) = Var(X_1) = \sigma^2 $$
+$$ Var(\hat{\theta}_1) = Var(\bar{X}) = Var\left( \frac{1}{n} \sum_{i=1}^{n} X_i \right) = \frac{1}{n^2} \sum_{i=1}^{n} Var(X_i) = \frac{1}{n^2}(n\sigma^2) = \frac{\sigma^2}{n} $$
+As long as our sample size $n > 1$, $Var(\hat{\theta}_1) < Var(\hat{\theta}_2)$. Therefore, the sample mean is a highly efficient estimator compared to $X_1$, proving mathematically why we bother collecting a full sample rather than just looking at one data point.
+
+\subsubsection{The Trade-off in Interval Estimation}
+When moving from point estimates to interval estimates, we evaluate a "good" confidence interval based on two competing criteria: \emph{narrowness} (precision) and \emph{confidence level} (reliability).
+
+To see this tension mathematically, consider the standard confidence interval formula for a population mean (when $\sigma$ is known):
+$$ \bar{X} \pm Z_{\alpha/2} \left( \frac{\sigma}{\sqrt{n}} \right) $$
+The width of this interval is exactly $2 \times Z_{\alpha/2} \left( \frac{\sigma}{\sqrt{n}} \right)$.
+
+\begin{itemize}
+    \item \textbf{Increasing Confidence:} If we want to be more certain that our interval captures $\mu$, we might increase our confidence level from $95\%$ to $99\%$. This increases the critical value $Z_{\alpha/2}$ (from $1.96$ to $2.576$). Looking at the formula, increasing $Z$ mathematically forces the interval to become \emph{wider}.
+    \item \textbf{Increasing Precision:} If a wide interval is practically useless (e.g., "The mean income is somewhere between 0 and 1,000,000 pesos"), we want a narrower interval. Looking at the formula, the only way to decrease the width without sacrificing our confidence level $Z_{\alpha/2}$ is to increase the sample size $n$. Because $n$ is in the denominator, a larger $n$ shrinks the standard error, yielding a tighter, more precise interval.
+\end{itemize}
+
+\subsection{Point Estimation in Mean, Proportion, and Variance}
+
+Table \ref{tab:pointests} summarizes the different target parameters and point estimators for the three quantities we are concerned with in this module: the mean, variance, and proportion.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\hline
+\textbf{Target Quantity} & \textbf{Parameter} & \textbf{Estimator} \\ \hline
+Mean & $\mu$ & $\bar{x} = \frac{1}{n}\sum_{i=1}^{n}X_i$ \\
+Variance & $\sigma^2$ & $s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(X_i - \bar{x})^2$ \\
+Proportion & $p = \frac{1}{N}\sum_{i=1}^{N}X_i$ & $\hat{p} = \frac{1}{n}\sum_{i=1}^{n}X_i$ \\ 
+\hline \hline
+\end{tabular}
+\caption{\label{tab:pointests} Point Estimators for Single Populations}
+\end{table}
+
+As established previously, the point estimator for the population mean $\mu$ is the sample mean $\bar{x}$. For the population variance $\sigma^2$, the unbiased point estimator is the sample variance $s^2$, which divides the sum of squared deviations by $n-1$ (the degrees of freedom) rather than $n$.
+
+A special case of the mean arises when estimating \emph{proportions}. Proportions quantify the fraction of a population that possesses a specific binary characteristic. 
+
+To formalize this for statistical modeling, we define our variable $X_i$ as an indicator (a Bernoulli random variable) for whether the $i$th individual meets the characteristic:
+
+$$X_i=\begin{cases}1&\text{if the }i\text{th element possesses the characteristic}\\0&\text{otherwise}\end{cases}$$
+
+For a Bernoulli random variable, the expected value $E(X_i)=p$ and the variance $Var(X_i)=p(1-p)$. Therefore, in a population of size $N$, the total number of items possessing the characteristic is $\sum_{i=1}^{N}X_i$. The population proportion is exactly the population mean of these Bernoulli variables: $p=\frac{1}{N}\sum_{i=1}^{N}X_i$. 
+
+Consequently, we estimate $p$ using the sample mean of the indicators, yielding the sample proportion $\hat{p}=\frac{1}{n}\sum_{i=1}^{n}X_i$.
+
+\textbf{Example: Point Estimation of a Proportion} \\
+Suppose we want to estimate the proportion of a city's residents who support a new transit initiative. We randomly select $n=300$ individuals, and $150$ indicate their support. Here, $\sum X_i=150$. Our point estimate is simply:
+$$\hat{p}=\frac{150}{300}=0.50$$
+Based on this sample, our best single guess is that 50\% of the population supports the initiative.
+
+\subsection{Interval Estimation in Mean, Proportion, and Variance}
+
+While point estimates give us a single best guess, interval estimators incorporate the variability inherent in the sampling distribution. The goal is to capture the endpoints at which the cumulative probability in the sampling distribution corresponds to our chosen confidence level, $1-\alpha$.
+
+\subsubsection{Interval Estimation for the Mean}
+
+The formula used to construct a confidence interval for the population mean depends heavily on what information is available regarding the population variance $\sigma^2$, and the size of the sample $n$. Table \ref{tab:intervals} outlines the three primary scenarios.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Interval Estimator} \\ \hline
+1: $\sigma^2$ is known & $\bar{x} \pm Z_{\alpha/2} \left( \frac{\sigma}{\sqrt{n}} \right)$ \\
+2: $\sigma^2$ is unknown, $n \leq 30$ & $\bar{x} \pm t_{\alpha/2, \nu=n-1} \left( \frac{s}{\sqrt{n}} \right)$ \\
+3: $\sigma^2$ is unknown, $n > 30$ & $\bar{x} \pm Z_{\alpha/2} \left( \frac{s}{\sqrt{n}} \right)$ \\ 
+\hline \hline
+\end{tabular}
+\caption{\label{tab:intervals} Interval Estimators for the Mean}
+\end{table}
+
+Case 1 relies on the standard normal distribution ($Z$) because the true standard error is known. Case 2 uses the Student's $t$-distribution, which has heavier tails to account for the additional uncertainty introduced by having to estimate $\sigma$ with $s$. Case 3 applies the Central Limit Theorem, using the $Z$-distribution as an asymptotic approximation since $s$ becomes a highly reliable estimate of $\sigma$ in large samples.
+
+\textbf{Example: Estimating the Mean (Case 2)} \\
+A hardware engineer tests the battery life of a new prototype. From a small random sample of $n=16$ batteries, she computes a sample mean of $\bar{x}=45$ hours and a sample standard deviation of $s=4$ hours. Construct a 95\% confidence interval for the true mean battery life.
+
+Because $\sigma$ is unknown and $n \leq 30$, we use the $t$-distribution (Case 2) with degrees of freedom $\nu = 16 - 1 = 15$. For a 95\% confidence level, $\alpha=0.05$, so we look up $t_{0.025, 15} \approx 2.131$.
+$$\bar{x} \pm t_{0.025, 15} \left( \frac{s}{\sqrt{n}} \right) = 45 \pm 2.131 \left( \frac{4}{\sqrt{16}} \right)$$
+$$= 45 \pm 2.131(1) = 45 \pm 2.131$$
+We are 95\% confident that the true mean battery life lies in the interval $(42.87, 47.13)$ hours.
+
+\subsubsection{Interval Estimation for the Variance}
+
+The sampling distribution of the sample variance $s^2$ (when sampling from a normally distributed population) follows a Chi-Square ($\chi^2$) distribution with $n-1$ degrees of freedom. Unlike the $Z$ or $t$ distributions, the $\chi^2$ distribution is right-skewed and strictly positive. Therefore, the interval is not perfectly symmetric around the point estimate.
+
+The $100(1-\alpha)$\% confidence interval for $\sigma^2$ is given by:
+$$\frac{(n-1)s^2}{\chi^2_{\alpha/2, n-1}} \leq \sigma^2 \leq \frac{(n-1)s^2}{\chi^2_{1-\alpha/2, n-1}}$$
+
+\textbf{Example: Estimating the Variance} \\
+Using the battery data from the previous example ($n=16, s=4 \implies s^2=16$), construct a 95\% confidence interval for the population variance $\sigma^2$. 
+
+We need the critical values from the $\chi^2$ distribution with $\nu=15$. For $\alpha=0.05$:
+\begin{itemize}
+    \item Upper critical value: $\chi^2_{0.025, 15} \approx 27.488$
+    \item Lower critical value: $\chi^2_{0.975, 15} \approx 6.262$
+\end{itemize}
+Plugging these into our formula:
+$$\frac{(15)(16)}{27.488} \leq \sigma^2 \leq \frac{(15)(16)}{6.262}$$
+$$\frac{240}{27.488} \leq \sigma^2 \leq \frac{240}{6.262}$$
+$$8.73 \leq \sigma^2 \leq 38.33$$
+We are 95\% confident that the true variance of the battery life is between $8.73$ and $38.33$ squared hours.
+
+\subsubsection{Interval Estimation for the Proportion}
+
+As noted earlier, a sample proportion $\hat{p}$ is simply a sample mean of Bernoulli random variables. If we define $Y = \sum_{i=1}^{n}X_i$ as the total number of successes, then $Y$ follows a Binomial distribution $Y \sim Binomial(n,p)$. 
+
+The expected value is $E(\hat{p}) = p$, and the standard error of this estimator is $SE(\hat{p}) = \sqrt{\frac{p(1-p)}{n}}$. Since the true $p$ is unknown, we substitute our point estimate $\hat{p}$ into the standard error formula. 
+
+By invoking the Central Limit Theorem, we know that for sufficiently large samples (typically when $n\hat{p} \geq 5$ and $n(1-\hat{p}) \geq 5$), the sampling distribution of $\hat{p}$ is approximately normal. Thus, the $100(1-\alpha)$\% confidence interval is:
+$$\hat{p} \pm Z_{\alpha/2} \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+\textbf{Example: Estimating a Proportion} \\
+Returning to our transit initiative example, out of $n=300$ sampled residents, $150$ supported the initiative ($\hat{p}=0.50$). Construct a 95\% confidence interval for the true population proportion.
+
+For a 95\% confidence level, $Z_{0.025} = 1.96$. 
+$$\hat{p} \pm 1.96 \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = 0.50 \pm 1.96 \sqrt{\frac{0.50(1-0.50)}{300}}$$
+$$= 0.50 \pm 1.96 \sqrt{\frac{0.25}{300}} \approx 0.50 \pm 1.96(0.0289)$$
+$$= 0.50 \pm 0.0566$$
+We are 95\% confident that the true proportion of supporters in the entire city lies between $0.4434$ and $0.5566$ (or roughly 44.3\% to 55.7\%).
+
+\subsection{Independent and Related Sampling}
+
+When moving from a single population to comparing two populations, the structure of our sample collection dictates the statistical tools we use. We classify two-population sampling into two distinct categories: independent sampling and related (or dependent) sampling.
+
+\textbf{Independent sampling} occurs when the selection of a sample from one population is completely unrelated to the selection of a sample from the second population. The probability of any specific observation being chosen in the first group has no bearing on who or what is chosen in the second group. For instance, if an engineering team wants to compare the inference speeds of two different hardware accelerators, they might randomly test 15 instances of Accelerator A and a completely separate batch of 20 instances of Accelerator B. Because the units are distinct and unlinked, the samples are independent.
+
+\textbf{Related, matched, or paired sampling} arises when the selection of data points in one sample is directly linked to the data points in the second sample. This one-to-one mapping usually occurs in two ways:
+\begin{enumerate}
+    \item \emph{Repeated Measures:} The same individual or unit is measured twice (e.g., benchmarking the latency of a single server before and after a software update).
+    \item \emph{Matched Pairs:} Distinct units are paired based on shared characteristics to control for confounding variables (e.g., pairing two similar students and giving each a different teaching method). 
+\end{enumerate}
+
+\subsubsection{Interval Estimation for Independent Populations}
+
+When estimating the difference between two independent populations, our objective is to construct an interval for the difference in their true means, $\mu_X - \mu_Y$. To do this, we rely on the sampling distribution of the difference between their sample means, $(\bar{X} - \bar{Y})$.
+
+Table \ref{tab:quantities} summarizes the notation used for the two-population case.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+\hline
+\textbf{Quantity}             & \textbf{First Population} & \textbf{Second Population} \\ \hline
+Population Mean               & $\mu_X$ & $\mu_Y$ \\
+Population Standard Deviation & $\sigma_X$ & $\sigma_Y$ \\
+Sample Mean                   & $\bar{X}$ & $\bar{Y}$ \\
+Sample Standard Deviation     & $S_X$ &  $S_Y$ \\
+Sample Size                   & $n_1$ & $n_2$ \\ \hline \hline
+\end{tabular}
+\caption{\label{tab:quantities} Quantities of Interest in the Two-Population Case}
+\end{table}
+
+A critical mathematical property of independent random variables is that their variances \emph{add}, even when taking the difference of the variables. Because the samples are independent, the covariance is zero, yielding:
+$$ Var(\bar{X} - \bar{Y}) = Var(\bar{X}) + Var(\bar{Y}) = \frac{\sigma^2_X}{n_1} + \frac{\sigma^2_Y}{n_2} $$
+
+Because of the properties of the normal distribution and the Central Limit Theorem, the difference $(\bar{X} - \bar{Y})$ follows a normal (or approximately normal) distribution. The specific interval estimator formula depends on whether the population variances are known and, if unknown, whether we can assume they are equal ($\sigma^2_X = \sigma^2_Y$). Table \ref{tab:indintervals} details the four primary cases.
+
+\begin{table}[htbp]
+\centering
+\bgroup
+\def\arraystretch{2.0}
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Interval Estimator} \\ \hline
+1: $\sigma^2_X$, $\sigma^2_Y$ known  & $(\bar{X} - \bar{Y}) \pm Z_{\alpha/2} \sqrt{\frac{\sigma^2_X}{n_1} + \frac{\sigma^2_Y}{n_2}}$ \\
+2: $\sigma^2_X$, $\sigma^2_Y$ unknown, but $\sigma^2_X = \sigma^2_Y$ & $(\bar{X} - \bar{Y}) \pm t_{\alpha/2, \nu = n_1 + n_2 - 2} \sqrt{S^2_p \left(\frac{1}{n_1} + \frac{1}{n_2} \right)}$ \\
+\emph{(Pooled Variance)} & where $S^2_p = \frac{(n_1 - 1)S^2_X + (n_2 - 1)S^2_Y}{n_1 + n_2 - 2}$ \\
+3: $\sigma^2_X$, $\sigma^2_Y$ unknown, and $\sigma^2_X \neq \sigma^2_Y$ & $(\bar{X} - \bar{Y}) \pm t_{\alpha/2, \nu} \sqrt{\frac{S^2_X}{n_1} + \frac{S^2_Y}{n_2}}$ \\
+\emph{(Welch's Approximation)} & where $\nu = \frac{(S^2_X / n_1 + S^2_Y / n_2)^2}{\frac{(S^2_X/n_1)^2}{n_1 - 1} + \frac{(S^2_Y/n_2)^2}{n_2 - 1}}$ \\ 
+4: $\sigma^2_X$, $\sigma^2_Y$ unknown, large samples ($n_1, n_2 > 30$) & $(\bar{X} - \bar{Y}) \pm Z_{\alpha/2} \sqrt{\frac{S^2_X}{n_1} + \frac{S^2_Y}{n_2}}$ \\ \hline \hline
+\end{tabular}
+\egroup
+\caption{\label{tab:indintervals} Interval Estimators for the Mean Difference of Independent Populations}
+\end{table}
+
+\textbf{Example: Independent Means (Case 2 - Pooled Variance)} \\
+An engineering team is testing the processing time of two different algorithms on a standard dataset. They run Algorithm A $n_1=10$ times, observing a mean time of $\bar{X}=15.0$ ms with a variance of $S^2_X=4.0$. They run Algorithm B $n_2=12$ times, observing a mean of $\bar{Y}=12.5$ ms with a variance of $S^2_Y=5.0$. Assuming the true variances are equal, construct a $95\%$ confidence interval for the difference in mean processing time ($\mu_X - \mu_Y$).
+
+First, we calculate the pooled variance $S^2_p$:
+$$ S^2_p = \frac{(10 - 1)(4.0) + (12 - 1)(5.0)}{10 + 12 - 2} = \frac{36 + 55}{20} = \frac{91}{20} = 4.55 $$
+Next, find the critical $t$-value for $\nu = 20$ at $\alpha=0.05$. Looking this up, $t_{0.025, 20} = 2.086$.
+$$ (15.0 - 12.5) \pm 2.086 \sqrt{4.55 \left(\frac{1}{10} + \frac{1}{12}\right)} $$
+$$ 2.5 \pm 2.086 \sqrt{4.55(0.1833)} \implies 2.5 \pm 2.086(0.913) \implies 2.5 \pm 1.90 $$
+We are $95\%$ confident that the true difference in processing time is between $0.60$ ms and $4.40$ ms. Because the interval does not contain $0$, we have strong evidence that Algorithm B is genuinely faster.
+
+\vspace{1em}
+\textbf{Differences in Proportions} \\
+We may also be interested in the difference in proportions of two independent populations ($p_1 - p_2$). These are estimated by sample proportions $\hat{p}_1$ and $\hat{p}_2$. Following the logic of the Central Limit Theorem for proportions, the $100(1-\alpha)\%$ confidence interval is:
+
+$$
+(\hat{p}_1 - \hat{p}_2) \pm Z_{\alpha/2} \sqrt{\frac{\hat{p}_1 (1 - \hat{p}_1) }{n_1} + \frac{\hat{p}_2 (1 - \hat{p}_2) }{n_2}}
+$$
+
+\textbf{Example: Independent Proportions} \\
+Two Large Language Models are tested for hallucination rates. Model 1 is prompted $n_1=500$ times and hallucinates $60$ times ($\hat{p}_1 = 0.12$). Model 2 is prompted $n_2=400$ times and hallucinates $32$ times ($\hat{p}_2 = 0.08$). A $95\%$ confidence interval ($Z = 1.96$) for the difference in hallucination rates $(p_1 - p_2)$ is:
+$$ (0.12 - 0.08) \pm 1.96 \sqrt{\frac{0.12(0.88)}{500} + \frac{0.08(0.92)}{400}} $$
+$$ 0.04 \pm 1.96 \sqrt{0.000211 + 0.000184} \implies 0.04 \pm 1.96(0.0199) \implies 0.04 \pm 0.039 $$
+The interval is $(0.001, 0.079)$. Because the entire interval is positive, we are $95\%$ confident that Model 1 has a higher hallucination rate than Model 2.
+
+\subsubsection{Interval Estimation for Dependent Populations}
+
+Estimating the difference between two means in the independent case is complex because we must account for two separate distributions. However, in the dependent populations case (the paired samples scenario), the math simplifies beautifully. Testing for the difference $\mu_X - \mu_Y$ entails transforming the paired data into a single new variable that represents the per-pair difference.
+
+Let $(X_1, Y_1), (X_2, Y_2), \dots, (X_n, Y_n)$ be the matched sample data. We compute the difference for each pair: $D_i = X_i - Y_i$ for $i = 1,2,\dots,n$. 
+
+We can then calculate the sample mean of the differences ($\bar{D}$) and the sample standard deviation of the differences ($S_D$):
+
+$$ \bar{D} = \frac{1}{n} \sum_{i=1}^{n}D_i \quad \text{and} \quad S_D = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n}(D_i - \bar{D})^2} $$
+
+The average $\bar{D}$ is an unbiased point estimator for the true mean difference $\mu_D = \mu_X - \mu_Y$. Because we have reduced the two-sample problem into a single-sample estimation of $D$, the interval estimator reverts exactly to the single population case using the $t$-distribution with $n-1$ degrees of freedom:
+
+$$ \bar{D} \pm t_{\alpha/2, \nu = n - 1} \left( \frac{S_D}{\sqrt{n}} \right) $$
+
+\textbf{Example: Dependent Means (Paired Samples)} \\
+To test if a specific caching optimization reduces database query latency, $n=8$ standardized queries are run before ($X$) and after ($Y$) applying the optimization. By subtracting the "after" latency from the "before" latency for each query, we find an average improvement of $\bar{D} = 18$ ms with a standard deviation of $S_D = 6$ ms. Construct a $99\%$ confidence interval for the true mean improvement. 
+
+With $n=8$, we use $t_{0.005, 7} = 3.499$:
+$$ 18 \pm 3.499 \left( \frac{6}{\sqrt{8}} \right) = 18 \pm 3.499(2.121) = 18 \pm 7.42 $$
+We are $99\%$ confident that the optimization reduces latency by between $10.58$ ms and $25.42$ ms.
+
+\subsection{Exercises}
+\begin{enumerate}
+    \item For each of the following items, write TRUE if the statement is \textit{unconditionally} true. Otherwise, write FALSE.
+    \begin{enumerate}
+        \item Using the same sample data, increasing the confidence coefficient in interval estimation will result in an increase in the length of the interval estimate.
+	\item The unbiased estimator of a particular parameter is unique, i.e. there can only be one unbiased estimator.
+	\item The confidence level can be interpreted as the probability that the interval estimate encloses the true population parameter.
+	\item The sample mean is the most efficient estimator of $\mu$ when sampling from the normal distribution.
+	\item If the computed interval estimate for $\mu_X-\mu_Y$ contains positive values only then we are highly confident that mean of $X$ is greater than the mean of $Y$.
+    \end{enumerate}
+    \item A random sample of 10 chocolate energy bars of a certain brand has, on average, 230 calories per bar, with a standard deviation of 15 calories. Construct a 99\% confidence interval for the true mean calorie content of this brand of energy bar. Assume that the distribution of the calorie content is approximately normal.
+    \item Suppose that 175 heads and 225 tails resulted from 400 tosses of a coin.  Find a 90\% confidence interval for the probability of a head. Also, find a 90\% confidence interval for the probability of a tail.  Does this appear to be a fair coin?
+    \item The following measurements were recorded for the drying time, in hours, of a certain brand of latex paint.
+    \begin{table}[H]
+    \begin{tabular}{lllll}
+    3.4 & 2.5 & 4.8 & 2.9 & 3.6 \\
+    2.8 & 3.3 & 5.6 & 3.7 & 2.8 \\
+    4.4 & 4.0 & 5.2 & 3.0 & 4.8
+    \end{tabular}
+    \end{table}
+    \begin{enumerate}
+        \item Provide a point estimate for the mean drying time.
+        \item Assuming that the measurements represent a random sample from a normal population with $\sigma = 1.20$, find a 95\% confidence interval for the mean drying time.
+        \item If we remove the assumption of knowing $\sigma$. How would you compute for the 95\% confidence interval for the mean drying time. Is there a difference in the resulting interval?
+    \end{enumerate}
+    \item A sample of $n_1 = 20$ male and $n_2 = 25$ female students were equipped with a device that records sound for one day. Data about number of words spoken per day are presented below. Construct a 99\% confidence interval for the difference in the mean number of words spoken by males and females. Using this confidence interval, can you support the claim that females talk more than males? Assume the population variances to be unknown and unequal.
+    \begin{table}[H]
+    \begin{tabular}{lrr}
+    & \textbf{Males} & \textbf{Females} \\
+    Mean & 16,177 & 16,569 \\
+    Standard Deviation & 7,520 & 9,108
+    \end{tabular}
+    \end{table}
+\end{enumerate}
+
+\section{Hypothesis Testing}
+
+\subsection{Basic Concepts}
+
+The primary goal of hypothesis testing is to formalize the process of decision-making under uncertainty. We use sample data to determine whether there is sufficient statistical evidence to support a particular claim, or if the observed variations are simply the result of random chance.
+
+To conduct a hypothesis test, we define two competing, mutually exclusive statements about a population parameter: the \emph{null hypothesis} ($H_0$) and the \emph{alternative hypothesis} ($H_1$ or $H_a$). 
+
+\begin{itemize}
+    \item \textbf{The Null Hypothesis ($H_0$):} This is the default assumption, representing the status quo, no effect, or no difference. It is the hypothesis that the researcher typically seeks to challenge or falsify. It always contains a statement of equality (e.g., $=, \geq, \leq$).
+    \item \textbf{The Alternative Hypothesis ($H_1$):} This is the operational statement of the theory that the researcher believes to be true and wishes to demonstrate. It represents a strict inequality (e.g., $\neq, >, <$).
+\end{itemize}
+
+For instance, consider an AI engineer evaluating the generation latency of a newly proposed Large Language Model (LLM) architecture. The current production model has a known mean latency of $200$ milliseconds per token. The engineer wants to prove that the new architecture is strictly faster (latency is lower). 
+\begin{itemize}
+    \item $H_0: \mu \geq 200$ ms (The new model is no faster, or is slower, than the baseline).
+    \item $H_1: \mu < 200$ ms (The new model is strictly faster).
+\end{itemize}
+
+\begin{margintable}
+\centering
+\begin{tabular}{|| c c ||} 
+ \hline
+ Null ($H_0$) & Alternative ($H_1$) \\ [0.5ex] 
+ \hline\hline
+ $\mu = \mu_0$   & $\mu > \mu_0$ (Right-tailed) \\
+         & $\mu < \mu_0$ (Left-tailed) \\
+         & $\mu \neq \mu_0$ (Two-tailed) \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:hypotheses} Null Hypothesis \& Possible Alternative Hypotheses.}
+\end{margintable}
+
+Once the hypotheses are established, we collect a random sample and compute a \emph{test statistic}. A test statistic (such as a $Z$-score or $T$-score) standardizes our sample data, allowing us to map our results onto a known probability distribution. 
+
+We then establish a \emph{rejection region} (or critical region). The rejection region consists of the extreme values of the test statistic that are highly unlikely to occur if $H_0$ were actually true. The boundary of this region is called the \emph{critical value}. If our computed test statistic crosses the critical value and falls into the rejection region, the evidence contradicts $H_0$ strongly enough that we \emph{reject the null hypothesis}. Otherwise, we \emph{fail to reject} it. 
+
+\subsubsection{Type I and Type II Errors}
+
+Because our decisions are based on sample data rather than the entire population, hypothesis testing is inherently subject to error. We classify these into two distinct types.
+
+\begin{margintable}
+\centering
+\begin{tabular}{|| c c c ||} 
+ \hline
+ & \multicolumn{2}{c||}{\textbf{$H_0$ Truth}} \\ 
+ \textbf{$H_0$ Decision} & True & False \\ [0.2ex] 
+ \hline\hline
+ Reject & Type I & Correct \\
+ Fail to Reject & Correct & Type II \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:errors} Decision matrix for Hypothesis Testing.}
+\end{margintable}
+
+\begin{itemize}
+    \item \textbf{Type I Error ($\alpha$):} Rejecting the null hypothesis when it is actually true. This is a "false positive." Mathematically, the probability of committing a Type I error is the \emph{level of significance}:
+    $$ \alpha = P(\text{Reject } H_0 \mid H_0 \text{ is true}) $$
+    \item \textbf{Type II Error ($\beta$):} Failing to reject the null hypothesis when it is actually false. This is a "false negative." 
+    $$ \beta = P(\text{Fail to reject } H_0 \mid H_1 \text{ is true}) $$
+\end{itemize}
+
+\textbf{Example: Error Types in Practice} \\
+Consider a classification algorithm acting as a toxicity filter for an online forum. We are testing incoming text blocks.
+\begin{itemize}
+    \item $H_0$: The text is benign (safe).
+    \item $H_1$: The text is toxic.
+\end{itemize}
+A \emph{Type I error} occurs if the filter flags a perfectly benign message as toxic (a false alarm). A \emph{Type II error} occurs if a highly toxic message slips through the filter undetected. 
+
+Researchers set the significance level $\alpha$ \emph{a priori} (commonly $0.05$ or $0.01$) to control the maximum acceptable probability of a Type I error. A smaller $\alpha$ shrinks the rejection region, making the test stricter and a Type I error less likely. However, because $\alpha$ and $\beta$ are inversely related, making a test too strict increases the risk of a Type II error.
+
+\subsubsection{P-Values: A Formal Definition}
+
+While critical values compare test statistics on an axis, modern statistical software relies almost exclusively on $p$-values. 
+
+The $p$-value is defined as the probability of obtaining a test statistic at least as extreme as the one actually observed, \emph{assuming the null hypothesis is completely true}. 
+$$ p\text{-value} = P(\text{Observing data as or more extreme} \mid H_0 \text{ is true}) $$
+
+\textbf{A Crucial Clarification:} A common misconception is that the $p$-value is the probability that the null hypothesis is true. \emph{It is not.} It is a conditional probability about the data, given the hypothesis. It measures the compatibility of your data with $H_0$. 
+
+\begin{margintable}
+\centering
+\begin{tabular}{|| c c ||} 
+ \hline
+ $H_1$ & Reject $H_0$ when... \\ [0.5ex] 
+ \hline\hline
+ $\mu > \mu_0$ & $Z > Z_\alpha$ \\
+ $\mu < \mu_0$ & $Z < -Z_\alpha$  \\
+ $\mu \neq \mu_0$ & $|Z| > Z_{\alpha/2}$ \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:zcriticals} Rejection Regions for the $Z$-test}
+\end{margintable}
+
+To make a decision, we simply compare the computed $p$-value directly against our significance level $\alpha$:
+\begin{itemize}
+    \item \textbf{If $p \leq \alpha$:} The observed data is highly unlikely under $H_0$. We \emph{reject $H_0$}.
+    \item \textbf{If $p > \alpha$:} The observed data is reasonably likely to occur by chance under $H_0$. We \emph{fail to reject $H_0$}.
+\end{itemize}
+
+\subsubsection{Steps For Hypothesis Testing}
+
+\begin{margintable}
+\centering
+\begin{tabular}{|| c c ||} 
+ \hline
+ $H_1$ & Reject $H_0$ when... \\ [0.5ex] 
+ \hline\hline
+ $\mu > \mu_0$ & $T > T_{\alpha, \nu}$ \\
+ $\mu < \mu_0$ & $T < -T_{\alpha, \nu}$  \\
+ $\mu \neq \mu_0$ & $|T| > T_{\alpha/2, \nu}$ \\ [1ex] 
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:tcriticals} Rejection Regions for the $T$-test, for $\nu$ degrees of freedom.}
+\end{margintable}
+
+We can summarize the rigorous protocol for hypothesis testing into six systematic steps:
+
+\begin{enumerate}
+    \item \textbf{Formulate Hypotheses:} Define the null ($H_0$) and alternative ($H_1$) hypotheses mathematically.
+    \item \textbf{Set $\alpha$:} Decide on the maximum acceptable Type I error rate (level of significance).
+    \item \textbf{Identify the Distribution:} Select the appropriate test statistic ($Z$, $T$, $\chi^2$) and define the critical region.
+    \item \textbf{Analyze Data:} Compute the specific test statistic and/or $p$-value from the sample data.
+    \item \textbf{Statistical Decision:} Reject $H_0$ if the test statistic falls in the critical region (or if $p \leq \alpha$). Otherwise, fail to reject $H_0$.
+    \item \textbf{Practical Interpretation:} Translate the statistical conclusion back into the context of the original real-world problem.
+\end{enumerate}
+
+\subsection{Hypothesis Testing for a Single Population Mean and Proportion}
+
+In many scenarios, we wish to test the null hypothesis that the mean of a population is equal to some specified target value, $\mu_0$. Leveraging our knowledge of the sampling distribution of the point estimator $\bar{X}$, we can standardize our sample mean into either a $Z$ or $T$ test statistic, as outlined in Table \ref{tab:meantests1}.
+
+\begin{table}[h]
+\centering
+\bgroup
+\def\arraystretch{2.0}
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Test Statistic} \\ \hline
+1: $\sigma$ is known & $Z = \frac{\bar{X} - \mu_0}{\sigma / \sqrt{n}}$ \\
+2: $\sigma$ is unknown and $n \leq 30$ & $T = \frac{\bar{X} - \mu_0}{s / \sqrt{n}}$ \\
+3: $\sigma$ is unknown and $n > 30$ & $Z = \frac{\bar{X} - \mu_0}{s / \sqrt{n}}$ \\ \hline \hline
+\end{tabular}
+\egroup
+\caption{\label{tab:meantests1} Test Statistics for a Single Population Mean}
+\end{table}
+
+These formulas are exact level-$\alpha$ tests when sampling from a normal distribution. Case 3 provides a robust, approximate level-$\alpha$ test via the Central Limit Theorem when the distribution is not strictly normal, provided the sample size is sufficiently large (typically $n \geq 30$).
+
+\textbf{Example 1: Single Population Mean} \\
+Suppose a software provider claims that the average token generation latency of their baseline Large Language Model is $50$ milliseconds. An engineering team believes that a newly implemented caching mechanism has reduced this latency (meaning the average is now less than $50$ ms). They sample $n=50$ generation requests and observe an average latency of $\bar{X} = 48.5$ ms. Historical benchmarking establishes the population standard deviation as strictly $\sigma = 4$ ms. Does this provide enough evidence at a $5\%$ significance level to support the engineers' claim?
+
+Because the population standard deviation ($\sigma$) is known, we use the $Z$-test (Case 1). Even if it were unknown, we would still approximate with $Z$ (Case 3) because $n=50 > 30$.
+
+This is a one-tailed (left-tailed) test because the alternative hypothesis asserts the latency is strictly lower ($H_1: \mu < 50$). For $\alpha=0.05$, the critical $Z$-value corresponding to the 5th percentile is approximately $-1.645$. Our rejection region is $Z < -1.645$.
+
+Calculating the test statistic:
+$$ Z = \frac{48.5 - 50}{4 / \sqrt{50}} = \frac{-1.5}{0.565} \approx -2.65 $$
+
+Since $-2.65 < -1.645$, the test statistic falls deep within the rejection region. We reject the null hypothesis. At the $5\%$ level of significance, there is sufficient evidence to conclude that the caching mechanism successfully reduced the average generation latency below $50$ ms.
+
+\vspace{1em}
+\textbf{Testing a Single Proportion} \\
+We frequently need to evaluate statements regarding a population proportion $p$ (e.g., success rates, error rates). Recalling that a proportion behaves identically to the mean of a Bernoulli-distributed population, we rely on the $Z$-test for large samples. To test the null hypothesis $H_0: p = p_0$, the standardized test statistic is:
+
+$$ Z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1 - p_0)}{n}}} $$
+
+where $\hat{p} = \frac{Y}{n}$ is the sample proportion, and $Y$ is the number of observed "successes." Note that the standard error in the denominator uses the hypothesized proportion $p_0$, not the sample proportion, because hypothesis testing assumes $H_0$ is completely true.
+
+\textbf{Example 2: Single Population Proportion} \\
+An established text-classification model achieves a baseline accuracy of $70\%$ ($p_0 = 0.70$). A researcher introduces a new regularization technique, claiming it significantly improves accuracy. Testing the modified model on a holdout set of $n=150$ records, it correctly classifies $Y=115$ records. At $\alpha=0.05$, is the researcher's claim valid?
+
+The hypotheses are $H_0: p = 0.70$ against a right-tailed alternative $H_1: p > 0.70$. The sample proportion is $\hat{p} = 115/150 \approx 0.767$. 
+
+The critical $Z$-value for a right-tailed test at $\alpha=0.05$ is $1.645$. 
+$$ Z = \frac{0.767 - 0.70}{\sqrt{\frac{0.70(0.30)}{150}}} = \frac{0.067}{0.0374} \approx 1.79 $$
+
+Because $1.79 > 1.645$, we reject the null hypothesis. There is statistically significant evidence to conclude that the new regularization technique improved the model's accuracy above the $70\%$ baseline.
+
+\subsection{Hypothesis Testing for Two Populations}
+
+While single-population tests evaluate a parameter against a fixed standard, many engineering and scientific applications require comparing two distinct populations. For instance, rather than asking "Is Algorithm A's processing time $50$ ms?", we ask, "Is Algorithm A significantly faster than Algorithm B?"
+
+To formalize this, suppose we have two populations, $X$ and $Y$, with respective means $\mu_X$ and $\mu_Y$. If the two populations perform identically, then $\mu_X = \mu_Y$, meaning their difference is zero. Thus, our standard null hypothesis is $H_0: \mu_X - \mu_Y = 0$. (More generally, we can test if the difference equals a specific non-zero difference $d_0$).
+
+Table \ref{tab:meantests2} summarizes the test statistics used for comparing two independent means.
+
+\begin{table}[h]
+\centering
+\bgroup
+\def\arraystretch{2.0}
+\begin{tabular}{ll}
+\hline
+\textbf{Case} & \textbf{Test Statistic} \\ \hline
+1: $\sigma^2_X$, $\sigma^2_Y$ known & $Z = \frac{(\bar{X} - \bar{Y}) - d_0}{\sqrt{\frac{\sigma^2_X}{n_1} + \frac{\sigma^2_Y}{n_2}}}$ \\
+2: $\sigma^2_X$, $\sigma^2_Y$ unknown and $\sigma^2_X = \sigma^2_Y$ & $T = \frac{(\bar{X} - \bar{Y}) - d_0}{\sqrt{S^2_p \left(\frac{1}{n_1} + \frac{1}{n_2}\right)}}$ \\
+\emph{(Pooled Variance)} & $S^2_p = \frac{(n_1 - 1)S^2_X + (n_2 - 1)S^2_Y}{n_1 + n_2 - 2}$ \\
+& $\nu = n_1 + n_2 - 2$ \\
+3: $\sigma^2_X$, $\sigma^2_Y$ unknown and $\sigma^2_X \neq \sigma^2_Y$ & $T = \frac{(\bar{X} - \bar{Y}) - d_0}{\sqrt{\frac{s^2_X}{n_1} + \frac{s^2_Y}{n_2}}}$ \\
+\emph{(Welch's Test)} & $\nu = \frac{(s^2_X / n_1 + s^2_Y / n_2)^2}{\frac{(s^2_X/n_1)^2}{n_1 - 1} + \frac{(s^2_Y/n_2)^2}{n_2 - 1}}$ \\ 
+4: $\sigma^2_X$, $\sigma^2_Y$ unknown, $n_1 > 30$, $n_2 > 30$ & $Z = \frac{(\bar{X} - \bar{Y}) - d_0}{\sqrt{\frac{s^2_X}{n_1} + \frac{s^2_Y}{n_2}}}$ \\ \hline \hline
+\end{tabular}
+\egroup
+\caption{\label{tab:meantests2} Test Statistics for the Means of Two Independent Populations}
+\end{table}
+
+\textbf{Example 3: Two Population Means (Unequal Variances)} \\
+A data scientist evaluates the convergence speeds (in epochs) of two distinct neural network architectures, Method A and Method B. They independently train $30$ instances of Method A and $25$ instances of Method B using random initializations. The results are:
+\begin{itemize}
+    \item \textbf{Method A:} $\bar{X} = 85$ epochs, $s_X = 10$, $n_1 = 30$
+    \item \textbf{Method B:} $\bar{Y} = 80$ epochs, $s_Y = 15$, $n_2 = 25$
+\end{itemize}
+Is there a significant difference in the average convergence speeds at a $5\%$ level of significance? Assume the population variances are unequal.
+
+We are comparing independent means where variances are explicitly assumed to be unequal, necessitating Case 3 (Welch's $T$-test). The hypotheses are $H_0: \mu_X - \mu_Y = 0$ against $H_1: \mu_X - \mu_Y \neq 0$ (a two-tailed test, $d_0 = 0$).
+
+First, we calculate the adjusted degrees of freedom ($\nu$):
+$$ \nu = \frac{(100/30 + 225/25)^2}{\frac{(100/30)^2}{29} + \frac{(225/25)^2}{24}} = \frac{(3.333 + 9)^2}{\frac{11.11}{29} + \frac{81}{24}} = \frac{152.11}{0.383 + 3.375} \approx 40.47 $$
+Rounding down to $\nu = 40$, the critical $T$-values for a two-tailed test at $\alpha=0.05$ are $\pm 2.021$. 
+
+Calculating the test statistic:
+$$ T = \frac{(85 - 80) - 0}{\sqrt{\frac{100}{30} + \frac{225}{25}}} = \frac{5}{\sqrt{3.333 + 9}} = \frac{5}{3.511} \approx 1.42 $$
+
+Since $1.42$ lies between $-2.021$ and $2.021$, it does not fall into the rejection region. We fail to reject $H_0$. Despite the $5$-epoch difference in the sample means, the high variance in Method B means there is insufficient evidence to confidently conclude that one architecture converges faster than the other.
+
+\vspace{1em}
+\textbf{Hypothesis Testing for Two Proportions} \\
+When comparing the proportions of two populations (e.g., comparing the error rates of two classifiers), our null hypothesis is typically $H_0: p_1 = p_2$, which is equivalent to $p_1 - p_2 = 0$. 
+
+If $H_0$ is true, both samples are theoretically drawn from a single population with an unknown common proportion $p$. Therefore, rather than estimating standard errors separately, we calculate a \emph{pooled sample proportion}, $\hat{p}_p$, combining the successes ($X$ and $Y$) from both samples:
+$$ \hat{p}_p = \frac{X + Y}{n_1 + n_2} $$
+
+The test statistic for the difference between two proportions (provided $n_1, n_2$ are sufficiently large) is then computed as:
+$$ Z = \frac{(\hat{p}_1 - \hat{p}_2) - 0}{\sqrt{\hat{p}_p (1 - \hat{p}_p) \left( \frac{1}{n_1} + \frac{1}{n_2} \right)}} $$
+
+\textbf{Example 4: Two Population Proportions (Pooled Test)} \\
+An engineering team is evaluating two different Natural Language Processing (NLP) models for a text-summarization pipeline. They want to determine if the newly proposed model (Model 2) has a strictly lower error rate (e.g., fewer hallucinated summaries) than their current baseline model (Model 1). 
+
+They run a benchmark test on independent sets of prompts. 
+\begin{itemize}
+    \item \textbf{Model 1 (Baseline):} Out of $n_1 = 500$ prompts, $X = 45$ result in errors. ($\hat{p}_1 = \frac{45}{500} = 0.09$)
+    \item \textbf{Model 2 (New):} Out of $n_2 = 600$ prompts, $Y = 36$ result in errors. ($\hat{p}_2 = \frac{36}{600} = 0.06$)
+\end{itemize}
+At a $5\%$ level of significance, is there sufficient evidence to conclude that Model 2 has a lower error rate than Model 1?
+
+We are comparing two independent proportions. Our null hypothesis assumes there is no difference between the models' error rates, while the alternative hypothesis reflects the team's hope that the baseline error rate is strictly greater than the new model's error rate.
+\begin{itemize}
+    \item $H_0: p_1 - p_2 = 0$
+    \item $H_1: p_1 - p_2 > 0$ (Right-tailed test)
+\end{itemize}
+
+Because this is a right-tailed test at $\alpha=0.05$, the critical $Z$-value is $1.645$. Our rejection region is $Z > 1.645$.
+
+First, we calculate the pooled sample proportion, $\hat{p}_p$, which represents the best estimate of the common error rate if $H_0$ were true:
+$$ \hat{p}_p = \frac{X + Y}{n_1 + n_2} = \frac{45 + 36}{500 + 600} = \frac{81}{1100} \approx 0.0736 $$
+
+Next, we calculate the standard error of the difference using this pooled proportion:
+$$ SE = \sqrt{\hat{p}_p (1 - \hat{p}_p) \left( \frac{1}{n_1} + \frac{1}{n_2} \right)} $$
+$$ SE = \sqrt{0.0736 (1 - 0.0736) \left( \frac{1}{500} + \frac{1}{600} \right)} $$
+$$ SE = \sqrt{0.0736 (0.9264) \left( 0.002 + 0.00167 \right)} $$
+$$ SE = \sqrt{0.0682 (0.00367)} = \sqrt{0.00025} \approx 0.0158 $$
+
+Finally, we compute the $Z$-statistic:
+$$ Z = \frac{(\hat{p}_1 - \hat{p}_2) - 0}{SE} = \frac{0.09 - 0.06}{0.0158} = \frac{0.03}{0.0158} \approx 1.898 $$
+
+\textbf{Conclusion:} 
+Since our computed test statistic $Z = 1.898$ is greater than the critical value of $1.645$, it falls within the rejection region. We reject the null hypothesis. At the $5\%$ level of significance, there is sufficient statistical evidence to conclude that the new NLP model produces a significantly lower error rate than the baseline model.
+
+\subsection{Tests for Independence}
+
+In previous sections, we tested hypotheses concerning the parameters of specific distributions. However, we are often interested in analyzing the relationship between two categorical (qualitative) random variables. The Pearson chi-square ($\chi^2$) test for independence is used to determine whether these two variables are statistically independent or if an underlying association exists between them.
+
+Recall the formal definition of independence in probability: two events $A$ and $B$ are independent if their joint probability equals the product of their marginal probabilities, $P(A \cap B) = P(A)P(B)$. The chi-square test applies this exact theoretical foundation to sample data. 
+
+When observing two categorical variables, we tally the frequencies into an $r \times c$ \emph{contingency table}, where $r$ is the number of categories for the first variable (rows) and $c$ is the number of categories for the second (columns). 
+
+For our test, the hypotheses are universally defined as:
+\begin{itemize}
+    \item $H_0$: The two variables are independent (any observed deviations are due to random chance).
+    \item $H_1$: The two variables are not independent (there is an association between them).
+\end{itemize}
+
+\subsubsection{Deriving the Expected Frequencies}
+
+If the null hypothesis of independence is true, the probability that a randomly selected observation falls into row $i$ and column $j$ is the product of their marginal probabilities:
+$$ P(\text{Row } i \text{ and Column } j) = P(\text{Row } i) \times P(\text{Column } j) $$
+
+We estimate these marginal probabilities from our sample data using the row and column totals:
+$$ P(\text{Row } i) = \frac{\text{Row } i \text{ Total}}{N} \quad \text{and} \quad P(\text{Column } j) = \frac{\text{Column } j \text{ Total}}{N} $$
+where $N$ is the grand total of all observations. 
+
+To find the \emph{expected frequency} ($E_{ij}$) for any cell under the assumption of independence, we simply multiply this joint probability by the total sample size $N$:
+$$ E_{ij} = N \times \left( \frac{\text{Row } i \text{ Total}}{N} \right) \times \left( \frac{\text{Column } j \text{ Total}}{N} \right) = \frac{(\text{Row } i \text{ Total}) \times (\text{Column } j \text{ Total})}{N} $$
+
+\subsubsection{The Chi-Square Test Statistic}
+
+Once we have our observed counts ($O_{ij}$) and our theoretically expected counts ($E_{ij}$), we measure the total discrepancy using the chi-square test statistic:
+
+$$ X^2 = \sum_{i=1}^{r} \sum_{j=1}^{c} \frac{(O_{ij} - E_{ij})^2}{E_{ij}} $$
+
+This statistic strictly follows a $\chi^2$ distribution with degrees of freedom $\nu = (r-1)(c-1)$. Our decision rule is to reject $H_0$ if our computed $X^2 > \chi^2_{\alpha, \nu}$.
+
+\textbf{Validity Assumption:} Because the $\chi^2$ distribution is a continuous approximation of discrete counts, the test is only valid if the sample size is sufficiently large. A standard rule of thumb is that at least 80\% of the expected frequencies ($E_{ij}$) must be $\geq 5$, and no expected frequency can be less than $1$. If these conditions are violated, researchers must either collect more data or carefully pool adjacent categories to increase cell counts.
+
+\vspace{1em}
+\textbf{Example 1: An $r \times c$ Contingency Table} \\
+An AI engineering team wants to determine if the types of generation errors produced by three different Large Language Models (LLMs) are independent of the model architecture. They sample $200$ generation errors and classify them by Model (A, B, C) and Error Type (Syntax, Logic, Hallucination). 
+
+The observed counts ($O_{ij}$) are tallied below:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|ccc|c}
+\hline
+\multirow{2}{*}{\textbf{Model Architecture}} & \multicolumn{3}{c|}{\textbf{Error Type}} & \multirow{2}{*}{\textbf{Total}} \\
+ & \textbf{Syntax} & \textbf{Logic} & \textbf{Hallucination} & \\ \hline
+\textbf{Model A} & 15 & 30 & 25 & 70 \\
+\textbf{Model B} & 20 & 40 & 20 & 80 \\
+\textbf{Model C} & 10 & 15 & 25 & 50 \\ \hline
+\textbf{Total} & 45 & 85 & 70 & 200 \\ \hline \hline
+\end{tabular}
+\end{table}
+
+Let us test for independence at $\alpha = 0.05$. First, we calculate the expected counts ($E_{ij}$) for each cell. For example, for Model A / Syntax:
+$$ E_{11} = \frac{70 \times 45}{200} = 15.75 $$
+
+Calculating this for all nine cells allows us to evaluate the $X^2$ components:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccccc}
+\hline
+\textbf{Cell} & $O_{ij}$ & $E_{ij}$ & $(O_{ij} - E_{ij})^2$ & $\frac{(O_{ij} - E_{ij})^2}{E_{ij}}$ \\ \hline
+A, Syntax & 15 & 15.75 & 0.5625 & 0.0357 \\
+A, Logic & 30 & 29.75 & 0.0625 & 0.0021 \\
+A, Halluc. & 25 & 24.50 & 0.2500 & 0.0102 \\
+B, Syntax & 20 & 18.00 & 4.0000 & 0.2222 \\
+B, Logic & 40 & 34.00 & 36.0000 & 1.0588 \\
+B, Halluc. & 20 & 28.00 & 64.0000 & 2.2857 \\
+C, Syntax & 10 & 11.25 & 1.5625 & 0.1389 \\
+C, Logic & 15 & 21.25 & 39.0625 & 1.8382 \\
+C, Halluc. & 25 & 17.50 & 56.2500 & 3.2143 \\ \hline
+\textbf{Total} & & & & $\mathbf{8.8061}$ \\ \hline \hline
+\end{tabular}
+\caption{\label{tab:chisq_llm} Chi-Square calculations for the LLM Error Data}
+\end{table}
+
+Our computed test statistic is $X^2 \approx 8.81$. The degrees of freedom for a $3 \times 3$ table is $\nu = (3-1)(3-1) = 4$. Consulting the $\chi^2$ distribution table for $\alpha = 0.05$, the critical value is $\chi^2_{0.05, 4} = 9.488$. 
+
+Because $8.81 < 9.488$, the test statistic does not enter the rejection region. We fail to reject $H_0$. Despite visual variations in the error distributions, there is insufficient evidence to conclude a statistically significant dependence between model architecture and error type.
+
+\subsubsection{Yates' Correction for $2 \times 2$ Tables}
+
+When a contingency table shrinks to $2 \times 2$, it has only $1$ degree of freedom ($\nu = (2-1)(2-1) = 1$). At this strict limit, the continuous chi-square distribution tends to overestimate the test statistic for discrete frequency data, potentially leading to Type I errors (false positives). 
+
+To compensate, we apply \emph{Yates' Correction for Continuity}. This adjustment mathematically reduces the absolute difference between observed and expected frequencies by $0.5$ before squaring:
+
+$$ X^2_{Yates} = \sum_{i=1}^{2} \sum_{j=1}^{2} \frac{(|O_{ij} - E_{ij}| - 0.5)^2}{E_{ij}} $$
+
+This formula is robust provided $N \geq 40$, or if $20 \leq N < 40$ given that all $E_{ij} \geq 5$. If cell counts are extremely small, non-parametric alternatives like Fisher's Exact Test must be used instead.
+
+\vspace{1em}
+\textbf{Example 2: A $2 \times 2$ Table with Yates' Correction} \\
+A database administrator wants to know if a new caching optimization significantly impacts query timeout rates. They log $80$ random queries, split evenly between the Standard and Optimized algorithms.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cc|c}
+\hline
+\multirow{2}{*}{\textbf{Algorithm}} & \multicolumn{2}{c|}{\textbf{Output Status}} & \multirow{2}{*}{\textbf{Total}} \\
+ & \textbf{Success} & \textbf{Timeout} & \\ \hline
+\textbf{Standard} & 25 & 15 & 40 \\
+\textbf{Optimized} & 35 & 5 & 40 \\ \hline
+\textbf{Total} & 60 & 20 & 80 \\ \hline \hline
+\end{tabular}
+\end{table}
+
+The expected values are identical for both rows because the totals are perfectly balanced:
+\begin{itemize}
+    \item $E_{Success} = \frac{40 \times 60}{80} = 30$
+    \item $E_{Timeout} = \frac{40 \times 20}{80} = 10$
+\end{itemize}
+
+Notice that for every cell, the absolute difference $|O_{ij} - E_{ij}|$ is exactly $5$. 
+\begin{itemize}
+    \item Standard/Success: $|25 - 30| = 5$
+    \item Standard/Timeout: $|15 - 10| = 5$
+    \item Optimized/Success: $|35 - 30| = 5$
+    \item Optimized/Timeout: $|5 - 10| = 5$
+\end{itemize}
+
+Applying Yates' Correction, the squared numerator for all four cells is $(5 - 0.5)^2 = 4.5^2 = 20.25$. We construct the test statistic:
+$$ X^2 = \frac{20.25}{30} + \frac{20.25}{10} + \frac{20.25}{30} + \frac{20.25}{10} = 0.675 + 2.025 + 0.675 + 2.025 = 5.40 $$
+
+With $\nu = 1$ and $\alpha = 0.05$, the critical value is $\chi^2_{0.05, 1} = 3.841$. 
+
+Because $5.40 > 3.841$, we safely reject the null hypothesis. There is statistically significant evidence that the caching algorithm used is dependent on (associated with) the timeout rate of the queries.
+
+\subsection{Exercises}
+
+\begin{enumerate}
+    \item Write TRUE if the statement is unconditionally true. Otherwise, write FALSE.
+    \begin{enumerate}
+        \item If $H_0$ is rejected at the $0.05$ level of significance, then $H_0$ will also be rejected at the $0.10$ level of significance using the same test on the same dataset.
+        \item A $95\%$ confidence interval estimate for $\mu$ given to be $(15, 19)$ will reject the null hypothesis $H_0: \mu = 20$ vs $H_1: \mu \neq 20$ at the $0.05$ level of significance.
+        \item In testing for a software defect, the null hypothesis is that the module is bug-free, while the alternative hypothesis is that the module contains defects. If a perfectly working module is flagged as defective, a Type I error is committed.
+        \item The $p$-value gives the probability that the null hypothesis is true given the data observed.
+        \item The null hypothesis is always stated as a hypothesis of strict inequality against the claimed value.
+    \end{enumerate}
+
+    \item A lead engineer at Mind in a Device claims that their primary API gateway handles an average of $60$ requests per second during standard operating hours. System logs show the number of requests per second sampled randomly over a one-month period. Assume the population standard deviation $\sigma$ is known to be $13.42$. Is there enough evidence to reject the engineer's claim at $\alpha = 0.05$?
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{rrrrrrrr}
+    72 & 45 & 36 & 68 & 69 & 71 & 57 & 60 \\
+    83 & 26 & 60 & 72 & 58 & 87 & 48 & 59 \\
+    60 & 56 & 64 & 68 & 42 & 57 & 57 & \\
+    58 & 63 & 49 & 73 & 75 & 42 & 63 & 
+    \end{tabular}
+    \end{table}
+
+    \item The average execution time for a standard database query was historically reported to be $2.27$ milliseconds. After a recent system migration, a random sample of $20$ queries showed an average of $2.98$ milliseconds with a sample standard deviation of $0.98$ milliseconds. At $\alpha = 0.05$, can it be concluded that the average query time differs from the historical population average?
+
+    \item A random number generator software outputs a float from $0$ to $1$. If the numbers are uniformly and truly randomly generated, the population mean must be exactly $0.5$. Suppose you ran a script to generate $150$ numbers and obtained a sample mean of $0.536$ and a standard deviation of $0.312$. At a $1\%$ level of significance, test the hypothesis that the numbers are not truly randomly generated.
+
+    \item A hardware enthusiast is testing the thermal dissipation of a Beelink Mini PC inside a Small Form Factor (SFF) ITX case. The manufacturer claims the CPU maintains an average core temperature of $75^\circ\text{C}$ under load. A sample of independent stress tests yielded the following maximum temperatures. Test the hypothesis that the population mean temperature of this SFF setup strictly exceeds the manufacturer's claim of $75^\circ\text{C}$. Use $\alpha = 0.05$.
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{rrr}
+    78 & 75 & 80 \\
+    81 & 74 & 76 \\
+    83 & 77 & 79 \\
+    75 & 82 & 78 \\
+    79 & 81 & 77
+    \end{tabular}
+    \end{table}
+
+    \item A wildlife researcher in Nara Park is studying the weights of adult male deer across two different zones to see if proximity to tourist feeding areas impacts their mass. Here is the data (in kg) for $12$ deer in the high-traffic zone and $9$ similar deer in the restricted forest zone. Does the high-traffic zone significantly increase the mean weight of the deer? Assume equal population variances and use $\alpha = 0.05$.
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{ll}
+    High-Traffic & 62 58 62 60 55 61 53 53 59 53 59 55 \\
+    Restricted & 57 44 58 54 58 55 55 50 52
+    \end{tabular}
+    \end{table}
+
+    \item A film blogger categorizes their recent reviews into a contingency table based on the film's origin (Local vs. International) and their final assigned rating sentiment (Positive, Mixed, Negative). Test the hypothesis that the assigned sentiment is independent of the film's origin at $\alpha = 0.05$.
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{l|ccc|c}
+    \hline
+    \multirow{2}{*}{\textbf{Film Origin}} & \multicolumn{3}{c|}{\textbf{Rating Sentiment}} & \multirow{2}{*}{\textbf{Total}} \\
+     & \textbf{Positive} & \textbf{Mixed} & \textbf{Negative} & \\ \hline
+    \textbf{Local} & 22 & 15 & 13 & 50 \\
+    \textbf{International} & 35 & 25 & 20 & 80 \\ \hline
+    \textbf{Total} & 57 & 40 & 33 & 130 \\ \hline \hline
+    \end{tabular}
+    \end{table}
+
+    \item A data scientist is comparing the hallucination rates of two different Natural Language Processing models. Model A generated $45$ hallucinated responses out of a sample of $500$ prompts. Model B generated $28$ hallucinated responses out of a separate sample of $400$ prompts. At the $5\%$ significance level, is there sufficient evidence to conclude that Model A has a significantly higher hallucination rate than Model B?
+
+    \item An engineering team wants to know if applying a specific Bayesian optimization algorithm is associated with a model successfully converging during cross-validation. They run a small batch of $30$ trials. Test for independence at $\alpha = 0.05$.
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{l|cc|c}
+    \hline
+    \multirow{2}{*}{\textbf{Algorithm}} & \multicolumn{2}{c|}{\textbf{Convergence}} & \multirow{2}{*}{\textbf{Total}} \\
+     & \textbf{Success} & \textbf{Failure} & \\ \hline
+    \textbf{Standard} & 8 & 7 & 15 \\
+    \textbf{Bayesian} & 12 & 3 & 15 \\ \hline
+    \textbf{Total} & 20 & 10 & 30 \\ \hline \hline
+    \end{tabular}
+    \end{table}
+
+    \item A developer wants to know if rewriting a data-processing module in Rust significantly reduces the runtime compared to the original Python code. They run $6$ specific, highly complex datasets through both modules and record the runtimes (in seconds):
+    
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{lcccccc}
+    \hline
+    \textbf{Dataset} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\ \hline
+    \textbf{Python Runtime ($X$)} & 14.2 & 28.5 & 19.3 & 45.1 & 11.2 & 33.4 \\
+    \textbf{Rust Runtime ($Y$)}   & 12.0 & 26.1 & 17.5 & 42.0 & 9.5 & 31.0 \\ \hline
+    \end{tabular}
+    \end{table}
+    
+    \begin{enumerate}
+        \item Identify the correct hypothesis test for this scenario. Formulate $H_0$ and $H_1$ to test if the Rust module is strictly faster, and compute the test statistic. State your conclusion at $\alpha = 0.05$.
+        \item Suppose a junior engineer mistakenly analyzed this exact same data using an Independent Two-Sample T-test (assuming equal variances). Calculate the test statistic they would have obtained. 
+        \item Compare the results from (a) and (b). Explain mathematically why the test statistic changes so drastically, and why failing to recognize dependent samples can lead to a Type II Error.
+    \end{enumerate}
+
+\end{enumerate}
+
+\end{document}

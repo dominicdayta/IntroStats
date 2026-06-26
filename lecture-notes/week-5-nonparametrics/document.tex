@@ -1,0 +1,220 @@
+\documentclass{article}
+
+\usepackage{kafkanotes}
+\usepackage{amsmath}
+\usepackage{multirow}
+
+%Judul dan Penulis
+\title{V. Nonparametric Statistics}
+\author{Dayta, Dominic}
+
+\begin{document}
+
+%Halaman Judul
+\begin{titlepage}
+\thispagestyle{empty}
+\maketitle
+
+%Abstrak
+\begin{abstract}
+Most of the methods discussed so far make a very specific parametric assumption on the sampling distribution of the statistic ($\bar{X}$). In many instances, such assumptions may not hold, rendering the use of these methods suspect. In such cases, it may be useful to remove this assumption of normality entirely. Nonparametric statistics constitute a wide field, much of it you will encounter in greater theoretical and practical detail in later courses. The following short module provides a brief introduction to the field with a sampling of simpler methods that demonstrate its capacity for handling non-Normal data.
+
+\textit{Please note that the following lecture notes have been prepared specifically for our Stat 195 class. Please do not disseminate.}
+\end{abstract}
+
+\tableofcontents
+\end{titlepage}
+
+%Geometri untuk halaman konten
+\newgeometry{top=20mm,bottom=25mm,right=80mm,left=20mm}
+
+%================KONTEN DIMULAI DISINI================%
+
+\section{Methods for a Single Population}
+
+\subsection{Parametric vs Nonparametric Methods}
+
+Parametric and nonparametric methods are two broad categories of statistical techniques, differentiated primarily by the assumptions they make about the underlying data distribution.
+
+Parametric methods assume that the data follows a specific distribution, typically a normal distribution. These methods often involve parameters such as the population mean and variance/standard deviation that define the distribution. Because of these assumptions, parametric methods can be more powerful and provide more precise estimates when the assumptions hold true. However, if the data significantly deviates from the assumed distribution, parametric methods can lead to misleading conclusions.
+
+In contrast, nonparametric methods do not assume a specific distribution for the data. They are more flexible and can be used in a wider range of situations, particularly when the data does not meet the assumptions required for parametric methods. Nonparametric methods rely on fewer assumptions and can be applied to data with unknown or irregular distributions. This makes them particularly useful when dealing with small sample sizes or ordinal data.
+
+In summary, some cases where nonparametric methods become more preferable over the standard parametric counterparts are the following:
+
+\begin{enumerate}
+    \item The sample size is not large enough to make applicability of the CLT questionable
+    \item The data are not ratio or interval-level measures (the Normal distribution is strictly continuous)
+    \item The sampling distribution is likely to be asymmetric, or with large outliers
+\end{enumerate}
+
+The single sample t-test is a common parametric method used to determine whether the mean of a single sample differs significantly from a known or hypothesized population mean. The primary parametric assumption for the t-test is that the sample mean reasonably follows a normal distribution. Additionally, the t-test assumes that the sample is drawn from a population with a finite but unknown variance, and that the sample variance can be used as a reasonable estimate. If these assumptions are violated, particularly the normality assumption, the validity of the t-test results can be compromised.
+
+On the other hand, the Fisher sign test, discussed in this module, is a nonparametric alternative to the t-test. It does not assume any specific distribution for the data. The Fisher sign test is used to test the median of a single sample against a hypothesized median. Instead of relying on the mean and variance, it uses the signs of the differences between the sample data points and the hypothesized median. This makes the sign test robust to outliers and applicable to data that is not normally distributed. As a result, the Fisher sign test is particularly useful when dealing with ordinal data or when the normality assumption is questionable.
+
+It should also be noted that in nonparametric methods, the mean in the null hypothesis is often replaced by the median. This is because the removal of the parametric assumptions can mean that the data can be asymmetric, with large outliers, or are ordinal in level. If the data are asymmetric or contain large outliers, the mean is no longer a representative measure for the entire population. Similarly, if the data are ordinal-level, the mean cannot be computed. For this reason, the median serves as a useful general alternative when dealing with non-normal sampling distributions.
+
+\subsection{Fisher Sign Test}
+
+The Fisher Sign Test is a nonparametric statistical test used to determine whether the median of a single sample differs significantly from a hypothesized value. This test is particularly useful when the data does not meet the assumptions required for parametric tests, such as normality. However, while the Fisher Sign test does not assume a specific distribution for the data or the sample median, it does have its own assumption that make the method possible: the sample data must be independent observations (i.e., measurements obtained from each member of the sample are not related to those of the other members).
+
+The null hypothesis ($H_0$) for the Fisher Sign Test posits that the median of the population from which the sample is drawn is equal to a specified value ($M_0$). The alternative hypothesis ($H_1$) suggests that the median is different from this specified value. Formally, these hypotheses can be stated as:
+
+\begin{itemize}
+    \item $H_0$: $M = M_0$
+    \item $H_1$: $M > M_0$, $M < M_0$, or $M \neq M_0$
+\end{itemize}
+
+To conduct the Fisher Sign Test, each observation in the sample is compared to the hypothesized median $M_0$. If an observation is greater than $M_0$, it is assigned a positive sign (+); if it is less than $M_0$, it is assigned a negative sign (-). Observations exactly equal to $M_0$ are usually discarded from the analysis or marked as zero ($0$), as they do not contribute to the determination of the median's deviation.
+
+The test statistic for the Fisher Sign Test is the number of positive signs, denoted as $S^{+}$. Under the null hypothesis, the number of positive and negative signs should be approximately equal if the sample size is large. For a large sample size (typicaly when $n \geq 10$), the distribution of $S^{+}$ can be approximated by a normal distribution with mean $\mu = n/2$ and standard deviation $\sigma = \sqrt{n}/2$, where $n$ is the number of non-zero differences. The test statistic $Z$ is then calculated as:
+\begin{align*}
+    Z = \frac{2S^{+}-n}{\sqrt{n}}
+\end{align*}
+
+To determine whether to reject the null hypothesis, the calculated $Z$ value is compared to the critical value from the standard normal distribution as in the $Z$ test. 
+
+\subsection{Wilcoxon Signed Rank Test}
+
+The Wilcoxon Signed Rank Test is another nonparametric  test used to compare the median of a single sample to a hypothesized value, or to compare the medians of two related samples. The primary assumptions of the Wilcoxon Signed Rank Test include the following: the data must consist of paired observations or a single sample of continuous or ordinal measurements, and the differences between pairs (or the differences from the hypothesized median) must be symmetric around the median. Importantly, the test does not assume that the data follow a specific distribution.
+
+To perform the Wilcoxon Signed Rank Test, the following steps are taken:
+
+\begin{itemize}
+\item Calculate the differences between each observation and the hypothesized median.
+\item Exclude any differences that are zero.
+\item Rank the absolute values of the remaining differences, assigning ranks from the smallest to the largest.
+\item Assign the original sign of the differences to the corresponding ranks.
+\item Sum the ranks of the positive differences ($T^{+}$) and the ranks of the negative differences ($T^{-}$).
+\item The test statistic $T$ is the smaller of the two sums, $T = \min\{T^{+}, T^{-}\}$
+\end{itemize}
+
+For large sample sizes, the distribution of the test statistic can be approximated by a normal distribution with mean $\mu = n(n+1)/4$ and standard deviation $\sigma = n(n+1)(2n+1)/24$, where $n$ is the number of non-zero differences. The test  statistic $Z$ is then calculated as:
+
+\begin{align*}
+    Z = \frac{T - \mu}{\sigma}
+\end{align*}
+
+The rest of the $Z$ test procedure follows.
+
+The Wilcoxon Signed Rank Test is generally more powerful than the Fisher Sign Test because it takes into account both the sign and the magnitude of the differences, while the Fisher Sign Test considers only the sign. This allows the Wilcoxon test to detect smaller effects and provides more information about the data.
+
+However, the Wilcoxon Signed Rank Test has more stringent assumptions, requiring the differences to be symmetrically distributed around the median. The Fisher Sign Test, on the other hand, requires fewer assumptions, making it more robust in situations with non-symmetric distributions. Additionally, the Fisher Sign Test is simpler to perform and interpret, making it suitable for smaller sample sizes or when computational resources are limited.
+
+\section{Methods for Two Populations}
+
+Both Fisher's sign test and the Wilcoxon Signed Rank test apply to single populations. In the following section, we discuss methods that can be applied to two populations, either paired or independent. First we discuss extending the methods to the paired population case. Afterwards, we discuss additional methods for performing tests between two independent populations.
+
+\subsection{Testing for Paired Means}
+
+For testing between paired populations, both the Fisher Sign Test and the Wilcoxon Signed Rank Test can be adapted to test the difference between their corresponding medians. This is achieved by analyzing the differences between paired observations, transforming the paired sample problem into a single sample problem.
+
+Specifically, we begin by first transforming the paired data for group $X$ and $Y$ into the difference $D = X - Y$. In this case, we consider only the single sample $D$ and test for the null hypothesis that the true median difference $M_D$ is equal to some specified value $M_0$ (typically $M_0 = 0$). This is against the alternative hypothesis that the true value is not equal to $M_0$. In notation,
+
+\begin{itemize}
+    \item $H_0$: $M_D = M_0$
+    \item $H_1$: $M_D > M_0$, $M_D < M_0$, or $M_D \neq M_0$
+\end{itemize}
+
+The rest of the process for both the Fisher Sign Test and Wilcoxon Signed Rank tests follow after transformation.
+
+\subsection{Wilcoxon Rank Sum Test}
+
+The Wilcoxon Rank Sum Test, also known as the Mann-Whitney U Test, is a nonparametric test used to determine whether there is a significant difference between the distributions of two independent populations. The Wilcoxon Rank Sum Test operates under the null hypothesis ($H_0$) that the two samples come from populations with the same distribution, specifically that the median value of the $X$ sample is the same as that of the $Y$ group: $M_X = M_Y$, or $M_X - M_Y = 0$. The alternative hypothesis ($H_1$) suggests that the distributions of the two populations differ.
+
+Performing the Wilcoxon Rank Sum Test begins by combining the data from both independent samples into a single dataset. Rank all the observations in ascending order, assigning ranks from 1 to $n$, where $n$ is the total number of observations ($n = n_1 + n_2$). In cases of tied ranks, assign the average rank to each tied value. Calculate the sum of the ranks for each sample separately. Denote the rank sum of the first sample as $R_1$ and the rank sum of the second sample as $R_2$.
+
+The test statistic $U$ is derived from the rank sums. Calculate $U$ for both samples using the formulas:
+\begin{align}
+U_1 & = R_1 - \frac{n_1 (n_1 + 1)}{2} \\
+U_2 & = R_2 - \frac{n_2 (n_2 + 1)}{2}
+\end{align}
+where $n_1$ and $n_2$ are the sample sizes of the first and second samples, respectively. The test statistic $U = \min\{U_1, U_2\}$ is the smaller of the two $U$ statistics.
+
+For large sample sizes (typically when both $n_1$ and $n_2$ are greater than 10), the distribution of $U$ can be approximated by a normal distribution. The mean ($\mu_U$) and standard deviation ($\sigma_U$) of $U$ under the null hypothesis are given by:
+\begin{align}
+\mu_U = \frac{n_1 n_2}{2} && \sigma_U = \sqrt{\frac{n_1 n_2 (n_1 + n_2 + 1)}{12}}
+\end{align}
+with the corresponding $Z$ score given by
+\begin{align}
+Z = \frac{U - \mu_U}{\sigma_U}
+\end{align}
+The rest of the Z-test procedure follows.
+
+\section{Exercises}
+
+\begin{enumerate}
+    \item Ten homing pigeons were taken to a point 25 kilometers west of their loft and released singly to see whether they dispersed at random in all directions (the null hypothesis) or whether they tended to proceed eastward toward their loft. Field glasses were used to observe the birds until they disappeared from view, at which time the angle of the vanishing point was noted. These angles are: 20, 35, 350, 120, 85, 345, 80, 320, 280, and 85 degrees. Let ``+'' denote directions more eastward than westward (angles from 0 to 90 degrees or from 270 to 360 degrees) and let ``-'' denote directions away from the loft (between 90 to 270 degrees). Test the hypothesis that the pigeons are more inclined to go more eastward than westward. Use $\alpha$ = 0.05.
+    
+    \item A researcher found that the mean weight of a sample of a particular species of adult female monkey from a certain locality was 8.41 kg. Suppose that a sample of adult females of the same species from another locality yielded the weights shown below:
+    \begin{table}[H]
+    \begin{tabular}{rrrrrrrrrr}
+    8.3 & 9.5 & 9.6 & 8.75 & 8.4 & 9.1 & 9.25 & 9.8 & 10.05 & 8.15 \\
+    10 & 9.6 & 9.8 & 9.2 & 9.3 & 8.4 & 8.31 & 8.12 & 7.68 & 8.02
+    \end{tabular}
+    \end{table}
+    \begin{enumerate}
+        \item Can we conclude that the median weight of the population from which the sample was drawn is greater than 8.41 kg?
+        \item Compare the conclusion obtained from the nonparametric method of your choice against a t-test.
+    \end{enumerate}
+    
+    \item Armstrong studied the daily exposure in minutes of 20 North Hawaiian families to the risk of a motor vehicle accident. Suppose that a similar survey in another area yielded the exposure times below. Is there sufficient evidence to conclude that the median daily exposure in minutes of North Hawaiian families is not equal to 30 minutes at 0.03 level?
+    \begin{table}[H]
+    \begin{tabular}{rrrrrrrrrr}
+    18.3 & 45.2 & 19.1 & 57 & 63.9 & 10.3 & 12.1 & 35.3 & 36.3 & 74.6 \\
+    10.5 & 27.8 & 44.9 & 40.9 & 63.7 & 40.8 & 59.1 & 31.5 & 40.1 & 8.1
+    \end{tabular}
+    \end{table}
+
+    \item The following data show the change in performance of naive subjects following certain treatments. The first set of data corresponds to changes in intellectual performance following the smoking of an ordinary cigarette, the second to such changes following the smoking of a marijuana cigarette. The observations are matched pairs of subjects. Apply the Wilcoxon Signed Rank Test to test if the difference between the medians is less than -3.
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrrrrr}
+    Ordinary, $x$ & 3 & 10 & -3 & 3 & 4 & -3 & 2 & -1 & -1 \\
+    Marijuana, $y$ & 5 & -17 & -7 & -3 & -7 & -9 & -6 & 1 & -3
+    \end{tabular}
+    \end{table}
+
+    \item A dermatologist wishes to test the effectiveness of a new lotion, $Y$, in preventing sunburn as compared to an existing brand $X$. He uses six subjects. In treating one shoulder of each subject with lotion $Y$ and the other shoulder with lotion $X$, he follows the standard procedure. After identical exposures, the degree of sunburn is measured on a scale and the following matched pairs of measurements $X_i$, $Y_i$ are obtained.
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrr}
+    $X$ & 72 & 109 & 74 & 32 & 92 & 60 \\
+    $Y$ & 34 & 72 & 122 & 14 & 52 & 75
+    \end{tabular}
+    \end{table}
+
+    \item The table below shows the tidal volume of 37 adults suffering from atrial septal defect. In 26 of these, pulmonary hypertension was absent. The data were reported by Ressl et al. Do these data provide sufficient evidence to indicate a higher tidal volume in subjects with pulmonary hypertension?
+    \begin{table}[H]
+    \begin{tabular}{rrrr}
+    Hypertension Absent, $X$ & Ranks, $R_X$ & Hypertension Present $Y$ & Ranks, $R_Y$ \\
+    \hline
+    652 & 27 & 876 & 37 \\
+    556 & 19.5 & 556 & 19.5 \\
+    618 & 26 & 493 & 7 \\
+    500 & 9 & 348 & 1 \\
+    500 & 9 & 530 & 14 \\
+    526 & 13 & 780 & 35 \\
+    511 & 11 & 569 & 21 \\
+    538 & 15 & 546 & 16 \\
+    440 & 5 & 766 & 33 \\
+    547 & 17 & 819 & 36 \\
+    605 & 24.5 & 710 & 30 \\
+    500 & 9 & &  \\
+    437 & 4 & &    \\
+    481 & 6 &   \\
+    572 & 22 &   \\
+    589 & 23 &  \\
+    605 & 24.5 &   \\
+    436 & 3 &  & \\
+    724 & 32 &  & \\
+    515 & 12 &  & \\
+    552 & 18 &  & \\
+    722 & 31 &  & \\
+    778 & 34 &  & \\
+    677 & 28 &  & \\
+    680 & 29 & &  \\
+    428 & 2 &  &
+    \end{tabular}
+    \end{table}
+\end{enumerate}
+
+\end{document}

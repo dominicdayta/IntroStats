@@ -128,6 +128,54 @@ where $d_i = R(X_i) - R(Y_i)$ is the difference between the $X$ and $Y$ ranks fo
 
 With large sample sizes, the sampling distribution for Spearman's coefficient is the same as that for Pearson's $r$. Thus, performing a hypothesis test makes use of the same distribution and test statistic.
 
+\subsection{Exercises}
+
+\begin{enumerate}
+    \item Identify which of the following statements are TRUE or FALSE.
+    \begin{enumerate}
+        \item If there is a negative correlation between anxiety and performance on complex tasks, then either high level of anxiety causes poor performance on complex tasks or poor performance on complex tasks causes high levels of anxiety.
+        \item A correlation of 0.29 indicates a weaker linear relationship than a correlation of -0.40.
+        \item A zero correlation between variables X and Y means that X and Y have no relationship.
+        \item The correlation coefficient formula requires at least 30 samples in order to produce results.
+        \item The OLS simple linear regression formula requires at least 30 samples in order to produce results.
+        \item If there is no relationship between two variables, then the correlation coefficient is 0.
+        \item A correlation of 0.96 for two variables X and Y implies that if X increases, there is a 96\% chance that Y will also increase.
+    \end{enumerate}
+
+    \item The data below indicate the state gas tax in cents per gallon and the fuel use per registered vehicle (in gallons). Is there a significant relationship between these two variables?
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrr}
+    Tax&21.5&23&18&24.5&26.4&19\\
+    Usage&1062&631&920&686&736&684\\
+    \end{tabular}
+    \end{table}
+
+    \item A random sample of states yielded the following numbers of local school districts and the corresponding numbers of secondary schools. Is there a significant relationship between the data?
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrr}
+    School districts & 53 & 19 & 24 & 17 & 95 & 68 \\
+    Secondary schools & 50 & 27 & 187 & 84 & 143 & 216 \\
+    \end{tabular}
+    \end{table}
+
+    \item The number of faculty and the number of students are shown for a random selection of small colleges. Is there a significant relationship between the two variables? Switch $x$ and $y$ and repeat the process. Which do you think is really the independent variable?
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrrr}
+    Faculty & 99 & 110 & 113 & 116 & 138 & 174 & 220 \\
+    Students & 1353 & 1290 & 1091 & 1213 & 1384 & 1283 & 2075
+    \end{tabular}
+    \end{table}
+
+    \item A hospital administrator wants to see if there is a relationship between the number of licensed beds and the number of staffed beds in local hospitals. The data for a specific day are shown. Describe the relationship.
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrrr}
+    Licensed beds, $x$ & 144 & 32 & 175 & 185 & 208 & 100 & 169 \\
+    Staffed beds, $y$ & 112 & 32 & 162 & 141 & 103 & 80 & 118
+    \end{tabular}
+    \end{table}
+
+\end{enumerate}
+
 \section{Regression Analysis}
 
 Correlation analysis is quite useful in measuring the strength and direction of the relationship between two variables. For simpler analysis, this much information is already quite helpful. In practice, however, we tend to want to do more than simply knowing whether two variables are related. More specifically, we wish to know exactly how one variable will react when another variable changes.
@@ -286,5 +334,45 @@ Multicollinearity arises when predictor variables in a regression model are high
 \subsubsection{Error Normality}
 
 The assumption of normality of residuals posits that the residuals—differences between observed and predicted values—should follow a normal distribution. Departures from normality can undermine the reliability of hypothesis tests and confidence intervals associated with the regression coefficients. Normality can be assessed through graphical methods like normal probability plots or quantile-quantile (Q-Q) plots. Additionally, statistical tests such as the Shapiro-Wilk test or the Anderson-Darling test can provide quantitative measures of departure from normality. When substantial deviations are detected, transformations of variables or using robust regression techniques might be considered.
+
+\subsection{Exercises}
+
+\begin{enumerate}
+    \item Identify which of the following statements are TRUE or FALSE.
+    \begin{enumerate}
+        \item If the sample correlation coefficient between $X$ and $Y$ is positive, then the slope of the estimated regression line of $Y$ on $X$ will also be positive.
+        \item If a regression analysis is to be performed between the running time (in minutes) and heart rate (in bpm) of young adults, then the independent variable is the running time. 
+        \item The coefficient of determination ($R^2$) in multiple linear regression indicates the proportion of the variance in the dependent variable that is predictable from the independent variables.
+        \item The coefficient of determination ($R^2$) in the multiple linear regression case is generally equal to the square of the corresponding correlation coefficient.
+        \item In simple linear regression, adding more independent variables will always increase the adjusted $R^2$ value.
+    \end{enumerate}
+
+    \item The data below indicate the state gas tax in cents per gallon and the fuel use per registered vehicle (in gallons). Is there a significant relationship between these two variables?
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrr}
+    Tax, $x$ &21.5&23&18&24.5&26.4&19\\
+    Usage, $y$ &1062&631&920&686&736&684\\
+    \end{tabular}
+    \end{table}
+
+    \item A hospital administrator wants to see if there is a relationship between the number of licensed beds and the number of staffed beds in local hospitals. The data for a specific day are shown. Describe the relationship.
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrrr}
+    Licensed beds, $x$ & 144 & 32 & 175 & 185 & 208 & 100 & 169 \\
+    Staffed beds, $y$ & 112 & 32 & 162 & 141 & 103 & 80 & 118
+    \end{tabular}
+    \end{table}
+
+    \item A study is conducted to determine the relationship between a driver’s age, their weekly alcohol consumption (in Liters) and the number of accidents he or she has over a 1-year period. The data are shown here. If there is a significant relationship, predict the number of accidents of a driver who is 28 and consumes around 2.5 L per week.
+    \begin{table}[H]
+    \begin{tabular}{lrrrrrrrr}
+    Driver's Age & 16 & 24 & 18 & 17 & 23 & 27 & 32 \\
+    Consumption & 0.3 & 3.4 & 3.3 & 0.9 & 1.5 & 0.5 & 3.0 \\
+    No accidents & 3 & 2 & 5 & 2 & 0 & 1 & 1
+    \end{tabular}
+    \end{table}
+    
+
+\end{enumerate}
 
 \end{document}

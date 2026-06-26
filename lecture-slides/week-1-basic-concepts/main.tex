@@ -1,0 +1,467 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{CambridgeUS}
+\usecolortheme{default}
+
+\useinnertheme[shadow=false]{tcolorbox}
+\tcbthemeset{fuzzy halo=1mm with gray}
+
+\title{Week 1: Introduction to Statistics and Probability}
+\subtitle{Stat 195: Midyear Bridge Program}
+\author{Dominic Dayta}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Session Overview}
+    \tableofcontents
+\end{frame}
+
+% --- SECTION 1: VARIABLES & MEASUREMENT ---
+\section{Variables and Measurement}
+
+\begin{frame}{Refresher: Types of Variables}
+    \begin{block}{What is a Variable?}
+        Any unknown characteristic or trait that can assume a range of values once observed or measured. The observed value is our \textbf{data}.
+    \end{block}
+    
+    \vspace{0.5cm}
+    \textbf{Two Main Categories:}
+    \begin{itemize}
+        \item \textbf{Qualitative:} Categorical attributes (e.g., gender, geographic location).
+        \item \textbf{Quantitative:} Numerical values that allow for ordering.
+        \begin{itemize}
+            \item \emph{Discrete:} Countable, specific values (e.g., number of children, API calls).
+            \item \emph{Continuous:} Infinite values within an interval (e.g., temperature, latency).
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Refresher: Levels of Measurement}
+    \begin{itemize}
+        \item \textbf{Nominal:} Unordered categories (e.g., Eye color, marital status).
+        \item \textbf{Ordinal:} Ordered categories, but differences are not quantifiable (e.g., Survey ratings: "Poor" to "Excellent").
+        \item \textbf{Interval:} Ordered, equal intervals, but \emph{no true zero} point (e.g., Temperature in Celsius).
+        \item \textbf{Ratio:} Ordered, equal intervals, \emph{with a true zero} representing absence (e.g., Height, salary, execution time).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exercise Set 1: Classifying Variables}
+    \textbf{Classify each variable as Qualitative or Quantitative. If Quantitative, specify Discrete or Continuous.}
+    \vspace{0.3cm}
+    \begin{enumerate}
+        \item Marital status of nurses in a hospital. \pause \hfill \textcolor{blue}{Qualitative}
+        \item Time it takes to run a marathon. \pause \hfill \textcolor{blue}{Quant / Continuous}
+        \item Capacity of NFL football stadiums. \pause \hfill \textcolor{blue}{Quant / Discrete}
+        \item Colors of automobiles in a parking lot. \pause \hfill \textcolor{blue}{Qualitative}
+        \item Number of students scheduling math tutoring. \pause \hfill \textcolor{blue}{Quant / Discrete}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise Set 2: Levels of Measurement}
+    \textbf{Classify each as Nominal, Ordinal, Interval, or Ratio.}
+    \vspace{0.3cm}
+    \begin{enumerate}
+        \item Rankings of golfers in a tournament. \pause \hfill \textcolor{blue}{Ordinal}
+        \item Temperatures inside 10 pizza ovens ($^\circ$C). \pause \hfill \textcolor{blue}{Interval}
+        \item Salaries of coaches in the NFL. \pause \hfill \textcolor{blue}{Ratio}
+        \item Categories of magazines (sports, news, health). \pause \hfill \textcolor{blue}{Nominal}
+        \item Ratings of textbooks (poor, fair, good, excellent). \pause \hfill \textcolor{blue}{Ordinal}
+    \end{enumerate}
+\end{frame}
+
+% --- SECTION 2: SAMPLING ---
+\section{Sampling and Study Design}
+
+\begin{frame}{Refresher: Sampling Methods}
+    \begin{alertblock}{Why Sample?}
+        To gather information about a large population efficiently while avoiding bias.
+    \end{alertblock}
+    
+    \vspace{0.3cm}
+    \textbf{Four Fundamental Methods:}
+    \begin{itemize}
+        \item \textbf{Random:} Chance selection (e.g., random number generator).
+        \item \textbf{Systematic:} Selecting every $k$-th subject from an ordered list.
+        \item \textbf{Stratified:} Dividing the population into relevant groups (strata), then randomly sampling \emph{within} each group.
+        \item \textbf{Cluster:} Dividing the population into geographic/physical clusters, randomly selecting whole clusters, and sampling \emph{all} members of the chosen clusters.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exercise Set 3: Applied Sampling \& Study Design}
+    \textbf{Identify the sampling method or study type:}
+    \vspace{0.3cm}
+    \begin{enumerate}
+        \item A college president selects 50 first-year and 50 second-year students to survey. \pause \hfill \textcolor{blue}{Stratified}
+        \item Testing every 10th item from an assembly line for defects. \pause \hfill \textcolor{blue}{Systematic}
+        \item A researcher stands at a busy intersection to see if car color correlates with running red lights. \pause \hfill \textcolor{blue}{Observational Study}
+        \item Subjects are assigned to a low-fat diet, high-fish diet, or regular diet. After 6 months, blood pressures are compared. \pause \hfill \textcolor{blue}{Experimental Study}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise Set 4: Engineering Context}
+    Engineers at Mind in a Device are evaluating the output quality of a new NLP model. They have a database of 100,000 generated responses.
+    \vspace{0.3cm}
+    \begin{enumerate}
+        \item They categorize responses as "Syntax Error", "Logic Error", or "Valid". What level of measurement is this? \pause \hfill \textcolor{blue}{Nominal}
+        \item To sample the data, they randomly pick 5 days of the month and manually review \emph{every} generated response from those 5 days. What sampling method is this? \pause \hfill \textcolor{blue}{Cluster Sampling}
+        \item What is a potential bias of using this specific sampling method for a software product? \pause \hfill \textcolor{blue}{\textit{Discussion: Server outages, weekend vs. weekday usage patterns, or patches applied mid-month could severely skew those specific clusters.}}
+    \end{enumerate}
+\end{frame}
+
+% --- SECTION 3: PROBABILITY & EVENTS ---
+\section{Probability and Events}
+
+\begin{frame}{Refresher: Sample Spaces and Events}
+    \begin{itemize}
+        \item \textbf{Sample Space ($\Omega$):} The collection of all possible outcomes of a random experiment. Can be described via the \emph{Roster Method} or \emph{Rule Method}.
+        \item \textbf{Event:} A specific subset of the sample space.
+        \item \textbf{Impossible Event:} $\emptyset$
+        \item \textbf{Sure Event:} $\Omega$
+    \end{itemize}
+    \vspace{0.3cm}
+    \textbf{Set Operations:}
+    \begin{itemize}
+        \item $A^c$: Complement (not $A$)
+        \item $A \cup B$: Union (at least one occurs)
+        \item $A \cap B$: Intersection (both occur)
+        \item Mutually Exclusive: $A \cap B = \emptyset$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Refresher: Kolmogorov's Axioms}
+    For any event $A$, a valid probability function $P(A)$ must satisfy:
+    \begin{enumerate}
+        \item $P(A) \geq 0$
+        \item $P(\Omega) = 1$
+        \item \textbf{Finite Additivity:} If $A$ and $B$ are mutually exclusive, then $P(A \cup B) = P(A) + P(B)$.
+    \end{enumerate}
+    \vspace{0.3cm}
+    \textbf{Derived Properties:}
+    \begin{itemize}
+        \item $P(A^c) = 1 - P(A)$
+        \item \textbf{Additive Law:} $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exercise Set 5: Working with Sample Spaces}
+    \textbf{Consider the random experiment of tossing a balanced coin twice.}
+    \vspace{0.3cm}
+    \begin{enumerate}
+        \item Write the sample space $\Omega$ using the roster method. \pause \hfill \textcolor{blue}{$\Omega = \{HH, HT, TH, TT\}$}
+        \item Let Event $A$ be "getting exactly one Head". Write Event $A$ in roster form. \pause \hfill \textcolor{blue}{$A = \{HT, TH\}$}
+        \item Let Event $B$ be "getting at least one Tail". Write Event $B$ in roster form. \pause \hfill \textcolor{blue}{$B = \{HT, TH, TT\}$}
+        \item Are Events $A$ and $B$ mutually exclusive? Why or why not? \pause \hfill \textcolor{blue}{No. $A \cap B = \{HT, TH\} \neq \emptyset$}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise Set 6: Probability Axioms in Action}
+    A resident takes a weekend walk through Nara Park. Let $A$ be the event that they see a deer, and $B$ be the event that it rains during their walk. 
+    \vspace{0.2cm}
+    
+    Suppose historical data tells us:
+    \begin{itemize}
+        \item $P(A) = 0.85$ (85\% chance to see a deer)
+        \item $P(B) = 0.30$ (30\% chance of rain)
+        \item $P(A \cup B) = 0.95$ (95\% chance of at least one happening)
+    \end{itemize}
+    \vspace{0.2cm}
+    
+    \textbf{Questions:}
+    \begin{enumerate}
+        \item Find the probability that the resident sees a deer \emph{and} it rains ($P(A \cap B)$). \pause
+        \newline \textcolor{blue}{$P(A \cup B) = P(A) + P(B) - P(A \cap B)$}
+        \newline \textcolor{blue}{$0.95 = 0.85 + 0.30 - P(A \cap B) \implies P(A \cap B) = 0.20$} \pause
+        \item Find the probability that it does \emph{not} rain. \pause \hfill \textcolor{blue}{$P(B^c) = 1 - 0.30 = 0.70$} \pause
+        \item Are seeing a deer and raining mutually exclusive? \pause \hfill \textcolor{blue}{No, because $P(A \cap B) = 0.20 > 0$.}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Challenge Exercise: System States (Sample Spaces)}
+    A high-availability web service is deployed across 3 distinct cloud zones (A, B, and C). At any given moment, each zone can either be \textbf{U}p or \textbf{D}own.
+    \vspace{0.2cm}
+
+    \textbf{Questions:}
+    \begin{enumerate}
+        \item Write the sample space $\Omega$ for the entire cluster's status using the roster method. \pause 
+        \newline \textcolor{blue}{$\Omega = \{UUU, UUD, UDU, DUU, UDD, DUD, DDU, DDD\}$} \pause
+        
+        \item Let Event $E_1$ be "The service has high availability (at least two zones Up)". Write $E_1$. \pause 
+        \newline \textcolor{blue}{$E_1 = \{UUU, UUD, UDU, DUU\}$} \pause
+        
+        \item Let Event $E_2$ be "Zone A experiences an outage (Down)". Write $E_2$. \pause 
+        \newline \textcolor{blue}{$E_2 = \{DUU, DUD, DDU, DDD\}$} \pause
+        
+        \item Find $E_1 \cap E_2$. What does this represent in plain English? \pause 
+        \newline \textcolor{blue}{$E_1 \cap E_2 = \{DUU\}$. "The service maintains high availability despite Zone A being down (meaning Zones B and C must carry the load)."}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Challenge Exercise: Defect Analysis (Probability Laws)}
+    A batch of microcontroller chips is tested for two specific manufacturing defects: \textbf{S}cratches and \textbf{C}ontamination.
+    \vspace{0.2cm}
+
+    Quality assurance historical data shows:
+    \begin{itemize}
+        \item Probability of a scratch: $P(S) = 0.12$
+        \item Probability of contamination: $P(C) = 0.08$
+        \item The probability a chip is \emph{perfect} (has neither defect) is $0.85$.
+    \end{itemize}
+    \vspace{0.2cm}
+
+    \textbf{Questions:}
+    \begin{enumerate}
+        \item Find the probability a chip has \emph{at least one} defect, $P(S \cup C)$. \pause 
+        \newline \textcolor{blue}{"Perfect" is $(S \cup C)^c$. Thus, $P(S \cup C) = 1 - 0.85 = 0.15$.} \pause
+        
+        \item Find the probability a chip suffers from \emph{both} defects, $P(S \cap C)$. \pause 
+        \newline \textcolor{blue}{$P(S \cup C) = P(S) + P(C) - P(S \cap C)$}
+        \newline \textcolor{blue}{$0.15 = 0.12 + 0.08 - P(S \cap C) \implies P(S \cap C) = 0.05$} \pause
+        
+        \item Find the probability a chip has a scratch but \emph{no} contamination, $P(S \cap C^c)$. \pause 
+        \newline \textcolor{blue}{$P(S \cap C^c) = P(S) - P(S \cap C) = 0.12 - 0.05 = 0.07$}
+    \end{enumerate}
+\end{frame}
+
+% --- SECTION 1: CONDITIONAL & TOTAL PROBABILITY ---
+\section{Conditional & Total Probability}
+
+\begin{frame}{Refresher: Conditional Probability}
+    \begin{block}{Definition}
+        The probability of an event $A$ occurring, given that event $B$ has already occurred (where $P(B) > 0$), is defined as:
+        $$ P(A|B) = \frac{P(A \cap B)}{P(B)} $$
+    \end{block}
+    
+    \vspace{0.3cm}
+    \textbf{The Multiplication Rule:}
+    By rearranging the definition, we can find the probability of the intersection of two events:
+    $$ P(A \cap B) = P(A|B)P(B) = P(B|A)P(A) $$
+\end{frame}
+
+\begin{frame}{Refresher: Theorem of Total Probability}
+    If a sample space is partitioned into a set of mutually exclusive and exhaustive events $\{B_1, B_2, \dots, B_n\}$, then for any event $A$:
+    $$ P(A) = \sum_{j=1}^{n} P(A|B_j)P(B_j) $$
+    
+    \vspace{0.2cm}
+    \textit{Intuition:} To find the total probability of $A$, we calculate the probability of $A$ occurring under every possible scenario ($B_j$), weighted by how likely each scenario is to occur.
+\end{frame}
+
+\begin{frame}{Warm-up: Probability Axioms}
+    \textbf{A probability experiment is conducted. Which of these cannot be considered a valid probability outcome?}
+    
+    \begin{enumerate}
+        \item $2/3$ \pause \hfill \textcolor{blue}{Valid ($0.667 \in [0,1]$)}
+        \item $0.63$ \pause \hfill \textcolor{blue}{Valid}
+        \item $-3/5$ \pause \hfill \textcolor{blue}{\textbf{Invalid} (Negative)}
+        \item $0.00$ \pause \hfill \textcolor{blue}{Valid (Impossible Event)}
+        \item $1.65$ \pause \hfill \textcolor{blue}{\textbf{Invalid} (Greater than 1)}
+        \item $-0.44$ \pause \hfill \textcolor{blue}{\textbf{Invalid} (Negative)}
+        \item $125\%$ \pause \hfill \textcolor{blue}{\textbf{Invalid} ($1.25 > 1$)}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise: Dice Probabilities}
+    \textbf{If two dice are rolled one time, find the probability of getting:}
+    \vspace{0.2cm}
+    
+    \begin{enumerate}
+        \item A sum of 9 \pause
+        \newline \textcolor{blue}{$\{(3,6), (4,5), (5,4), (6,3)\} \implies 4/36 = 1/9$} \pause
+        
+        \item A sum of 7 or 11 \pause
+        \newline \textcolor{blue}{Sum 7 (6 ways), Sum 11 (2 ways). Mutually exclusive $\implies 8/36 = 2/9$} \pause
+        
+        \item Doubles \pause
+        \newline \textcolor{blue}{$\{(1,1), \dots, (6,6)\} \implies 6/36 = 1/6$} \pause
+        
+        \item A sum less than 9 \pause
+        \newline \textcolor{blue}{$P(<9) = 1 - P(\geq 9)$. Sum 9 (4), 10 (3), 11 (2), 12 (1) = 10 ways.}
+        \newline \textcolor{blue}{$1 - (10/36) = 26/36 = 13/18$} \pause
+        
+        \item A sum greater than or equal to 10 \pause
+        \newline \textcolor{blue}{Sum 10, 11, 12 $\implies 6/36 = 1/6$}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise: Joint & Marginal Probabilities}
+    In a statistics class there are 18 juniors and 10 seniors (Total = 28). 6 seniors are females, and 12 juniors are males. If a student is selected at random, find the probability of selecting:
+    
+    \pause
+    \textit{Tip: Always build the contingency table first!}
+    \begin{itemize}
+        \item Juniors: 12 Male, 6 Female (Total 18)
+        \item Seniors: 4 Male, 6 Female (Total 10)
+    \end{itemize}
+    \pause
+    
+    \begin{enumerate}
+        \item A junior or a female \pause
+        \newline \textcolor{blue}{$P(J \cup F) = P(J) + P(F) - P(J \cap F) = \frac{18}{28} + \frac{12}{28} - \frac{6}{28} = \frac{24}{28} = \frac{6}{7}$} \pause
+        
+        \item A senior or a female \pause
+        \newline \textcolor{blue}{$P(S \cup F) = P(S) + P(F) - P(S \cap F) = \frac{10}{28} + \frac{12}{28} - \frac{6}{28} = \frac{16}{28} = \frac{4}{7}$} \pause
+        
+        \item A junior or a senior \pause
+        \newline \textcolor{blue}{Mutually exclusive $\implies P(J) + P(S) = \frac{18}{28} + \frac{10}{28} = 1$}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise: Conditional Probabilities}
+    In a community, 36\% of families own a dog, and 22\% of families that own a dog also own a cat. 30\% of families own a cat. Let $D$ = Dog, $C$ = Cat.
+    \vspace{0.2cm}
+    
+    \begin{enumerate}
+        \item What is the probability that a randomly selected family owns both a dog and a cat? \pause
+        \newline \textcolor{blue}{We are given $P(D) = 0.36$ and $P(C|D) = 0.22$.}
+        \newline \textcolor{blue}{Multiplication Rule: $P(C \cap D) = P(C|D)P(D) = (0.22)(0.36) = 0.0792$} \pause
+        \vspace{0.3cm}
+        \item What is the conditional probability that a randomly selected family owns a dog given that it owns a cat? \pause
+        \newline \textcolor{blue}{We need $P(D|C)$. We know $P(C) = 0.30$ and $P(C \cap D) = 0.0792$.}
+        \newline \textcolor{blue}{$P(D|C) = \frac{P(C \cap D)}{P(C)} = \frac{0.0792}{0.30} = 0.264$}
+    \end{enumerate}
+\end{frame}
+
+% --- SECTION 2: BAYES' THEOREM ---
+\section{Bayes' Theorem \& Paradigms}
+
+\begin{frame}{Refresher: Bayes' Theorem \& Inference}
+    \begin{block}{Bayes' Theorem}
+        Allows us to update our beliefs given new evidence. Reversing the condition:
+        $$ P(B_k | A) = \frac{P(A|B_k)P(B_k)}{\sum_{j=1}^{n} P(A|B_j)P(B_j)} $$
+    \end{block}
+    
+    \vspace{0.2cm}
+    \textbf{Two Statistical Paradigms:}
+    \begin{itemize}
+        \item \textbf{Frequentist:} Parameter ($\mu$) is fixed. Data ($X$) is random (varies under repeated sampling).
+        \item \textbf{Bayesian:} Parameter ($\mu$) is treated as a random variable. Data ($X$) is fixed once observed. 
+        $$ \text{Posterior} \propto \text{Likelihood} \times \text{Prior} $$
+        $$ P(\mu | X) \propto P(X|\mu)P(\mu) $$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exercise: Bayes' Theorem in Action}
+    \small
+    Voter breakdown: 46\% Independent ($I$), 30\% Liberal ($L$), 24\% Conservative ($C$). 
+    Turnout rates: 35\% of $I$, 62\% of $L$, and 58\% of $C$ voted ($V$). A voter is chosen at random.
+    \pause
+    
+    \vspace{0.2cm}
+    \textbf{d) What percent of voters participated in the local election?} \pause
+    \newline \textcolor{blue}{Total Prob: $P(V) = P(V|I)P(I) + P(V|L)P(L) + P(V|C)P(C)$}
+    \newline \textcolor{blue}{$P(V) = (0.35)(0.46) + (0.62)(0.30) + (0.58)(0.24) = 0.161 + 0.186 + 0.1392 = 0.4862$} \pause
+    
+    \vspace{0.2cm}
+    \textbf{Given this person voted, what is the probability they are...}
+    \begin{enumerate}
+        \item an Independent? \pause \textcolor{blue}{$P(I|V) = \frac{P(V|I)P(I)}{P(V)} = \frac{0.161}{0.4862} \approx 0.331$} \pause
+        \item a Liberal? \pause \textcolor{blue}{$P(L|V) = \frac{P(V|L)P(L)}{P(V)} = \frac{0.186}{0.4862} \approx 0.383$} \pause
+        \item a Conservative? \pause \textcolor{blue}{$P(C|V) = \frac{P(V|C)P(C)}{P(V)} = \frac{0.1392}{0.4862} \approx 0.286$}
+    \end{enumerate}
+\end{frame}
+
+% --- SECTION 3: INDEPENDENCE ---
+\section{Independence}
+
+\begin{frame}{Refresher: Independence}
+    \begin{block}{Statistical Independence}
+        Two events $A$ and $B$ are independent if knowing the outcome of one provides absolutely zero information about the outcome of the other. 
+    \end{block}
+    
+    \vspace{0.2cm}
+    Events are independent if \textbf{any} of the following hold true:
+    \begin{enumerate}
+        \item $P(A|B) = P(A)$
+        \item $P(B|A) = P(B)$
+        \item $P(A \cap B) = P(A)P(B)$
+    \end{enumerate}
+    
+    \vspace{0.2cm}
+    \textit{Note: Mutually exclusive events are highly dependent! If $A$ happens, you know $B$ cannot happen ($P(B|A)=0$).}
+\end{frame}
+
+\begin{frame}{Exercise: Independence vs Conditional}
+    Two cards are drawn without replacement. 
+    $B$ = both are aces, $A_s$ = Ace of Spades chosen, $A$ = at least one ace chosen.
+    
+    \vspace{0.2cm}
+    \begin{enumerate}
+        \item Find $P(B|A_s)$ \pause
+        \newline \textcolor{blue}{"Probability both are aces given the Ace of Spades is one of them."}
+        \newline \textcolor{blue}{Since the $A_s$ is in our hand, we need the 2nd card to be one of the remaining 3 Aces out of the remaining 51 cards. $\implies 3/51 = 1/17$} \pause
+        
+        \vspace{0.2cm}
+        \item Find $P(B|A)$ \pause
+        \newline \textcolor{blue}{"Probability both are aces given at least one ace is drawn."}
+        \newline \textcolor{blue}{$P(B|A) = \frac{P(B \cap A)}{P(A)}$. Note that if $B$ happens, $A$ must happen, so $B \cap A = B$.}
+        \newline \textcolor{blue}{$P(B) = \frac{4}{52} \times \frac{3}{51} = \frac{1}{221}$}
+        \newline \textcolor{blue}{$P(A) = 1 - P(\text{No Aces}) = 1 - \left(\frac{48}{52} \times \frac{47}{51}\right) = 1 - \frac{188}{221} = \frac{33}{221}$}
+        \newline \textcolor{blue}{$P(B|A) = \frac{1/221}{33/221} = 1/33$}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Challenge 1: Genetics \& Bayes (Part 1)}
+    \small
+    Blue ($b$) is recessive, Brown ($B$) is dominant. 
+    Smith's parents both have brown eyes, but his sister has blue eyes ($bb$). Smith has brown eyes.
+    
+    \vspace{0.2cm}
+    \textbf{a) What is the probability Smith possesses a blue-eyed gene?} \pause
+    \newline \textcolor{blue}{Because the sister is $bb$, both parents must be carriers ($Bb$).}
+    \newline \textcolor{blue}{A $Bb \times Bb$ cross yields $1/4$ $BB$, $1/2$ $Bb$, $1/4$ $bb$.}
+    \newline \textcolor{blue}{We are given Smith has brown eyes, so he is NOT $bb$. His reduced sample space is only the brown outcomes: $1/3$ $BB$ and $2/3$ $Bb$.}
+    \newline \textcolor{blue}{Probability he has the $b$ gene (is $Bb$) $= 2/3$.} \pause
+    
+    \vspace{0.2cm}
+    \textbf{b) Suppose Smith's wife has blue eyes. What is the probability their first child will have blue eyes?} \pause
+    \newline \textcolor{blue}{Wife is $bb$. The child will only be $bb$ if Smith passes a $b$ gene.}
+    \newline \textcolor{blue}{This requires two independent events: Smith must be $Bb$ (Prob $= 2/3$) AND Smith must pass the $b$ allele (Prob $= 1/2$).}
+    \newline \textcolor{blue}{$P(\text{Child Blue}) = \frac{2}{3} \times \frac{1}{2} = \frac{1}{3}$}
+\end{frame}
+
+\begin{frame}{Challenge 1: Genetics \& Bayes (Part 2)}
+    \small
+    \textbf{c) If their first child has brown eyes, what is the probability that their next child will also have brown eyes?} \pause
+    
+    \vspace{0.2cm}
+    \textcolor{blue}{\textit{We must update Smith's probability of being BB vs Bb using Bayes' Theorem!}}
+    \begin{itemize}
+        \item \textcolor{blue}{Prior: $P(BB) = 1/3$, $P(Bb) = 2/3$}
+        \item \textcolor{blue}{Likelihood of brown child: $P(Br | BB) = 1$, $P(Br | Bb) = 1/2$}
+        \item \textcolor{blue}{Total Prob of brown child: $(1)(1/3) + (1/2)(2/3) = 2/3$}
+    \end{itemize}
+    \pause
+    \textcolor{blue}{Posterior (Updated probability Smith is a carrier):}
+    \newline \textcolor{blue}{$P(Bb | \text{Child } Br) = \frac{P(Br | Bb)P(Bb)}{P(Br)} = \frac{(1/2)(2/3)}{2/3} = 1/2$}
+    \newline \textcolor{blue}{$P(BB | \text{Child } Br) = 1 - 1/2 = 1/2$}
+    
+    \vspace{0.2cm}
+    \pause
+    \textcolor{blue}{Now, calculate for the \textbf{next} child:}
+    \newline \textcolor{blue}{$P(\text{Next is } Br) = P(\text{Next } Br | BB)P(BB) + P(\text{Next } Br | Bb)P(Bb)$}
+    \newline \textcolor{blue}{$P(\text{Next is } Br) = (1)(1/2) + (1/2)(1/2) = 1/2 + 1/4 = 3/4$}
+\end{frame}
+
+\begin{frame}{Challenge 2: The Duel (Infinite Series)}
+    \small
+    Duelists $A$ and $B$ shoot simultaneously. Probabilities of hitting are $p_A$ and $p_B$. Let $q_A = 1-p_A$ and $q_B = 1-p_B$. Shots are independent. If both miss, they repeat.
+    
+    \vspace{0.2cm}
+    \textbf{a) Probability $A$ is not hit?} \pause \hfill \textcolor{blue}{$B$ misses $A$. $P = q_B$} \pause
+    \newline \textbf{b) Probability both are hit?} \pause \hfill \textcolor{blue}{$A$ hits $B$ AND $B$ hits $A$. $P = p_A p_B$} \pause
+    
+    \vspace{0.2cm}
+    \textbf{c) Probability the duel ends exactly after the $n$th round?} \pause
+    \newline \textcolor{blue}{This means both miss for $n-1$ rounds, then someone hits in round $n$.}
+    \newline \textcolor{blue}{P(Someone hits) = $1 - P(\text{both miss}) = 1 - q_A q_B$}
+    \newline \textcolor{blue}{$P(\text{Ends at } n) = (q_A q_B)^{n-1} (1 - q_A q_B)$} \pause
+    
+    \vspace{0.2cm}
+    \textbf{d) Conditional probability the duel ends after the $n$th round, given $A$ is not hit?} \pause
+    \newline \textcolor{blue}{The event "$A$ is never hit" restricts the sample space entirely to rounds where $B$ misses. Because the rounds are independent, the number of rounds until $A$ finally hits $B$ follows a geometric distribution depending only on $A$'s accuracy!}
+    \newline \textcolor{blue}{$P = (q_A)^{n-1} (p_A)$}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,98 @@
+# IntroStats — LaTeX lecture notes and Beamer slides
+# Track .tex/.sty sources; ignore build products and editor/OS clutter.
+
+## LaTeX auxiliary files
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## Intermediate documents
+*.dvi
+*.xdv
+*-converted-to.*
+
+## Bibliography
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+## latexmk / SyncTeX
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+## Beamer
+*.nav
+*.snm
+*.vrb
+
+## Hyperref / listings / index
+*.brf
+*.lol
+*.idx
+*.ilg
+*.ind
+
+## Glossaries / acronyms
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+
+## minted / Pygments
+_minted*
+*.pyg
+
+## Algorithms / nomenclature / gnuplot
+*.alg
+*.loa
+*.nlg
+*.nlo
+*.nls
+*-gnuplot.tex
+*.gnuplot
+
+## Compiled PDFs (notes and slides)
+*.pdf
+!**/gambar/*.pdf
+!**/figures/*.pdf
+!**/images/*.pdf
+
+## Backup and patch files
+*~
+*.bak
+*.backup
+*.swp
+*.swo
+
+## macOS / Windows
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## Editors
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
