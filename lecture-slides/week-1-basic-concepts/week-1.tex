@@ -226,7 +226,7 @@
 \end{frame}
 
 % --- SECTION 1: CONDITIONAL & TOTAL PROBABILITY ---
-\section{Conditional & Total Probability}
+\section{Conditional \& Total Probability}
 
 \begin{frame}{Refresher: Conditional Probability}
     \begin{block}{Definition}
@@ -285,7 +285,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Exercise: Joint & Marginal Probabilities}
+\begin{frame}{Exercise: Joint \& Marginal Probabilities}
     In a statistics class there are 18 juniors and 10 seniors (Total = 28). 6 seniors are females, and 12 juniors are males. If a student is selected at random, find the probability of selecting:
     
     \pause
@@ -382,6 +382,42 @@
     \textit{Note: Mutually exclusive events are highly dependent! If $A$ happens, you know $B$ cannot happen ($P(B|A)=0$).}
 \end{frame}
 
+\begin{frame}{Exercise: Checking for Independence}
+    \small
+    The quality assurance team at Mind in a Device tests 200 prototype biometric sensors for two specific performance degradation modes during stress testing: Overheating ($O$) and High Latency ($L$). The test logs show:
+    \begin{itemize}
+        \item 40 sensors overheated.
+        \item 50 sensors exhibited high latency.
+        \item 15 sensors experienced \textbf{both} overheating and high latency.
+    \end{itemize}
+    
+    \textbf{a) Find $P(O)$, $P(L)$, and $P(O \cap L)$.} \pause
+    \begin{itemize}
+        \item \textcolor{blue}{$P(O) = 40/200 = 0.20$}
+        \item \textcolor{blue}{$P(L) = 50/200 = 0.25$}
+        \item \textcolor{blue}{$P(O \cap L) = 15/200 = 0.075$}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exercise: Checking for Independence}
+    \small
+    The quality assurance team at Mind in a Device tests 200 prototype biometric sensors for two specific performance degradation modes during stress testing: Overheating ($O$) and High Latency ($L$). The test logs show:
+    \begin{itemize}
+        \item 40 sensors overheated.
+        \item 50 sensors exhibited high latency.
+        \item 15 sensors experienced \textbf{both} overheating and high latency.
+    \end{itemize}
+    
+    \textbf{b) Are Overheating and High Latency statistically independent? Prove it mathematically.} \pause
+    \newline \textcolor{blue}{We must check if the multiplication rule holds: $P(O \cap L) \stackrel{?}{=} P(O)P(L)$}
+    \newline \textcolor{blue}{$P(O)P(L) = (0.20)(0.25) = 0.050$}
+    \newline \textcolor{blue}{Since $0.075 \neq 0.050$, the equality fails. The events are \textbf{dependent}.} \pause
+
+    \textbf{c) What does this dependence imply for the engineers?} \pause
+    \newline \textcolor{blue}{Because $P(O \cap L)$ is higher than what we would expect under pure chance ($0.075 > 0.050$), the two failures are positively correlated. We can prove this by checking the conditional probability: $P(O|L) = 15/50 = 0.30$. Knowing a sensor has high latency \emph{increases} the baseline probability of overheating from 20\% to 30\%.}
+\end{frame}
+
+
 \begin{frame}{Exercise: Independence vs Conditional}
     Two cards are drawn without replacement. 
     $B$ = both are aces, $A_s$ = Ace of Spades chosen, $A$ = at least one ace chosen.
@@ -462,6 +498,66 @@
     \textbf{d) Conditional probability the duel ends after the $n$th round, given $A$ is not hit?} \pause
     \newline \textcolor{blue}{The event "$A$ is never hit" restricts the sample space entirely to rounds where $B$ misses. Because the rounds are independent, the number of rounds until $A$ finally hits $B$ follows a geometric distribution depending only on $A$'s accuracy!}
     \newline \textcolor{blue}{$P = (q_A)^{n-1} (p_A)$}
+\end{frame}
+
+\begin{frame}{Challenge 3: The Unreliable Relay}
+    \small
+    A digital signal (either a 0 or 1) is transmitted through a network of $n$ sequential routing nodes. Due to noise, each node correctly passes the bit it receives with probability $p$, and flips it with probability $1-p$. 
+    
+    Assume the noise at each node is independent. Let $P_n$ be the probability that the bit exiting the $n$-th node matches the original bit entering the 1st node.
+    
+    \vspace{0.2cm}
+    \textbf{a) Find $P_1$ and $P_2$.} \pause
+    \begin{itemize}
+        \item \textcolor{blue}{For 1 node: It simply passes correctly. $P_1 = p$.}
+        \item \textcolor{blue}{For 2 nodes: It must either be (Correct $\rightarrow$ Correct) OR (Flipped $\rightarrow$ Flipped back).}
+        \item \textcolor{blue}{$P_2 = p(p) + (1-p)(1-p) = p^2 + 1 - 2p + p^2 = 2p^2 - 2p + 1$.}
+    \end{itemize} \pause
+    
+    \vspace{0.2cm}
+    \textbf{b) Formulate a recurrence relation for $P_n$ in terms of $P_{n-1}$.} \pause
+    \newline \textcolor{blue}{\textit{Use the Theorem of Total Probability!} Let $C_n$ be the event the bit is correct at node $n$.}
+    \newline \textcolor{blue}{$P(C_n) = P(C_n | C_{n-1})P(C_{n-1}) + P(C_n | C_{n-1}^c)P(C_{n-1}^c)$}
+    \newline \textcolor{blue}{$P_n = p(P_{n-1}) + (1-p)(1 - P_{n-1})$}
+    \newline \textcolor{blue}{$P_n = pP_{n-1} + 1 - p - P_{n-1} + pP_{n-1}$}
+    \newline \textcolor{blue}{$P_n = (2p - 1)P_{n-1} + 1 - p$}
+\end{frame}
+
+\begin{frame}{Challenge 4: Sequential Bayesian Testing (Part 1)}
+    \small
+    An automated Intrusion Detection System (IDS) monitors server traffic. The base rate of a cyber attack at any given moment is $P(A) = 0.01$. To reduce false alarms, the system uses a sequential protocol:
+    \begin{itemize}
+        \item \textbf{Scan 1 (Fast):} True Positive Rate = 0.90, False Positive Rate = 0.05.
+        \item \textbf{Scan 2 (Deep):} If Scan 1 flags an attack, a deep scan triggers. True Positive Rate = 0.95, False Positive Rate = 0.01.
+    \end{itemize}
+    An alert is officially sent to the admin \textbf{only} if both scans flag positive. Assume the scans are conditionally independent given the true state of the network.
+    
+    \vspace{0.2cm}
+    \textbf{a) What is the total probability that an alert is sent?} \pause
+    \newline \textcolor{blue}{Let $F_1$, $F_2$ be positive flags. We need $P(F_1 \cap F_2)$. Total Prob: $P(F_1 \cap F_2 | A)P(A) + P(F_1 \cap F_2 | A^c)P(A^c)$}
+    \newline \textcolor{blue}{Because they are conditionally independent: }
+    \newline \textcolor{blue}{$P(F_1 \cap F_2 | A) = (0.90)(0.95) = 0.855$}
+    \newline \textcolor{blue}{$P(F_1 \cap F_2 | A^c) = (0.05)(0.01) = 0.0005$} \pause
+    \newline \textcolor{blue}{$P(\text{Alert}) = (0.855)(0.01) + (0.0005)(0.99) = 0.00855 + 0.000495 = 0.009045$}
+\end{frame}
+
+\begin{frame}{Challenge 4: Sequential Bayesian Testing (Part 2)}
+    \small
+    \textbf{b) Given that an alert is officially sent, what is the probability that the network is actually under attack?} \pause
+    
+    \vspace{0.2cm}
+    \textcolor{blue}{\textit{Apply Bayes' Theorem using our combined event!}}
+    $$ P(A | F_1 \cap F_2) = \frac{P(F_1 \cap F_2 | A)P(A)}{P(F_1 \cap F_2)} $$
+    $$ P(A | F_1 \cap F_2) = \frac{0.00855}{0.009045} \approx 0.945 \text{ (or } 94.5\%) $$ \pause
+    
+    \textbf{c) If the system only used Scan 1, what would the probability of a true attack be upon receiving an alert? Why does the architecture require two scans?} \pause
+
+    \textcolor{blue}{Bayes with only Scan 1:}
+    $$ P(A | F_1) = \frac{(0.90)(0.01)}{(0.90)(0.01) + (0.05)(0.99)} = \frac{0.009}{0.009 + 0.0495} $$
+    $$ P(A | F_1) = \frac{0.009}{0.0585} \approx 0.154 \text{ (or } 15.4\%) $$
+    
+    \vspace{0.2cm}
+    \textbf{Conclusion:} \pause \textcolor{blue}{Without the deep scan, 84.6\% of alerts would be false alarms (The Base Rate Fallacy). Chaining conditionally independent tests is a foundational Bayesian strategy to boost confidence when the prior is extremely low.}
 \end{frame}
 
 \end{document}
